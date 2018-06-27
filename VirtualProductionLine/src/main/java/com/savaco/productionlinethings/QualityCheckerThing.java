@@ -142,5 +142,15 @@ public class QualityCheckerThing extends QualityCheckerTemplate {
     public QualityCheckerThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine) {
         super(name, description, client, nextMachine, prevMachine);
     }
+
+    @Override
+    public void produce() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void adjustMachines(Object origin) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

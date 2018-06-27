@@ -5,15 +5,30 @@
  */
 package com.savaco.templates;
 
+import com.thingworx.communications.client.ConnectedThingClient;
+
 /**
  *
  * @author Administrator
  */
 public abstract class ProducerTemplate extends BaseMachineTemplate {
-    
-    public ProducerTemplate(){}
+
+    public ProducerTemplate(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine) {
+        super(name, description, client, nextMachine, prevMachine);
+    }
     
     public void buyResources(int amount){
-        super.bufferCapacity += amount;
+        int freeSpace = this.bufferCapacity-this.bufferQuantity;
+        if(freeSpace > amount){
+            this.bufferQuantity += amount;
+        } else {
+            this.bufferQuantity += freeSpace;
+        }
     }
+
+    @Override
+    public abstract void adjustMachines(Object origin) throws Exception;
+
+    @Override
+    public abstract void produce() throws Exception;
 }
