@@ -13,10 +13,10 @@ import com.thingworx.communications.client.ConnectedThingClient;
  */
 public abstract class QualityCheckerTemplate extends BaseMachineTemplate {
     
-    private int totalCount;
-    private int badCount;
-    private int quota;
-    private int desiredQuota;
+    protected int totalCount;
+    protected int badCount;
+    protected int quota;
+    protected int desiredQuota;
     
     public QualityCheckerTemplate(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine){
         super(name, description, client, nextMachine, prevMachine);

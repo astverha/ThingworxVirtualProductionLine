@@ -83,8 +83,8 @@ import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
             }
     ),
     @ThingworxPropertyDefinition(
-            name="Temperature",
-            description="The temperature of the machine",
+            name="TotalCount",
+            description="The amount of products already produces",
             baseType="INTEGER",
             aspects={"dataChangeType:ALWAYS",
                      "dataChangeThreshold:0",
@@ -96,8 +96,8 @@ import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
             }
     ),
     @ThingworxPropertyDefinition(
-            name="ResourceALevel",
-            description="The amount of resources of part A",
+            name="BadCount",
+            description="The amount of bad products produced",
             baseType="INTEGER",
             aspects={"dataChangeType:ALWAYS",
                      "dataChangeThreshold:0",
@@ -109,8 +109,8 @@ import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
             }
     ),
     @ThingworxPropertyDefinition(
-            name="ResourceBLevel",
-            description="The amount of resources of part B",
+            name="Quota",
+            description="Percentage of good products produced",
             baseType="INTEGER",
             aspects={"dataChangeType:ALWAYS",
                      "dataChangeThreshold:0",
@@ -122,8 +122,8 @@ import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
             }
     ),
     @ThingworxPropertyDefinition(
-            name="ResourceCLevel",
-            description="The amount of resources of part C",
+            name="DesiredQuota",
+            description="Percentage of good products needed",
             baseType="INTEGER",
             aspects={"dataChangeType:ALWAYS",
                      "dataChangeThreshold:0",
