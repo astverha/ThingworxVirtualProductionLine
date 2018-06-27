@@ -9,6 +9,11 @@ package com.savaco.templates;
  *
  * @author Administrator
  */
-public abstract class ProducerTemplate {
+public abstract class ProducerTemplate extends BaseMachineTemplate {
     
+    public ProducerTemplate(){}
+    
+    public void buyResources(int amount){
+        super.bufferCapacity += amount;
+    }
 }
