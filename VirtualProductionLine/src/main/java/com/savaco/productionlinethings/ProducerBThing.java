@@ -29,6 +29,9 @@ public class ProducerBThing extends ProducerTemplate {
     public void produce() throws Exception{
         if(this.bufferQuantity > 0){
             this.bufferQuantity--;
+            if(this.nextMachine.getBufferQuantity() < this.nextMachine.getBufferCapacity()){
+                this.nextMachine.setBufferQuantity(this.nextMachine.getBufferQuantity()+1);
+            }
         }
         else {
             throw new Exception("Buffer is already empty.");

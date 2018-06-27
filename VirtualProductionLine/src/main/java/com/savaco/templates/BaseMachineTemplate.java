@@ -49,4 +49,22 @@ public abstract class BaseMachineTemplate extends VirtualThing {
     
     public abstract void produce() throws Exception;
     public abstract void adjustMachines(Object origin) throws Exception;
+
+    public String getState() {
+        return state;
+    }
+
+    public int getBufferCapacity() {
+        return bufferCapacity;
+    }
+
+    public int getBufferQuantity() {
+        return bufferQuantity;
+    }
+
+    public void setBufferQuantity(int bufferQuantity) {
+        this.bufferQuantity = bufferQuantity;
+    }
+    
+    
 }

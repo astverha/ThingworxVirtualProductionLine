@@ -13,9 +13,9 @@ import com.thingworx.communications.client.ConnectedThingClient;
  */
 public abstract class AssemblerTemplate extends BaseMachineTemplate {
     
-    private int resourceALevel;
-    private int resourceBLevel;
-    private int resourceCLevel;
+    protected int resourceALevel;
+    protected int resourceBLevel;
+    protected int resourceCLevel;
     
     public AssemblerTemplate(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine){
         super(name, description, client, nextMachine, prevMachine);
