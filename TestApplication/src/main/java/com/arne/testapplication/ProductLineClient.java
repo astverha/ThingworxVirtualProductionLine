@@ -36,6 +36,7 @@ public class ProductLineClient extends ConnectedThingClient {
         config.ignoreSSLErrors(true);
         
         //Build the things by reading the XML file
+        String thingName = "Asset_TestAssetArne";
         List<ThingProperty> assetProps = new ArrayList<ThingProperty>();
         assetProps.add(new ThingProperty("Temperature", "20"));
         assetProps.add(new ThingProperty("Humidity", "20"));
@@ -43,7 +44,7 @@ public class ProductLineClient extends ConnectedThingClient {
         try {
             ProductLineClient client = new ProductLineClient(config);
             
-            AssetThing thing = new AssetThing("ArneThing2", "Basic Arne", client, assetProps);
+            AssetThing thing = new AssetThing(thingName, "Basic Arne", client, assetProps);
 
             client.start();
 
@@ -55,15 +56,15 @@ public class ProductLineClient extends ConnectedThingClient {
                 if (client.isConnected()) {
                     LOG.info("\n\n---- Thing is connected ----\n\n");
 
-                    for (int i = 0; i < 10; i++) {
+                    for (int i = 0; i < 10000; i++) {
                         //even scannen naar nieuwe property waarden voor thing
                         thing.processScanRequest();
 
                         //LOG.info("++++++++++++++++++++++++++++++++" + thing.getProperty("Temperature").toString() + "+++++++++++++++++++++++++++++++");
                         //read props from thingworx platform
-                        InfoTable result = client.readProperty(ThingworxEntityTypes.Things, "ArneThing2", "Temperature", 10000);
+                        InfoTable result = client.readProperty(ThingworxEntityTypes.Things, thingName, "Temperature", 10000);
                         String temp = result.getFirstRow().getStringValue("Temperature");
-                        result = client.readProperty(ThingworxEntityTypes.Things, "ArneThing2", "Humidity", 10000);
+                        result = client.readProperty(ThingworxEntityTypes.Things, thingName, "Humidity", 10000);
                         String hum = result.getFirstRow().getStringValue("Humidity");
                         LOG.info("\n\n---- temp: {} - hum: {} ----\n", temp, hum);
 
@@ -71,7 +72,7 @@ public class ProductLineClient extends ConnectedThingClient {
                         //invoke services
                         
                         // effe wachten
-                        TimeUnit.SECONDS.sleep(10);
+                        TimeUnit.SECONDS.sleep(3);
                     }
 
                 } else {
