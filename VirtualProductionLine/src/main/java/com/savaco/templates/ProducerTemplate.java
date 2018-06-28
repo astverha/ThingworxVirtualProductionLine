@@ -28,7 +28,4 @@ public abstract class ProducerTemplate extends BaseMachineTemplate {
 
     @Override
     public abstract void adjustMachines(Object origin) throws Exception;
-
-    @Override
-    public abstract void produce() throws Exception;
 }

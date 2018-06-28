@@ -18,7 +18,15 @@ public abstract class BaseMachineTemplate extends VirtualThing {
     
     protected static final Logger LOG = LoggerFactory.getLogger(BaseMachineTemplate.class);
 
-    protected String state;
+    public enum State {
+        RUNNING,
+        PLANNED_DOWN,
+        UNPLANNED_DOWN,
+        WARNING,
+        UNAVAILABLE
+    };
+    
+    protected State state;
     
     protected int temperature;
     protected int productionRate;
@@ -47,12 +55,19 @@ public abstract class BaseMachineTemplate extends VirtualThing {
         this.prevMachine = prevMachine;
     }
     
-    public abstract void produce() throws Exception;
-    public abstract void adjustMachines(Object origin) throws Exception;
-
-    public String getState() {
-        return state;
+    public void produce() throws Exception {
+        if(this.bufferQuantity > 0 && ( this.state == State.RUNNING || this.state == State.WARNING )){
+            this.bufferQuantity--;
+            if(this.nextMachine.getBufferQuantity() < this.nextMachine.getBufferCapacity()){
+                this.nextMachine.setBufferQuantity(this.nextMachine.getBufferQuantity()+1);
+            }
+        }
+        else {
+            throw new Exception("Buffer is already empty.");
+        }
     }
+    
+    public abstract void adjustMachines(Object origin) throws Exception;
 
     public int getBufferCapacity() {
         return bufferCapacity;

@@ -1,0 +1,8 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Demo project internship Savaco
+${licensePrefix}Arne Verhaeghe & Dwight Van Lancker
+<#if licenseLast??>
+${licenseLast}
+</#if>
