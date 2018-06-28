@@ -1,0 +1,84 @@
+{
+  "assets": {
+    "AssemblerThing": [{
+      "name": "Assembler",
+      "properties": {
+        "State": "RUNNING",
+        "Temperature": "20",
+        "ProductionRate": "500",
+        "BufferCapacity": "10000",
+        "BufferQuantity": "7000",
+        "ResourceALevel": "99999",
+        "ResourceBLevel": "5000",
+        "ResourceCLevel": "5000"
+      }
+    }],
+    "BoxingThing": [{
+      "name": "Boxing",
+      "properties": {
+        "State": "RUNNING",
+        "Temperature": "20",
+        "ProductionRate": "500",
+        "BufferCapacity": "10000",
+        "BufferQuantity": "7000"
+      }
+    }],
+    "LabelerThing": [{
+      "name": "Labeler",
+      "properties": {
+        "State": "RUNNING",
+        "Temperature": "20",
+        "ProductionRate": "500",
+        "BufferCapacity": "10000",
+        "BufferQuantity": "7000"
+      }
+    }],
+    "PalletizerThing": [{
+      "name": "Palletizer",
+      "properties": {
+        "State": "RUNNING",
+        "Temperature": "20",
+        "ProductionRate": "500",
+        "BufferCapacity": "10000",
+        "BufferQuantity": "7000"
+      }
+    }],
+    "ProducerThing": [
+      {
+        "name": "ProducerB",
+        "properties": {
+          "State": "RUNNING",
+          "Temperature": "20",
+          "ProductionRate": "500",
+          "BufferCapacity": "10000",
+          "BufferQuantity": "7000"
+        }
+      },
+      {
+        "name": "ProducerC",
+        "properties": {
+          "State": "RUNNING",
+          "Temperature": "20",
+          "ProductionRate": "500",
+          "BufferCapacity": "10000",
+          "BufferQuantity": "7000"
+        }
+      }
+    ],
+    "QualityCheckerThing" : [
+      {
+        "name" : "QualityChecker",
+        "properties" : {
+          "State": "RUNNING",
+          "Temperature": "20",
+          "ProductionRate": "500",
+          "BufferCapacity": "10000",
+          "BufferQuantity": "7000",
+          "TotalCount" : "0",
+          "BadCount" : "0",
+          "Quota" : "50",
+          "DesiredQuota" : "50"
+        }
+      }]
+  }
+}

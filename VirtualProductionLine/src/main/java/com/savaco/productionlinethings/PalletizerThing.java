@@ -87,6 +87,7 @@ public class PalletizerThing extends BaseMachineTemplate implements IProducer {
 
     public PalletizerThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine) {
         super(name, description, client, nextMachine, prevMachine);
+        this.initializeFromAnnotations();
     }
 
     @Override

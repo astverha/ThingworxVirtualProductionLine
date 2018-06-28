@@ -130,6 +130,7 @@ public class AssemblerThing extends BaseMachineTemplate implements IProducer {
     
     public AssemblerThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine){
         super(name, description, client, nextMachine, prevMachine);
+        this.initializeFromAnnotations();
     }
     
     @Override
