@@ -23,7 +23,8 @@ public class Line {
      public Line(String name, String description){
          this.name = name;
          this.description = description;
-         assets = new ArrayList<>();
+         assets = new ArrayList<Asset>();
+         properties = new ArrayList<ThingProperty>();
      }
 
     public List<Asset> getAssets() {
