@@ -82,19 +82,6 @@ import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
             }
     ),
     @ThingworxPropertyDefinition(
-            name="Temperature",
-            description="The temperature of the machine",
-            baseType="INTEGER",
-            aspects={"dataChangeType:ALWAYS",
-                     "dataChangeThreshold:0",
-                     "cacheTime:-1",
-                     "isPersistent:TRUE",
-                     "isReadOnly:FALSE",
-                     "pushType:ALWAYS",
-                     "defaultValue:0"
-            }
-    ),
-    @ThingworxPropertyDefinition(
             name="ResourceALevel",
             description="The amount of resources of part A",
             baseType="INTEGER",
@@ -135,7 +122,7 @@ import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
     )
 })
 
-public abstract class AssemblerThing extends BaseMachineTemplate implements IProducer {
+public class AssemblerThing extends BaseMachineTemplate implements IProducer {
     
     protected int resourceALevel;
     protected int resourceBLevel;
@@ -149,4 +136,16 @@ public abstract class AssemblerThing extends BaseMachineTemplate implements IPro
     public void buyResources(int amount){
         this.resourceALevel += amount;
     }
+
+    @Override
+    public void adjustMachines(Object origin) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void produce() throws Exception {
+        super.produce(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }

@@ -136,7 +136,7 @@ import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
 })
 
 
-public abstract class QualityCheckerThing extends BaseMachineTemplate implements IQualityChecker{
+public class QualityCheckerThing extends BaseMachineTemplate implements IQualityChecker{
     
     protected int totalCount;
     protected int badCount;
@@ -154,10 +154,12 @@ public abstract class QualityCheckerThing extends BaseMachineTemplate implements
     }
 
     @Override
-    public abstract void adjustMachines(Object origin) throws Exception;
-
-    @Override
     public void produce() throws Exception {
         super.produce(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void adjustMachines(Object origin) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
