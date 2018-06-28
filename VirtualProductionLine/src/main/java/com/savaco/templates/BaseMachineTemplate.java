@@ -5,6 +5,7 @@
  */
 package com.savaco.templates;
 
+import com.savaco.interfaces.IBaseMachine;
 import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.communications.client.things.VirtualThing;
 import org.slf4j.Logger;
@@ -14,7 +15,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Administrator
  */
-public abstract class BaseMachineTemplate extends VirtualThing {
+public abstract class BaseMachineTemplate extends VirtualThing implements IBaseMachine {
     
     protected static final Logger LOG = LoggerFactory.getLogger(BaseMachineTemplate.class);
 
@@ -45,7 +46,7 @@ public abstract class BaseMachineTemplate extends VirtualThing {
      * @param client The client that this thin is associated with.
      */
     public BaseMachineTemplate(String name, String description, ConnectedThingClient client,
-            BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine){
+            BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine) {
         super(name, description, client);
         this.initializeFromAnnotations();
         
@@ -55,6 +56,7 @@ public abstract class BaseMachineTemplate extends VirtualThing {
         this.prevMachine = prevMachine;
     }
     
+    @Override
     public void produce() throws Exception {
         if(this.bufferQuantity > 0 && ( this.state == State.RUNNING || this.state == State.WARNING )){
             this.bufferQuantity--;
@@ -67,6 +69,7 @@ public abstract class BaseMachineTemplate extends VirtualThing {
         }
     }
     
+    @Override
     public abstract void adjustMachines(Object origin) throws Exception;
 
     public int getBufferCapacity() {

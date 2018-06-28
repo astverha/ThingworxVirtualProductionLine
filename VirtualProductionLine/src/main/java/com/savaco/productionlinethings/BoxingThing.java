@@ -5,18 +5,17 @@
  */
 package com.savaco.productionlinethings;
 
+import com.savaco.interfaces.IProducer;
 import com.savaco.templates.BaseMachineTemplate;
-import com.savaco.templates.ProducerTemplate;
 import com.thingworx.communications.client.ConnectedThingClient;
 
 /**
  *
  * @author Administrator
  */
-public class ProducerBThing extends ProducerTemplate {
+public class BoxingThing extends BaseMachineTemplate implements IProducer {
 
-    public ProducerBThing(String name, String description, ConnectedThingClient client,
-            BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine) {
+    public BoxingThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine) {
         super(name, description, client, nextMachine, prevMachine);
     }
 
@@ -24,4 +23,16 @@ public class ProducerBThing extends ProducerTemplate {
     public void adjustMachines(Object origin) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void buyResources(int amount) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void produce() throws Exception {
+        super.produce(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }

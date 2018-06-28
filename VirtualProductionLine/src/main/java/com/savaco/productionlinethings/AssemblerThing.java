@@ -5,7 +5,7 @@
  */
 package com.savaco.productionlinethings;
 
-import com.savaco.templates.AssemblerTemplate;
+import com.savaco.interfaces.IProducer;
 import com.savaco.templates.BaseMachineTemplate;
 import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.metadata.annotations.ThingworxPropertyDefinition;
@@ -135,22 +135,18 @@ import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
     )
 })
 
-
-public class AssemblerThing extends AssemblerTemplate {
+public abstract class AssemblerThing extends BaseMachineTemplate implements IProducer {
     
-    public AssemblerThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine) {
+    protected int resourceALevel;
+    protected int resourceBLevel;
+    protected int resourceCLevel;
+    
+    public AssemblerThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine){
         super(name, description, client, nextMachine, prevMachine);
     }
-
-    @Override
-    public void produce() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void adjustMachines(Object origin) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
-    
+    @Override
+    public void buyResources(int amount){
+        this.resourceALevel += amount;
+    }
 }

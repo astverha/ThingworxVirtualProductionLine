@@ -5,9 +5,8 @@
  */
 package com.savaco.productionlinethings;
 
-
+import com.savaco.interfaces.IQualityChecker;
 import com.savaco.templates.BaseMachineTemplate;
-import com.savaco.templates.QualityCheckerTemplate;
 import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.metadata.annotations.ThingworxPropertyDefinition;
 import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
@@ -137,20 +136,28 @@ import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
 })
 
 
-public class QualityCheckerThing extends QualityCheckerTemplate {
+public abstract class QualityCheckerThing extends BaseMachineTemplate implements IQualityChecker{
     
-    public QualityCheckerThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine) {
+    protected int totalCount;
+    protected int badCount;
+    protected int quota;
+    protected int desiredQuota;
+    
+    public QualityCheckerThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine){
         super(name, description, client, nextMachine, prevMachine);
+        this.initializeFromAnnotations();
     }
+
+    @Override
+    public void checkQuality() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public abstract void adjustMachines(Object origin) throws Exception;
 
     @Override
     public void produce() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        super.produce(); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public void adjustMachines(Object origin) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }
