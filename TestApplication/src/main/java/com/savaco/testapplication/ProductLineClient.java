@@ -5,6 +5,7 @@
  */
 package com.savaco.testapplication;
 
+import com.savaco.ConfigurationAgent.ConfigurationAgent;
 import com.thingworx.communications.client.ClientConfigurator;
 import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.relationships.RelationshipTypes.ThingworxEntityTypes;
@@ -27,7 +28,8 @@ public class ProductLineClient extends ConnectedThingClient {
     }
 
     public static void main(String[] args) {
-        ClientConfigurator config = new ClientConfigurator();
+        ConfigurationAgent agent = new ConfigurationAgent("configuration.xml");
+        /*ClientConfigurator config = new ClientConfigurator();
         //server URI
         config.setUri("ws://iottest07:80/Thingworx/WS");
         //appKey
@@ -86,6 +88,6 @@ public class ProductLineClient extends ConnectedThingClient {
             LOG.error("\n\nAn exception occurred while initializing the client.\n", e);
         }
 
-        LOG.info("\n\n---- ArneThingClient is done. Exiting... ----\n");
+        LOG.info("\n\n---- ArneThingClient is done. Exiting... ----\n");*/
     }
 }

@@ -11,7 +11,9 @@ package com.savaco.testapplication;
  */
 public class ThingProperty {
     private final String propertyName;
-    private final String value;
+    private String value;
+    private int min;
+    private int max;
 
     public ThingProperty(String propertyName, String value) {
         this.propertyName = propertyName;
@@ -25,6 +27,21 @@ public class ThingProperty {
     public String getValue() {
         return value;
     }
-    
-    
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
+   
 }

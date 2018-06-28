@@ -44,17 +44,17 @@
 					<Property>
 						<Name>ProductionRate</Name>
 						<Min>0</Min>
-						<Value>0</Value>
+						<Value>600</Value>
 					</Property>
 					<Property>
 						<Name>status</Name>
 						<Value>2</Value>
 					</Property>
+                                        <Property>
+                                                <Name>PercentageFailure</Name>
+                                                <Value>10</Value>
+                                        </Property>
 				</PropertyDefinitions>
-				<Production>
-					<ProductionPerHour>36000</ProductionPerHour>
-					<PercentageFailure>10</PercentageFailure>
-				</Production>
 			</Asset>
 		</AssetDefinitions>
 	</ProductionLine>
