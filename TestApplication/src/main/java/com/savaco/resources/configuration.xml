@@ -1,6 +1,6 @@
 ﻿<DataSimulator>
 	<ServerConfiguration>
-		<Server>ws://iottest07:80/Thingwors/WS</Server>
+		<Server>ws://iottest07:80/Thingworx/WS</Server>
 		<AppKey>434cfef9-9993-478f-ad49-0738fb8948b3</AppKey>
 	</ServerConfiguration>
 	<ProductionLine>
@@ -35,6 +35,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
+                                                <value>0</value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -44,17 +45,270 @@
 					<Property>
 						<Name>ProductionRate</Name>
 						<Min>0</Min>
-						<Value>0</Value>
+						<Value>600</Value>
 					</Property>
 					<Property>
 						<Name>status</Name>
 						<Value>2</Value>
 					</Property>
+					<Property>
+						<Name>PercentageFailure</Name>
+						<Value>10</Value>
+					</Property>
 				</PropertyDefinitions>
-				<Production>
-					<ProductionPerHour>36000</ProductionPerHour>
-					<PercentageFailure>10</PercentageFailure>
-				</Production>
+			</Asset>
+                        <Asset>
+				<ThingName>Asset_ProducerC</ThingName>
+				<Name>ProducerC</Name>
+				<Description>Produces part C of the product</Description>
+				<DataFrequencyPerHour>600</DataFrequencyPerHour>
+				<PropertyDefinitions>
+					<Property>
+						<Name>Temperature</Name>
+						<Min>50</Min>
+						<Max>200</Max>
+						<Value>125</Value>
+					</Property>
+					<Property>
+						<Name>BufferQuantity</Name>
+						<Min>0</Min>
+                                                <value>0</value>
+					</Property>
+					<Property>
+						<Name>BufferCapacity</Name>
+						<Min>0</Min>
+						<Value>10000</Value>
+					</Property>
+					<Property>
+						<Name>ProductionRate</Name>
+						<Min>0</Min>
+						<Value>500</Value>
+					</Property>
+					<Property>
+						<Name>status</Name>
+						<Value>2</Value>
+					</Property>
+					<Property>
+						<Name>PercentageFailure</Name>
+						<Value>10</Value>
+					</Property>
+				</PropertyDefinitions>
+			</Asset>
+                        <Asset>
+				<ThingName>Asset_Assembler</ThingName>
+				<Name>Assembler</Name>
+				<Description>Assembles 2xA, 2xB, 1xC into product</Description>
+				<DataFrequencyPerHour>600</DataFrequencyPerHour>
+				<PropertyDefinitions>
+					<Property>
+						<Name>Temperature</Name>
+						<Min>20</Min>
+						<Max>50</Max>
+						<Value>25</Value>
+					</Property>
+					<Property>
+						<Name>BufferQuantity</Name>
+						<Min>0</Min>
+                                                <value>0</value>
+					</Property>
+					<Property>
+						<Name>BufferCapacity</Name>
+						<Min>0</Min>
+						<Value>10000</Value>
+					</Property>
+					<Property>
+						<Name>ProductionRate</Name>
+						<Min>0</Min>
+						<Value>800</Value>
+					</Property>
+					<Property>
+						<Name>ResourceALevel</Name>
+						<Min>0</Min>
+						<Value>200</Value>
+					</Property>
+					<Property>
+						<Name>ResourceBLevel</Name>
+						<Min>0</Min>
+						<Value>200</Value>
+					</Property>
+					<Property>
+						<Name>ResourceCLevel</Name>
+						<Min>0</Min>
+						<Value>200</Value>
+					</Property>
+					<Property>
+						<Name>status</Name>
+						<Value>2</Value>
+					</Property>
+					<Property>
+						<Name>PercentageFailure</Name>
+						<Value>10</Value>
+					</Property>
+				</PropertyDefinitions>
+			</Asset>
+                        <Asset>
+				<ThingName>Asset_QualityChecker</ThingName>
+				<Name>QualityChecker</Name>
+				<Description>Checks quality of assembled products, removes bad products</Description>
+				<DataFrequencyPerHour>600</DataFrequencyPerHour>
+				<PropertyDefinitions>
+					<Property>
+						<Name>Temperature</Name>
+						<Min>20</Min>
+						<Max>50</Max>
+						<Value>25</Value>
+					</Property>
+					<Property>
+						<Name>BufferQuantity</Name>
+						<Min>0</Min>
+                                                <value>0</value>
+					</Property>
+					<Property>
+						<Name>BufferCapacity</Name>
+						<Min>0</Min>
+						<Value>10000</Value>
+					</Property>
+					<Property>
+						<Name>ProductionRate</Name>
+						<Min>0</Min>
+						<Value>700</Value>
+					</Property>
+                                        <Property>
+                                            <Name>TotalCount</Name>
+                                            <Value>0</Value>
+                                        </Property>
+                                        <Property>
+                                            <Name>BadCount</Name>
+                                            <Value>0</Value>
+                                        </Property>
+                                        <Property>
+                                            <Name>Quota</Name>
+                                            <Value>0</Value>
+                                        </Property>
+                                        <Property>
+                                            <Name>DesiredQuota</Name>
+                                            <Value>70</Value>
+                                        </Property>
+					<Property>
+						<Name>status</Name>
+						<Value>2</Value>
+					</Property>
+					<Property>
+						<Name>PercentageFailure</Name>
+						<Value>10</Value>
+					</Property>
+				</PropertyDefinitions>
+			</Asset>
+                        <Asset>
+				<ThingName>Asset_Labeler</ThingName>
+				<Name>Labeler</Name>
+				<Description>Labels checked products</Description>
+				<DataFrequencyPerHour>600</DataFrequencyPerHour>
+				<PropertyDefinitions>
+					<Property>
+						<Name>Temperature</Name>
+						<Min>20</Min>
+						<Max>50</Max>
+						<Value>25</Value>
+					</Property>
+					<Property>
+						<Name>BufferQuantity</Name>
+						<Min>0</Min>
+                                                <value>0</value>
+					</Property>
+					<Property>
+						<Name>BufferCapacity</Name>
+						<Min>0</Min>
+						<Value>10000</Value>
+					</Property>
+					<Property>
+						<Name>ProductionRate</Name>
+						<Min>0</Min>
+						<Value>700</Value>
+					</Property>
+					<Property>
+						<Name>status</Name>
+						<Value>2</Value>
+					</Property>
+					<Property>
+						<Name>PercentageFailure</Name>
+						<Value>10</Value>
+					</Property>
+				</PropertyDefinitions>
+			</Asset>
+                        <Asset>
+				<ThingName>Asset_BoxingMachine</ThingName>
+				<Name>BoxingMachine</Name>
+				<Description>Boxes labeled products</Description>
+				<DataFrequencyPerHour>600</DataFrequencyPerHour>
+				<PropertyDefinitions>
+					<Property>
+						<Name>Temperature</Name>
+						<Min>20</Min>
+						<Max>50</Max>
+						<Value>25</Value>
+					</Property>
+					<Property>
+						<Name>BufferQuantity</Name>
+						<Min>0</Min>
+                                                <value>0</value>
+					</Property>
+					<Property>
+						<Name>BufferCapacity</Name>
+						<Min>0</Min>
+						<Value>10000</Value>
+					</Property>
+					<Property>
+						<Name>ProductionRate</Name>
+						<Min>0</Min>
+						<Value>700</Value>
+					</Property>
+					<Property>
+						<Name>status</Name>
+						<Value>2</Value>
+					</Property>
+					<Property>
+						<Name>PercentageFailure</Name>
+						<Value>10</Value>
+					</Property>
+				</PropertyDefinitions>
+			</Asset>
+                        <Asset>
+				<ThingName>Asset_Palletizer</ThingName>
+				<Name>Palletizer</Name>
+				<Description>Puts boxes on pallet</Description>
+				<DataFrequencyPerHour>600</DataFrequencyPerHour>
+				<PropertyDefinitions>
+					<Property>
+						<Name>Temperature</Name>
+						<Min>20</Min>
+						<Max>50</Max>
+						<Value>25</Value>
+					</Property>
+					<Property>
+						<Name>BufferQuantity</Name>
+						<Min>0</Min>
+                                                <value>0</value>
+					</Property>
+					<Property>
+						<Name>BufferCapacity</Name>
+						<Min>0</Min>
+						<Value>10000</Value>
+					</Property>
+					<Property>
+						<Name>ProductionRate</Name>
+						<Min>0</Min>
+						<Value>700</Value>
+					</Property>
+					<Property>
+						<Name>status</Name>
+						<Value>2</Value>
+					</Property>
+					<Property>
+						<Name>PercentageFailure</Name>
+						<Value>10</Value>
+					</Property>
+				</PropertyDefinitions>
 			</Asset>
 		</AssetDefinitions>
 	</ProductionLine>
