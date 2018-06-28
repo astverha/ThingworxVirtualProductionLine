@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.arne.testapplication;
+package com.savaco.testapplication;
 
 import com.thingworx.communications.client.ClientConfigurator;
 import com.thingworx.communications.client.ConnectedThingClient;
@@ -43,7 +43,7 @@ public class ProductLineClient extends ConnectedThingClient {
         try {
             ProductLineClient client = new ProductLineClient(config);
             
-            AssetThing thing = new AssetThing("ArneThing2", "Basic Arne", client, assetProps);
+            AssetThing thing = new AssetThing("Asset_TestAssetArne", "", client, assetProps);
 
             client.start();
 
@@ -61,7 +61,7 @@ public class ProductLineClient extends ConnectedThingClient {
 
                         //LOG.info("++++++++++++++++++++++++++++++++" + thing.getProperty("Temperature").toString() + "+++++++++++++++++++++++++++++++");
                         //read props from thingworx platform
-                        InfoTable result = client.readProperty(ThingworxEntityTypes.Things, "ArneThing2", "Temperature", 10000);
+                        InfoTable result = client.readProperty(ThingworxEntityTypes.Things, "Asset_TestAssetArne", "Temperature", 10000);
                         String temp = result.getFirstRow().getStringValue("Temperature");
                         result = client.readProperty(ThingworxEntityTypes.Things, "ArneThing2", "Humidity", 10000);
                         String hum = result.getFirstRow().getStringValue("Humidity");

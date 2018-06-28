@@ -1,4 +1,4 @@
-package com.arne.testapplication;
+package com.savaco.testapplication;
 
 import java.util.Random;
 
