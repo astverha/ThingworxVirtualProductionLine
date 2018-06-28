@@ -84,13 +84,22 @@ import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
 })
 
 public class ProducerThing extends BaseMachineTemplate implements IProducer {
+    
+    private final char part;
+    private final AssemblerThing assembler;
 
-    public ProducerThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine) {
+    public ProducerThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine, char part) {
         super(name, description, client, nextMachine, prevMachine);
+        this.part = part;
+        this.assembler = (AssemblerThing) nextMachine;
+        LOG.info("{} is turned on.", this.name);
     }
+    
+    
     
     @Override
     public void buyResources(int amount){
+        LOG.info("{} bought resources.", this.name);
         int freeSpace = this.bufferCapacity-this.bufferQuantity;
         if(freeSpace > amount){
             this.bufferQuantity += amount;
@@ -101,7 +110,36 @@ public class ProducerThing extends BaseMachineTemplate implements IProducer {
 
     @Override
     public void produce() throws Exception {
-        super.produce(); //To change body of generated methods, choose Tools | Templates.
+        if(this.bufferQuantity > 0 && ( this.state == State.RUNNING || this.state == State.WARNING )){
+            //deplete own buffer
+            this.bufferQuantity--;
+            
+            //add to correct resourceLevel of assembler
+            if(this.nextMachine.getBufferQuantity() < this.nextMachine.getBufferCapacity()){
+                switch(part){
+                    case 'B':
+                        this.assembler.addResourceB();
+                        break;
+                    case 'C':
+                        this.assembler.addResourceC();
+                        break;
+                }
+            }
+            else {
+                //trigger alarm for full buffer of next machine
+            }
+        }
+        else {
+            //throw new Exception("Buffer is already empty.");
+            this.state = State.UNPLANNED_DOWN;
+        }
+        
+        //trigger alarm for low resources (5% of capacity)
+        if(this.bufferQuantity < this.bufferCapacity*0.05){
+            this.state = State.WARNING;
+        }
+        
+        LOG.info("{} produced.", this.name);
     }
 
     @Override

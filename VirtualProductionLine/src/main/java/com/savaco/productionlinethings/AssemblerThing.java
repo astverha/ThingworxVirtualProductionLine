@@ -130,6 +130,12 @@ public class AssemblerThing extends BaseMachineTemplate implements IProducer {
     
     public AssemblerThing(String name, String description, ConnectedThingClient client, BaseMachineTemplate nextMachine, BaseMachineTemplate prevMachine){
         super(name, description, client, nextMachine, prevMachine);
+        this.initializeFromAnnotations();
+        
+        this.resourceALevel = 400;
+        this.resourceBLevel = 400;
+        this.resourceCLevel = 400;
+        LOG.info("{} is turned on.", this.name);
     }
     
     @Override
@@ -144,7 +150,42 @@ public class AssemblerThing extends BaseMachineTemplate implements IProducer {
 
     @Override
     public void produce() throws Exception {
-        super.produce(); //To change body of generated methods, choose Tools | Templates.
+        //we 2 parts A, 2 parts B and 1 parts C = 5 parts
+        if(this.bufferQuantity >= 5 && ( this.state == State.RUNNING || this.state == State.WARNING )){
+            this.bufferQuantity-=5;
+            if(this.nextMachine.getBufferQuantity() < this.nextMachine.getBufferCapacity()){
+                this.nextMachine.setBufferQuantity(this.nextMachine.getBufferQuantity()+1);
+            }
+            else {
+                //trigger alarm for full buffer of next machine
+            }
+        }
+        else {
+            //throw new Exception("Buffer is already empty.");
+            this.state = State.UNPLANNED_DOWN;
+        }
+        
+        //trigger alarm for low resources (5% of capacity)
+        if(this.bufferQuantity < this.bufferCapacity*0.05){
+            this.state = State.WARNING;
+        }
+    }
+
+    @Override
+    public void processScanRequest() throws Exception {
+        super.processScanRequest();
+        
+        
+    }
+
+    void addResourceB() {
+        this.resourceBLevel++;
+        this.bufferQuantity++;
+    }
+
+    void addResourceC() {
+        this.resourceCLevel++;
+        this.bufferQuantity++;
     }
     
     
