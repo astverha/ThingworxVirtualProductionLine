@@ -158,4 +158,10 @@ public class AssetThing extends VirtualThing {
             LOG.error("Exception occurred while updating properties.", e);
         }
     }
+
+    public List<ThingProperty> getDevice_Properties() {
+        return device_Properties;
+    }
+    
+    
 }
