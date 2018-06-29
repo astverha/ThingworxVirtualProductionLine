@@ -155,7 +155,7 @@ public class AssetThing extends VirtualThing {
         } catch (Exception e) {
             // This will occur if we provide an unknown property name. We'll ignore
             // the exception in this case and just log it.
-            LOG.error("Exception occurred while updating properties.", e);
+            LOG.error("Exception occurred while updating properties (AssetThing.java).", e);
         }
     }
 

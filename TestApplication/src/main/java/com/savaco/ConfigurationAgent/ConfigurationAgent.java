@@ -74,7 +74,6 @@ public class ConfigurationAgent {
         } catch (Exception e) {
             LOG.error("Exception occurred while creating assets.");
         }
-        LOG.info("\n\n--------- Spesjaal voor Arne: {} ------\n\n", lines.size());
         return things;
     }
     

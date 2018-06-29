@@ -40,32 +40,34 @@ public class ProductLineClient extends ConnectedThingClient {
             client.start();
 
             if (client.waitForConnection(20000)) {
-                LOG.warn("\n\n---- The {} is now Connected ----\n", client.toString());
+                LOG.warn("TESTLOG ---- The {} is now Connected ----", client.toString());
                 for (AssetThing thing : things) {
                     client.bindThing(thing);
 
                     if (client.isConnected()) {
-                        LOG.warn("\n\n---- {} is connected ----\n\n", thing.getName());
+                        LOG.warn("TESTLOG ---- {} is connected", thing.getName());
                         TimeUnit.SECONDS.sleep(5);
                         try {
                             for (ThingProperty tp : thing.getDevice_Properties()) {
                                 if (StringUtils.isNumeric(tp.getValue())) {
+                                    LOG.warn("TESTLOG ---- \t Property, number: {} ({})", tp.getPropertyName(), tp.getValue());
                                     thing.setPropertyValue(tp.getPropertyName(), new IntegerPrimitive(Integer.parseInt(tp.getValue())));
                                 } else {
+                                    LOG.warn("TESTLOG ---- \t Property, string: {} ({})", tp.getPropertyName(), tp.getValue());
                                     thing.setPropertyValue(tp.getPropertyName(), new StringPrimitive(tp.getValue()));
                                 }
-                            }                            
-                            thing.updateSubscribedProperties(10000);
 
-                            TimeUnit.SECONDS.sleep(3);
+                            }
+                            //thing.updateSubscribedProperties(10000);
                         } catch (Exception e) {
-                            LOG.warn("Exception occurred while updating properties");
+                            LOG.warn("Exception occurred while updating properties. (ProductLineClient.java)");
+                            e.printStackTrace();
                         }
 
                         //Invoke actions you need to do
                         //Threading
                     } else {
-                        LOG.warn("\n\n---- Thing is not connected :( ----\n\n");
+                        LOG.warn("TESTLOG ---- Thing is not connected :( ----");
                     }
 
                 }
@@ -73,7 +75,7 @@ public class ProductLineClient extends ConnectedThingClient {
             } else {
                 LOG.warn("\n\nClient did not connect within 30 seconds. Exiting...\n");
             }
-
+            TimeUnit.MINUTES.sleep(2);
             client.shutdown();
         } catch (Exception e) {
             LOG.warn("\n\nAn exception occurred while initializing the client.\n", e);
