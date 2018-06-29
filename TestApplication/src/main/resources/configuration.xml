@@ -35,7 +35,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <value>0</value>
+                                                <Value>0</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -72,7 +72,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <value>0</value>
+                                                <Value>0</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -109,7 +109,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <value>0</value>
+                                                <Value>0</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -161,7 +161,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <value>0</value>
+                                                <Value>0</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -214,7 +214,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <value>0</value>
+                                                <Value>0</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -251,7 +251,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <value>0</value>
+                                                <Value>0</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -288,7 +288,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <value>0</value>
+                                                <Value>0</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>

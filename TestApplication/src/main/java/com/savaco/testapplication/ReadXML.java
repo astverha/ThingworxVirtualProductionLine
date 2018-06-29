@@ -93,8 +93,8 @@ public class ReadXML {
                         machine.getProperties().add(assetProp);
                     }
 
-                    ThingProperty rproductionLineatedLine = new ThingProperty("rproductionLineatedLines", productionLine.getChildText("Name"));
-                    machine.getProperties().add(rproductionLineatedLine);
+                    ThingProperty relatedLines = new ThingProperty("relatedLines", productionLine.getChildText("Name"));
+                    machine.getProperties().add(relatedLines);
                     line.getAssets().add(machine);
                 }
 
