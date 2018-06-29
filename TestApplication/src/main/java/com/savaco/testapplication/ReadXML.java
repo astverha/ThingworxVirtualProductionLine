@@ -21,6 +21,9 @@ import org.jdom.input.SAXBuilder;
  * @author Administrator
  */
 public class ReadXML {
+    
+    private static String serverName;
+    private static String appKey;
 
     public static void read(File file) {
         SAXBuilder builder = new SAXBuilder();
@@ -35,14 +38,16 @@ public class ReadXML {
             //System.out.println("Server info:");
             //System.out.println("\tServer: " + serverConfiguration.getChildText("Server"));
             //System.out.println("\tAppKey: " + serverConfiguration.getChildText("AppKey"));
+            ReadXML.serverName = serverConfiguration.getChildText("Server");
+            ReadXML.appKey = serverConfiguration.getChildText("AppKey");
             
             //get all production lines
             List<Line> lines = new ArrayList<Line>();
             //System.out.println("\nProduction lines:");
             List<Element> productionLines = dataSimulator.getChildren("ProductionLine");
-            int i = 0;
+            //int i = 0;
             for(Element el : productionLines){
-                i++;
+                //i++;
                 //System.out.println(i+ " - " + el.getChildText("Name"));
                 Line line = new Line(el.getChildText("Name"), el.getChildText("Description"));
                 
@@ -61,9 +66,9 @@ public class ReadXML {
                 //System.out.println("\tAssets:");
                 Element assetDefinitions = (Element) el.getChildren("AssetDefinitions").get(0);
                 List<Element> assets = assetDefinitions.getChildren("Asset");
-                int a = 0;
+                //int a = 0;
                 for(Element asset : assets){
-                    a++;
+                    //a++;
                     //System.out.println("\t\t" + a + " - " + asset.getChildText("Name") + " (" + asset.getChildText("Description") + ")");
 
                     Asset machine = new Asset(asset.getChildText("Name"), asset.getChildText("Description"), Integer.parseInt(asset.getChildText("DataFrequencyPerHour")));
@@ -89,5 +94,13 @@ public class ReadXML {
         } catch (IOException | JDOMException io) {
             System.out.println(io.getMessage());
         }
+    }
+
+    public static String getServerName() {
+        return ReadXML.serverName;
+    }
+
+    public static String getAppKey() {
+        return ReadXML.appKey;
     }
 }

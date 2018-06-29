@@ -57,7 +57,7 @@ public class ProductLineClient extends ConnectedThingClient {
                 if (client.isConnected()) {
                     LOG.info("\n\n---- Thing is connected ----\n\n");
 
-                    for (int i = 0; i < 10; i++) {
+                    for (int i = 0; i < 1000; i++) {
                         //even scannen naar nieuwe property waarden voor thing
                         thing.processScanRequest();
 
@@ -73,7 +73,7 @@ public class ProductLineClient extends ConnectedThingClient {
                         //invoke services
                         
                         // effe wachten
-                        TimeUnit.SECONDS.sleep(10);
+                        TimeUnit.SECONDS.sleep(5);
                     }
 
                 } else {

@@ -36,6 +36,8 @@ public class ConfigurationAgent {
             File xmlFile = new File(loader.getResource(file).getFile());
             
             ReadXML.read(xmlFile);
+            serverName = ReadXML.getServerName();
+            appKey = ReadXML.getAppKey();
         } catch (Exception e) {
             LOG.error("There was an error reading the file \'{}\'", file);
             e.printStackTrace();
