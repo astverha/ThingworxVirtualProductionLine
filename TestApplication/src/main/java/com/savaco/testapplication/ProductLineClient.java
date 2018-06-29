@@ -58,7 +58,7 @@ public class ProductLineClient extends ConnectedThingClient {
                                 }
 
                             }
-                            //thing.updateSubscribedProperties(10000);
+                            thing.updateSubscribedProperties(10000);
                         } catch (Exception e) {
                             LOG.warn("Exception occurred while updating properties. (ProductLineClient.java)");
                             e.printStackTrace();
