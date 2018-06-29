@@ -24,6 +24,7 @@ public class Line {
          this.name = name;
          this.description = description;
          assets = new ArrayList<>();
+         properties = new ArrayList<>();
      }
 
     public List<Asset> getAssets() {
