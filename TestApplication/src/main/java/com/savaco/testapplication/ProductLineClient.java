@@ -24,8 +24,9 @@ import org.slf4j.LoggerFactory;
 public class ProductLineClient extends ConnectedThingClient {
 
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+
     private final ConfigurationAgent agent;
-    
+
     public ProductLineClient(ConfigurationAgent agent, ClientConfigurator config) throws Exception {
         super(config);
         this.agent = agent;
@@ -33,17 +34,15 @@ public class ProductLineClient extends ConnectedThingClient {
 
     public void startApplication() {
         try {
-
             List<AssetThing> things = this.agent.getAssetsAsThings();
             this.start();
 
             if (this.waitForConnection(20000)) {
-                LOG.warn("TESTLOG ---- The {} is now Connected ----", this.toString());
+                //LOG.info("TESTLOG ---- The {} is now Connected ----", this.toString());
                 for (AssetThing thing : things) {
                     this.bindThing(thing);
-
                     if (this.isConnected()) {
-                        LOG.warn("TESTLOG ---- {} is connected", thing.getName());
+                        //LOG.info("TESTLOG ---- {} is connected", thing.getName());
                         TimeUnit.SECONDS.sleep(5);
                         try {
                             for (ThingProperty tp : thing.getDevice_Properties()) {
@@ -52,30 +51,28 @@ public class ProductLineClient extends ConnectedThingClient {
                                 } else {
                                     thing.setPropertyValue(tp.getPropertyName(), new StringPrimitive(tp.getValue()));
                                 }
-
                             }
                             thing.updateSubscribedProperties(10000);
                         } catch (Exception e) {
-                            LOG.warn("TESTLOG ---- Exception occurred while updating properties. (ProductLineClient.java)");
+                            LOG.warn("TESTLOG ---- Exception occurred while initializing properties. (ProductLineClient.java)");
                         }
-
-                        //Invoke actions you need to do
-                        //Threading
                     } else {
-                        LOG.warn("TESTLOG ---- Thing is not connected :(");
+                        LOG.warn("TESTLOG ---- Thing is not connected. (ProductLineClient.java)");
                     }
-
                 }
 
+                //Threading
+                ThreadManager tManager = new ThreadManager(agent);
+                tManager.start();
             } else {
                 LOG.warn("TESTLOG ---- Client did not connect within 30 seconds. Exiting...\n");
             }
-            TimeUnit.MINUTES.sleep(2);
+            //how long threads should keep running
+            TimeUnit.MINUTES.sleep(15);
             this.shutdown();
         } catch (Exception e) {
             LOG.warn("TESTLOG ---- An exception occurred while initializing the client.\n", e);
         }
-
         LOG.warn("TESTLOG ---- ProductLineClient is done. Exiting...");
     }
 }
