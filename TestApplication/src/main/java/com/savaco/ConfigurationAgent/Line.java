@@ -1,0 +1,53 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.savaco.ConfigurationAgent;
+
+import com.savaco.testapplication.ThingProperty;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author Administrator
+ */
+public class Line {
+    
+     private List<Asset> assets;
+     private List<ThingProperty> properties;
+     private final String name;
+     private final String thingName;
+     private final String description;
+     
+    public Line(String name, String thingName, String description){
+         this.name = name;
+         this.description = description;
+         this.thingName = thingName;
+         
+         assets = new ArrayList<>();
+         properties = new ArrayList<>();
+    }
+
+    public List<Asset> getAssets() {
+        return assets;
+    }
+
+    public List<ThingProperty> getProperties() {
+        return properties;
+    }
+
+    public String getThingName() {
+        return thingName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+      
+}
