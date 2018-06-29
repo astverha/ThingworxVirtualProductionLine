@@ -28,6 +28,10 @@ public class ThingProperty {
         return value;
     }
 
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     public int getMin() {
         return min;
     }
@@ -43,5 +47,7 @@ public class ThingProperty {
     public void setMax(int max) {
         this.max = max;
     }
+
+    
    
 }

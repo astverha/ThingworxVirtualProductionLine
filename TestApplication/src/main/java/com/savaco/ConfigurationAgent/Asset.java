@@ -15,11 +15,11 @@ import java.util.List;
  */
 public class Asset {
     
-    private List<ThingProperty> properties;
-    private String name;
-    private String thingName;
-    private String description;
-    private int frequentie;
+    private final List<ThingProperty> properties;
+    private final String name;
+    private final String thingName;
+    private final String description;
+    private final int frequentie;
     
     public Asset(String name, String thingName, String description, int frequentie){
         this.name = name;

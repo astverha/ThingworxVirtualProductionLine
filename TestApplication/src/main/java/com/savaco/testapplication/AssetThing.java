@@ -8,22 +8,14 @@ import org.slf4j.LoggerFactory;
 import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
-import com.thingworx.metadata.annotations.ThingworxPropertyDefinition;
-import com.thingworx.metadata.annotations.ThingworxPropertyDefinitions;
-import com.thingworx.metadata.annotations.ThingworxServiceDefinition;
-import com.thingworx.metadata.annotations.ThingworxServiceParameter;
-import com.thingworx.metadata.annotations.ThingworxServiceResult;
-import com.thingworx.relationships.RelationshipTypes;
 import com.thingworx.types.BaseTypes;
 import com.thingworx.types.collections.AspectCollection;
 import com.thingworx.types.constants.Aspects;
 import com.thingworx.types.constants.DataChangeType;
 import com.thingworx.types.primitives.BooleanPrimitive;
-import com.thingworx.types.primitives.IPrimitiveType;
 import com.thingworx.types.primitives.IntegerPrimitive;
 import com.thingworx.types.primitives.NumberPrimitive;
 import com.thingworx.types.primitives.StringPrimitive;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -61,12 +53,13 @@ public class AssetThing extends VirtualThing {
 
     private final String name;
     private final ConnectedThingClient client;
-    private List<ThingProperty> device_Properties;
+    private final List<ThingProperty> device_Properties;
 
     /**
      * @param name The name of the thing.
      * @param description A description of the thing.
      * @param client The client that this thing is associated with.
+     * @param device_Properties
      * @throws java.lang.Exception
      */
     public AssetThing(String name, String description, ConnectedThingClient client, List<ThingProperty> device_Properties)
@@ -86,7 +79,7 @@ public class AssetThing extends VirtualThing {
             //determine Basetype of property (NUMBER, BOOLEAN or STRING)
             if (StringUtils.isNumeric(node.getValue())) {
                 pd = new PropertyDefinition(node.getPropertyName(), " ", BaseTypes.NUMBER);
-            } else if (node.getValue() == "true" | node.getValue() == "false") {
+            } else if ("true".equals(node.getValue()) || "false".equals(node.getValue())) {
                 pd = new PropertyDefinition(node.getPropertyName(), " ", BaseTypes.BOOLEAN);
             } else {
                 pd = new PropertyDefinition(node.getPropertyName(), " ", BaseTypes.STRING);

@@ -8,24 +8,17 @@ package com.savaco.ConfigurationAgent;
 import com.savaco.testapplication.AssetThing;
 import com.savaco.testapplication.ProductLineClient;
 import com.savaco.testapplication.ReadXML;
-import com.savaco.testapplication.ThingProperty;
 import com.thingworx.communications.client.ClientConfigurator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  *
  * @author Administrator
  */
-public class ConfigurationAgent {
+public final class ConfigurationAgent {
     
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ConfigurationAgent.class);
     
@@ -46,8 +39,7 @@ public class ConfigurationAgent {
             client = new ProductLineClient(this.getConfiguration());
             
         } catch (Exception e) {
-            LOG.error("There was an error reading the file \'{}\'", file);
-            e.printStackTrace();
+            LOG.error("TESTLOG ---- There was an error reading the file \'{}\'", file);
         }
     }
     
