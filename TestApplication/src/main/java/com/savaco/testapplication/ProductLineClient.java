@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ProductLineClient extends ConnectedThingClient {
 
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ProductLineClient.class);
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
 
     public ProductLineClient(ClientConfigurator config) throws Exception {
         super(config);
@@ -32,7 +32,6 @@ public class ProductLineClient extends ConnectedThingClient {
 
     public static void main(String[] args) {
         ConfigurationAgent agent = new ConfigurationAgent("configuration.xml");
-
         try {
             ProductLineClient client = agent.getClient();
 
