@@ -35,27 +35,27 @@ public class ReadXML {
             
             List<Element> list = dataSimulator.getChildren("ServerConfiguration");
             Element serverConfiguration = list.get(0);
-            //System.out.println("Server info:");
-            //System.out.println("\tServer: " + serverConfiguration.getChildText("Server"));
-            //System.out.println("\tAppKey: " + serverConfiguration.getChildText("AppKey"));
+            System.out.println("Server info:");
+            System.out.println("\tServer: " + serverConfiguration.getChildText("Server"));
+            System.out.println("\tAppKey: " + serverConfiguration.getChildText("AppKey"));
             ReadXML.serverName = serverConfiguration.getChildText("Server");
             ReadXML.appKey = serverConfiguration.getChildText("AppKey");
             
             //get all production lines
             List<Line> lines = new ArrayList<Line>();
-            //System.out.println("\nProduction lines:");
+            System.out.println("\nProduction lines:");
             List<Element> productionLines = dataSimulator.getChildren("ProductionLine");
-            //int i = 0;
+            int i = 0;
             for(Element el : productionLines){
-                //i++;
-                //System.out.println(i+ " - " + el.getChildText("Name"));
+                i++;
+                System.out.println(i+ " - " + el.getChildText("Name"));
                 Line line = new Line(el.getChildText("Name"), el.getChildText("Description"));
                 
                 //get all line properties
                 Element propertyDefinitions = (Element) el.getChildren("PropertyDefinitions").get(0);
                 List<Element> lineProperties = propertyDefinitions.getChildren("Property");
                 for(Element prop : lineProperties){
-                    //System.out.println("\t" + prop.getChildText("Name") + ": " + prop.getChildText("Value"));
+                    System.out.println("\t" + prop.getChildText("Name") + ": " + prop.getChildText("Value"));
                     //add lineproperties to Line object
                     ThingProperty lineProp = new ThingProperty(prop.getChildText("Name"), prop.getChildText("Value"));
                     lineProp.setMin(Integer.parseInt(prop.getChildText("Min")));
@@ -63,13 +63,13 @@ public class ReadXML {
                 }
                 
                 //get all assets
-                //System.out.println("\tAssets:");
+                System.out.println("\tAssets:");
                 Element assetDefinitions = (Element) el.getChildren("AssetDefinitions").get(0);
                 List<Element> assets = assetDefinitions.getChildren("Asset");
-                //int a = 0;
+                int a = 0;
                 for(Element asset : assets){
-                    //a++;
-                    //System.out.println("\t\t" + a + " - " + asset.getChildText("Name") + " (" + asset.getChildText("Description") + ")");
+                    a++;
+                    System.out.println("\t\t" + a + " - " + asset.getChildText("Name") + " (" + asset.getChildText("Description") + ")");
 
                     Asset machine = new Asset(asset.getChildText("Name"), asset.getChildText("Description"), Integer.parseInt(asset.getChildText("DataFrequencyPerHour")));
                     
@@ -77,7 +77,7 @@ public class ReadXML {
                     Element assetPropertyDefinitions = (Element) asset.getChildren("PropertyDefinitions").get(0);
                     List<Element> assetProperties = assetPropertyDefinitions.getChildren("Property");
                     for(Element prop : assetProperties){
-                        //System.out.println("\t\t\t" + prop.getChildText("Name") + ": " + prop.getChildText("Value"));
+                        System.out.println("\t\t\t" + prop.getChildText("Name") + ": " + prop.getChildText("Value"));
                         ThingProperty assetProp = new ThingProperty(prop.getChildText("Name"), prop.getChildText("Value"));
                         if(prop.getChildText("Min") != null){
                             assetProp.setMin(Integer.parseInt(prop.getChildText("Min")));
