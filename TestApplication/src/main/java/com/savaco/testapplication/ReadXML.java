@@ -6,7 +6,6 @@
 package com.savaco.testapplication;
 
 import com.savaco.ConfigurationAgent.Asset;
-import com.savaco.ConfigurationAgent.ConfigurationAgent;
 import com.savaco.ConfigurationAgent.Line;
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +34,7 @@ public class ReadXML {
         File xmlFile = file;
 
         //get all production lines
-        List<Line> lines = new ArrayList<Line>();
+        List<Line> lines = new ArrayList<>();
 
         try {
             Document document = (Document) builder.build(xmlFile);

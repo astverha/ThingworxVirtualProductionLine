@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class Line {
     
-     private List<Asset> assets;
-     private List<ThingProperty> properties;
+     private final List<Asset> assets;
+     private final List<ThingProperty> properties;
      private final String name;
      private final String thingName;
      private final String description;
