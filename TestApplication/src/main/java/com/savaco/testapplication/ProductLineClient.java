@@ -29,7 +29,7 @@ public class ProductLineClient extends ConnectedThingClient {
 
     public static void main(String[] args) {
         ConfigurationAgent agent = new ConfigurationAgent("configuration.xml");
-        /*ClientConfigurator config = new ClientConfigurator();
+        ClientConfigurator config = new ClientConfigurator();
         //server URI
         config.setUri("ws://iottest07:80/Thingworx/WS");
         //appKey
@@ -88,6 +88,6 @@ public class ProductLineClient extends ConnectedThingClient {
             LOG.error("\n\nAn exception occurred while initializing the client.\n", e);
         }
 
-        LOG.info("\n\n---- ArneThingClient is done. Exiting... ----\n");*/
+        LOG.info("\n\n---- ArneThingClient is done. Exiting... ----\n");
     }
 }

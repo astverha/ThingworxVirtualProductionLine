@@ -23,6 +23,7 @@ public class Line {
      public Line(String name, String description){
          this.name = name;
          this.description = description;
+         
          assets = new ArrayList<>();
          properties = new ArrayList<>();
      }
