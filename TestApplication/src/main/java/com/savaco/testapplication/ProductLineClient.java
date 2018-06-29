@@ -38,11 +38,9 @@ public class ProductLineClient extends ConnectedThingClient {
             this.start();
 
             if (this.waitForConnection(20000)) {
-                //LOG.info("TESTLOG ---- The {} is now Connected ----", this.toString());
                 for (AssetThing thing : things) {
                     this.bindThing(thing);
                     if (this.isConnected()) {
-                        //LOG.info("TESTLOG ---- {} is connected", thing.getName());
                         TimeUnit.SECONDS.sleep(5);
                         try {
                             for (ThingProperty tp : thing.getDevice_Properties()) {
@@ -60,14 +58,11 @@ public class ProductLineClient extends ConnectedThingClient {
                         LOG.warn("TESTLOG ---- Thing is not connected. (ProductLineClient.java)");
                     }
                 }
-
-                //Threading
                 ThreadManager tManager = new ThreadManager(agent);
                 tManager.start();
             } else {
                 LOG.warn("TESTLOG ---- Client did not connect within 30 seconds. Exiting...\n");
             }
-            //how long threads should keep running
             TimeUnit.MINUTES.sleep(15);
             this.shutdown();
         } catch (Exception e) {

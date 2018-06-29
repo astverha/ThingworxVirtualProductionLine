@@ -8,13 +8,10 @@ package com.savaco.testapplication;
 import com.savaco.ConfigurationAgent.AssetThing;
 import com.savaco.ConfigurationAgent.ConfigurationAgent;
 import com.savaco.ConfigurationAgent.ThingProperty;
-import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.types.primitives.IntegerPrimitive;
 import com.thingworx.types.primitives.StringPrimitive;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
@@ -37,32 +34,20 @@ public class ThreadManager {
     }
 
     public void start() {
-        LOG.info("TESTLOG ---- Starting the agent");
-
         try {
             client.start();
-
             if (client.waitForConnection(30000)) {
-                LOG.info("TESTLOG ---- ThreadManager client IS NOW CONNECTED!");
-
-                //start a thread for each asset
                 List<AssetThing> assetThings = agent.getAssetsAsThings();
                 for (AssetThing thing : assetThings) {
                     Thread agentThread = new Thread(new AgentThreadRunnable(thing, 1));
                     agentThread.start();
                 }
-                //wait for all threads
-                /*for(Thread thread : this.threads){
-                    thread.join();
-                }*/
             } else {
                 LOG.warn("TESTLOG ---- ThreadManager client could not connect.");
             }
-
         } catch (Exception e) {
             LOG.warn("TESTLOG ---- Exception starting the ThreadManager.");
         }
-
     }
 
     public void stop() {
@@ -88,18 +73,11 @@ public class ThreadManager {
 
         @Override
         public void run() {
-            Random random = new Random();
             while (!client.isShutdown()) {
                 try {
-                    //bind the asset to the client
                     client.bindThing(this.thing);
-                    //LOG.info("TESTLOG ---- Thing {} is now bound to the client.", this.thing.getName());
-
-                    //check if the client is connected
                     if (client.isConnected()) {
-                        //LOG.warn("TESTLOG ---- {} is connected.", thing.getName());
                         try {
-                            //set new values for the properties of the thing associated with this runnable thread
                             for (ThingProperty tp : this.thing.getDevice_Properties()) {
                                 if (!tp.getPropertyName().equals("status")) {
                                     if (StringUtils.isNumeric(tp.getValue())) {
@@ -111,15 +89,12 @@ public class ThreadManager {
                                         this.thing.setPropertyValue(tp.getPropertyName(), new StringPrimitive(tp.getValue()));
                                     }
                                 }
-
                             }
                             this.thing.updateSubscribedProperties(10000);
                             LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
-                            //sleep "sleeptime" seconds to update again
                             Thread.sleep(this.sleepTime * 1000);
                         } catch (Exception e) {
                             LOG.warn("TESTLOG ---- Exception occurred while updating properties. (ThreadManager.java)");
-                            e.printStackTrace();
                         }
                     } else {
                         LOG.warn("TESTLOG ---- Thing is not connected :(");

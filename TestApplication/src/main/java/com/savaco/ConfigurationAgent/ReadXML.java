@@ -5,8 +5,6 @@
  */
 package com.savaco.ConfigurationAgent;
 
-import com.savaco.ConfigurationAgent.Asset;
-import com.savaco.ConfigurationAgent.Line;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,10 +30,8 @@ public class ReadXML {
 
         SAXBuilder builder = new SAXBuilder();
         File xmlFile = file;
-
-        //get all production lines
+        
         List<Line> lines = new ArrayList<>();
-
         try {
             Document document = (Document) builder.build(xmlFile);
             Element dataSimulator = document.getRootElement();
@@ -51,7 +47,6 @@ public class ReadXML {
             
             //PRODUCTION LINE
             for (Element productionLine : productionLines) {
-
                 Line line = new Line(productionLine.getChildText("Name"), productionLine.getChildText("ThingName"), productionLine.getChildText("Description"));
 
                 //PROPERTIES OF A PRODUCTION LINE
@@ -59,18 +54,15 @@ public class ReadXML {
                 List<Element> lineProperties = propertyDefinitions.getChildren("Property");
 
                 for (Element lineProperty : lineProperties) {
-
                     ThingProperty lineProp = new ThingProperty(lineProperty.getChildText("Name"), lineProperty.getChildText("Value"));
                     lineProp.setMin(Integer.parseInt(lineProperty.getChildText("Min")));
                     line.getProperties().add(lineProp);
                 }
-
-
+                
                 //ASSETS OF A PRODUCTION LINE
                 Element assetDefinitions = (Element) productionLine.getChildren("AssetDefinitions").get(0);
                 List<Element> assets = assetDefinitions.getChildren("Asset");
                 for (Element asset : assets) {
-
                     Asset machine = new Asset(asset.getChildText("Name"), asset.getChildText("ThingName"), asset.getChildText("Description"), Integer.parseInt(asset.getChildText("DataFrequencyPerHour")));
 
                     //PROPERTIES OF AN ASSET
@@ -78,25 +70,19 @@ public class ReadXML {
                     List<Element> assetProperties = assetPropertyDefinitions.getChildren("Property");
 
                     for (Element assetProperty : assetProperties) {
-
                         ThingProperty assetProp = new ThingProperty(assetProperty.getChildText("Name"), assetProperty.getChildText("Value"));
-
                         if (assetProperty.getChildText("Min") != null) {
                             assetProp.setMin(Integer.parseInt(assetProperty.getChildText("Min")));
                         }
-
                         if (assetProperty.getChildText("Max") != null) {
                             assetProp.setMax(Integer.parseInt(assetProperty.getChildText("Max")));
                         }
-
                         machine.getProperties().add(assetProp);
                     }
-
                     ThingProperty relatedLines = new ThingProperty("relatedLines", productionLine.getChildText("Name"));
                     machine.getProperties().add(relatedLines);
                     line.getAssets().add(machine);
                 }
-
                 lines.add(line);
             }
         } catch (IOException | JDOMException io) {
