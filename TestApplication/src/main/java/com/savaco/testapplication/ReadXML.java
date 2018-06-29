@@ -43,64 +43,62 @@ public class ReadXML {
 
             List<Element> list = dataSimulator.getChildren("ServerConfiguration");
             Element serverConfiguration = list.get(0);
-            System.out.println("Server info:");
-            System.out.println("\tServer: " + serverConfiguration.getChildText("Server"));
-            System.out.println("\tAppKey: " + serverConfiguration.getChildText("AppKey"));
+            
+            //SERVER INFORMATION
             ReadXML.serverName = serverConfiguration.getChildText("Server");
             ReadXML.appKey = serverConfiguration.getChildText("AppKey");
 
-            //System.out.println("\nProduction lines:");
             List<Element> productionLines = dataSimulator.getChildren("ProductionLine");
-            //int i = 0;
-            for (Element el : productionLines) {
-                //i++;
-                //System.out.println(i+ " - " + el.getChildText("Name"));
-                Line line = new Line(el.getChildText("Name"), el.getChildText("ThingName"), el.getChildText("Description"));
+            
+            //PRODUCTION LINE
+            for (Element productionLine : productionLines) {
 
-                //get all line properties
-                Element propertyDefinitions = (Element) el.getChildren("PropertyDefinitions").get(0);
+                Line line = new Line(productionLine.getChildText("Name"), productionLine.getChildText("ThingName"), productionLine.getChildText("Description"));
+
+                //PROPERTIES OF A PRODUCTION LINE
+                Element propertyDefinitions = (Element) productionLine.getChildren("PropertyDefinitions").get(0);
                 List<Element> lineProperties = propertyDefinitions.getChildren("Property");
-                for (Element prop : lineProperties) {
-                    //System.out.println("\t" + prop.getChildText("Name") + ": " + prop.getChildText("Value"));
-                    //add lineproperties to Line object
-                    ThingProperty lineProp = new ThingProperty(prop.getChildText("Name"), prop.getChildText("Value"));
-                    lineProp.setMin(Integer.parseInt(prop.getChildText("Min")));
+
+                for (Element lineProperty : lineProperties) {
+
+                    ThingProperty lineProp = new ThingProperty(lineProperty.getChildText("Name"), lineProperty.getChildText("Value"));
+                    lineProp.setMin(Integer.parseInt(lineProperty.getChildText("Min")));
                     line.getProperties().add(lineProp);
                 }
 
-                //get all assets
-                System.out.println("\tAssets:");
-                Element assetDefinitions = (Element) el.getChildren("AssetDefinitions").get(0);
-                List<Element> assets = assetDefinitions.getChildren("Asset");
 
-                //int a = 0;
+                //ASSETS OF A PRODUCTION LINE
+                Element assetDefinitions = (Element) productionLine.getChildren("AssetDefinitions").get(0);
+                List<Element> assets = assetDefinitions.getChildren("Asset");
                 for (Element asset : assets) {
-                    //a++;
-                    //System.out.println("\t\t" + a + " - " + asset.getChildText("Name") + " (" + asset.getChildText("Description") + ")");
 
                     Asset machine = new Asset(asset.getChildText("Name"), asset.getChildText("ThingName"), asset.getChildText("Description"), Integer.parseInt(asset.getChildText("DataFrequencyPerHour")));
 
-                    //get all asset properties
+                    //PROPERTIES OF AN ASSET
                     Element assetPropertyDefinitions = (Element) asset.getChildren("PropertyDefinitions").get(0);
                     List<Element> assetProperties = assetPropertyDefinitions.getChildren("Property");
 
-                    for (Element prop : assetProperties) {
-                        //System.out.println("\t\t\t" + prop.getChildText("Name") + ": " + prop.getChildText("Value"));
-                        ThingProperty assetProp = new ThingProperty(prop.getChildText("Name"), prop.getChildText("Value"));
-                        if (prop.getChildText("Min") != null) {
-                            assetProp.setMin(Integer.parseInt(prop.getChildText("Min")));
+                    for (Element assetProperty : assetProperties) {
+
+                        ThingProperty assetProp = new ThingProperty(assetProperty.getChildText("Name"), assetProperty.getChildText("Value"));
+
+                        if (assetProperty.getChildText("Min") != null) {
+                            assetProp.setMin(Integer.parseInt(assetProperty.getChildText("Min")));
                         }
-                        if (prop.getChildText("Max") != null) {
-                            assetProp.setMax(Integer.parseInt(prop.getChildText("Max")));
+
+                        if (assetProperty.getChildText("Max") != null) {
+                            assetProp.setMax(Integer.parseInt(assetProperty.getChildText("Max")));
                         }
+
                         machine.getProperties().add(assetProp);
                     }
-                    ThingProperty relatedLine = new ThingProperty("relatedLines", el.getChildText("Name"));
-                    machine.getProperties().add(relatedLine);
+
+                    ThingProperty relatedLines = new ThingProperty("relatedLines", productionLine.getChildText("Name"));
+                    machine.getProperties().add(relatedLines);
                     line.getAssets().add(machine);
                 }
-                lines.add(line);
 
+                lines.add(line);
             }
         } catch (IOException | JDOMException io) {
             System.out.println(io.getMessage());
