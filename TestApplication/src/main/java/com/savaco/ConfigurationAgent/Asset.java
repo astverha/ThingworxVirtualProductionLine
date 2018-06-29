@@ -17,11 +17,13 @@ public class Asset {
     
     private List<ThingProperty> properties;
     private String name;
+    private String thingName;
     private String description;
     private int frequentie;
     
-    public Asset(String name, String description, int frequentie){
+    public Asset(String name, String thingName, String description, int frequentie){
         this.name = name;
+        this.thingName = thingName;
         this.description = description;
         this.frequentie = frequentie;
         properties = new ArrayList<>();
@@ -38,7 +40,13 @@ public class Asset {
     public int getFrequentie() {
         return frequentie;
     }
+
+    public String getThingName() {
+        return thingName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
  
-    
-    
 }

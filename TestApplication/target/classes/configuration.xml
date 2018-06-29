@@ -11,12 +11,12 @@
 			<Property>
 				<Name>ProductionRate</Name>
 				<Min>0</Min>
-				<Value>0</Value>
+				<Value>3000</Value>
 			</Property>
 			<Property>
 				<Name>ProductionCount</Name>
 				<Min>0</Min>
-				<Value>0</Value>
+				<Value>10</Value>
 			</Property>
 		</PropertyDefinitions>
 		<AssetDefinitions>
@@ -30,7 +30,7 @@
 						<Name>Temperature</Name>
 						<Min>20</Min>
 						<Max>50</Max>
-						<Value>25</Value>
+						<Value>30</Value>
 					</Property>
 					<Property>
 						<Name>BufferQuantity</Name>

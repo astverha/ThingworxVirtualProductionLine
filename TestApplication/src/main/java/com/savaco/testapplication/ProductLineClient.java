@@ -10,9 +10,12 @@ import com.thingworx.communications.client.ClientConfigurator;
 import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.relationships.RelationshipTypes.ThingworxEntityTypes;
 import com.thingworx.types.InfoTable;
+import com.thingworx.types.primitives.IntegerPrimitive;
+import com.thingworx.types.primitives.StringPrimitive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -29,65 +32,54 @@ public class ProductLineClient extends ConnectedThingClient {
 
     public static void main(String[] args) {
         ConfigurationAgent agent = new ConfigurationAgent("configuration.xml");
-        ClientConfigurator config = new ClientConfigurator();
-        //server URI
-        config.setUri("ws://iottest07:80/Thingworx/WS");
-        //appKey
-        config.setAppKey("434cfef9-9993-478f-ad49-0738fb8948b3");
-        //ignore ssl errors
-        config.ignoreSSLErrors(true);
-        
-        //Build the things by reading the XML file
-        List<ThingProperty> assetProps = new ArrayList<ThingProperty>();
-        assetProps.add(new ThingProperty("Temperature", "20"));
-        assetProps.add(new ThingProperty("Humidity", "20"));
 
         try {
-            ProductLineClient client = new ProductLineClient(config);
-            
-            AssetThing thing = new AssetThing("Asset_TestAssetArne", "", client, assetProps);
+            ProductLineClient client = agent.getClient();
 
+            List<AssetThing> things = agent.getAssetsAsThings();
             client.start();
 
             if (client.waitForConnection(20000)) {
-                LOG.info("\n\n---- The {} is now Connected ----\n", client.toString());
+                LOG.warn("\n\n---- The {} is now Connected ----\n", client.toString());
+                for (AssetThing thing : things) {
+                    client.bindThing(thing);
 
-                //bind ArneThing
-                client.bindThing(thing);
-                if (client.isConnected()) {
-                    LOG.info("\n\n---- Thing is connected ----\n\n");
-
-                    for (int i = 0; i < 1000; i++) {
-                        //even scannen naar nieuwe property waarden voor thing
-                        thing.processScanRequest();
-
-                        //LOG.info("++++++++++++++++++++++++++++++++" + thing.getProperty("Temperature").toString() + "+++++++++++++++++++++++++++++++");
-                        //read props from thingworx platform
-                        InfoTable result = client.readProperty(ThingworxEntityTypes.Things, "Asset_TestAssetArne", "Temperature", 10000);
-                        String temp = result.getFirstRow().getStringValue("Temperature");
-                        result = client.readProperty(ThingworxEntityTypes.Things, "ArneThing2", "Humidity", 10000);
-                        String hum = result.getFirstRow().getStringValue("Humidity");
-                        LOG.info("\n\n---- temp: {} - hum: {} ----\n", temp, hum);
-
-                        //write props
-                        //invoke services
-                        
-                        // effe wachten
+                    if (client.isConnected()) {
+                        LOG.warn("\n\n---- {} is connected ----\n\n", thing.getName());
                         TimeUnit.SECONDS.sleep(5);
+                        try {
+                            for (ThingProperty tp : thing.getDevice_Properties()) {
+                                if (StringUtils.isNumeric(tp.getValue())) {
+                                    thing.setPropertyValue(tp.getPropertyName(), new IntegerPrimitive(Integer.parseInt(tp.getValue())));
+                                } else {
+                                    thing.setPropertyValue(tp.getPropertyName(), new StringPrimitive(tp.getValue()));
+                                }
+                            }                            
+                            thing.updateSubscribedProperties(10000);
+
+                            TimeUnit.SECONDS.sleep(3);
+                        } catch (Exception e) {
+                            LOG.warn("Exception occurred while updating properties");
+                        }
+
+                        //Invoke actions you need to do
+                        //Threading
+                    } else {
+                        LOG.warn("\n\n---- Thing is not connected :( ----\n\n");
                     }
 
-                } else {
-                    LOG.info("\n\n---- Thing is not connected :( ----\n\n");
                 }
+
             } else {
                 LOG.warn("\n\nClient did not connect within 30 seconds. Exiting...\n");
             }
 
             client.shutdown();
         } catch (Exception e) {
-            LOG.error("\n\nAn exception occurred while initializing the client.\n", e);
+            LOG.warn("\n\nAn exception occurred while initializing the client.\n", e);
+            e.printStackTrace();
         }
 
-        LOG.info("\n\n---- ArneThingClient is done. Exiting... ----\n");
+        LOG.warn("\n\n---- ProductLineClient is done. Exiting... ----\n");
     }
 }
