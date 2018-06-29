@@ -1,4 +1,4 @@
-package com.savaco.testapplication;
+package com.savaco.ConfigurationAgent;
 
 import java.util.Random;
 

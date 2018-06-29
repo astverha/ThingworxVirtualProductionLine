@@ -5,6 +5,8 @@
  */
 package com.savaco.testapplication;
 
+import com.savaco.ConfigurationAgent.ThingProperty;
+import com.savaco.ConfigurationAgent.AssetThing;
 import com.savaco.ConfigurationAgent.ConfigurationAgent;
 import com.thingworx.communications.client.ClientConfigurator;
 import com.thingworx.communications.client.ConnectedThingClient;
@@ -22,25 +24,25 @@ import org.slf4j.LoggerFactory;
 public class ProductLineClient extends ConnectedThingClient {
 
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-
-    public ProductLineClient(ClientConfigurator config) throws Exception {
+    private final ConfigurationAgent agent;
+    
+    public ProductLineClient(ConfigurationAgent agent, ClientConfigurator config) throws Exception {
         super(config);
+        this.agent = agent;
     }
 
-    public static void main(String[] args) {
-        ConfigurationAgent agent = new ConfigurationAgent("configuration.xml");
+    public void startApplication() {
         try {
-            ProductLineClient client = agent.getClient();
 
-            List<AssetThing> things = agent.getAssetsAsThings();
-            client.start();
+            List<AssetThing> things = this.agent.getAssetsAsThings();
+            this.start();
 
-            if (client.waitForConnection(20000)) {
-                LOG.warn("TESTLOG ---- The {} is now Connected ----", client.toString());
+            if (this.waitForConnection(20000)) {
+                LOG.warn("TESTLOG ---- The {} is now Connected ----", this.toString());
                 for (AssetThing thing : things) {
-                    client.bindThing(thing);
+                    this.bindThing(thing);
 
-                    if (client.isConnected()) {
+                    if (this.isConnected()) {
                         LOG.warn("TESTLOG ---- {} is connected", thing.getName());
                         TimeUnit.SECONDS.sleep(5);
                         try {
@@ -69,7 +71,7 @@ public class ProductLineClient extends ConnectedThingClient {
                 LOG.warn("TESTLOG ---- Client did not connect within 30 seconds. Exiting...\n");
             }
             TimeUnit.MINUTES.sleep(2);
-            client.shutdown();
+            this.shutdown();
         } catch (Exception e) {
             LOG.warn("TESTLOG ---- An exception occurred while initializing the client.\n", e);
         }

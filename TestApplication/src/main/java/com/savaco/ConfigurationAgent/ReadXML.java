@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.savaco.testapplication;
+package com.savaco.ConfigurationAgent;
 
 import com.savaco.ConfigurationAgent.Asset;
 import com.savaco.ConfigurationAgent.Line;

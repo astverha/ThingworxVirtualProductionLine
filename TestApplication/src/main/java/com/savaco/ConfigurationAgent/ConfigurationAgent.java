@@ -5,9 +5,7 @@
  */
 package com.savaco.ConfigurationAgent;
 
-import com.savaco.testapplication.AssetThing;
 import com.savaco.testapplication.ProductLineClient;
-import com.savaco.testapplication.ReadXML;
 import com.thingworx.communications.client.ClientConfigurator;
 import java.io.File;
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public final class ConfigurationAgent {
             this.serverName = ReadXML.getServerName();
             this.appKey = ReadXML.getAppKey();
             
-            client = new ProductLineClient(this.getConfiguration());
+            client = new ProductLineClient(this, this.getConfiguration());
             
         } catch (Exception e) {
             LOG.error("TESTLOG ---- There was an error reading the file \'{}\'", file);

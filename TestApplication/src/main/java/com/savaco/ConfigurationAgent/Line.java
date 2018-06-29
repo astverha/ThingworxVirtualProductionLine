@@ -5,7 +5,6 @@
  */
 package com.savaco.ConfigurationAgent;
 
-import com.savaco.testapplication.ThingProperty;
 import java.util.ArrayList;
 import java.util.List;
 
