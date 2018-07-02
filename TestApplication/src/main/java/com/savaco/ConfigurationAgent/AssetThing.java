@@ -15,6 +15,7 @@ import com.thingworx.types.primitives.IntegerPrimitive;
 import com.thingworx.types.primitives.NumberPrimitive;
 import com.thingworx.types.primitives.StringPrimitive;
 import java.util.List;
+import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
 
 public class AssetThing extends VirtualThing {
@@ -24,6 +25,8 @@ public class AssetThing extends VirtualThing {
     private final String name;
     private final ConnectedThingClient client;
     private final List<ThingProperty> device_Properties;
+    private int oldProductionRate;
+    private int currentProductionRate;
 
     /**
      * @param name The name of the thing.
@@ -53,7 +56,7 @@ public class AssetThing extends VirtualThing {
             } else {
                 pd = new PropertyDefinition(node.getPropertyName(), " ", BaseTypes.STRING);
             }
-            
+
             aspects.put(Aspects.ASPECT_DATACHANGETYPE, new StringPrimitive("VALUE"));
             aspects.put(Aspects.ASPECT_DATACHANGETHRESHOLD, new NumberPrimitive(0.0));
             aspects.put(Aspects.ASPECT_CACHETIME, new IntegerPrimitive(0));
@@ -67,6 +70,41 @@ public class AssetThing extends VirtualThing {
             super.defineProperty(pd);
         }
         super.initialize();
+    }
+
+    public void simulateNewData(int value) {
+        Random r = new Random();
+        oldProductionRate = currentProductionRate;
+        currentProductionRate = value;
+
+        ThingProperty temp = null;
+        ThingProperty failure = null;
+
+        for (ThingProperty tp : this.getDevice_Properties()) {
+            if (tp.getPropertyName().equals("Temperature")) {
+                temp = tp;
+            } else if (tp.getPropertyName().equals("PercentageFailure")) {
+                failure = tp;
+            }
+        }
+
+        int newTemp = Integer.parseInt(temp.getValue());
+        int newFailure = Integer.parseInt(name);
+        if (currentProductionRate - oldProductionRate < 0) {
+            newTemp -= r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 20); //Schommeling van max 5%
+            newFailure -= r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 50);
+        } else {
+            newTemp += r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 20);
+            newFailure += r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 50);
+        }
+
+        try {
+            this.setPropertyValue("Temperature", new IntegerPrimitive(newTemp));
+            this.setPropertyValue(name, new IntegerPrimitive(newFailure));
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public List<ThingProperty> getDevice_Properties() {

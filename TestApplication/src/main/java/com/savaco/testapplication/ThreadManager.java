@@ -26,13 +26,15 @@ public class ThreadManager {
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
 
     private List<Thread> threads;
-    private final ConfigurationAgent agent;
-    private final ProductLineClient client;
+    private ConfigurationAgent agent;
+    private ProductLineClient client;
+    private boolean pauseThread;
 
     public ThreadManager(ConfigurationAgent agent) {
         this.agent = agent;
         this.client = agent.getClient();
         this.threads = new ArrayList<>();
+        pauseThread = false;
     }
 
     public void start() {
@@ -62,6 +64,14 @@ public class ThreadManager {
         }
     }
 
+    public void pause() {
+        pauseThread = true;
+    }
+
+    public void resume() {
+        pauseThread = false;
+    }
+
     private class AgentThreadRunnable implements Runnable {
 
         private final AssetThing thing;
@@ -75,33 +85,41 @@ public class ThreadManager {
         @Override
         public void run() {
             while (!client.isShutdown()) {
-                try {
-                    client.bindThing(this.thing);
-                    if (client.isConnected()) {
-                        try {
-                            for (ThingProperty tp : this.thing.getDevice_Properties()) {
-                                if (!tp.getPropertyName().equals("status")) {
-                                    if (StringUtils.isNumeric(tp.getValue())) {
-                                        int currVal = Integer.parseInt(tp.getValue());
+                if (pauseThread) {
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ThreadManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    try {
+                        client.bindThing(this.thing);
+                        if (client.isConnected()) {
+                            try {
+                                for (ThingProperty tp : this.thing.getDevice_Properties()) {
+                                    if (!tp.getPropertyName().equals("status")) {
+                                        if (StringUtils.isNumeric(tp.getValue())) {
+                                            /*int currVal = Integer.parseInt(tp.getValue());
                                         int newVal = currVal + 1;
                                         tp.setValue("" + newVal);
-                                        this.thing.setPropertyValue(tp.getPropertyName(), new IntegerPrimitive(newVal));
-                                    } else {
-                                        this.thing.setPropertyValue(tp.getPropertyName(), new StringPrimitive(tp.getValue()));
+                                        this.thing.setPropertyValue(tp.getPropertyName(), new IntegerPrimitive(newVal));*/
+                                        } else {
+                                            this.thing.setPropertyValue(tp.getPropertyName(), new StringPrimitive(tp.getValue()));
+                                        }
                                     }
                                 }
+                                this.thing.updateSubscribedProperties(10000);
+                                LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
+                                Thread.sleep(this.sleepTime * 1000);
+                            } catch (Exception e) {
+                                LOG.warn("TESTLOG ---- Exception occurred while updating properties. (ThreadManager.java)");
                             }
-                            this.thing.updateSubscribedProperties(10000);
-                            LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
-                            Thread.sleep(this.sleepTime * 1000);
-                        } catch (Exception e) {
-                            LOG.warn("TESTLOG ---- Exception occurred while updating properties. (ThreadManager.java)");
+                        } else {
+                            LOG.warn("TESTLOG ---- Thing is not connected :(");
                         }
-                    } else {
-                        LOG.warn("TESTLOG ---- Thing is not connected :(");
+                    } catch (Exception ex) {
+                        LOG.warn("TESTLOG ---- Thing {} could not be bound to the client.", this.thing.getName());
                     }
-                } catch (Exception ex) {
-                    LOG.warn("TESTLOG ---- Thing {} could not be bound to the client.", this.thing.getName());
                 }
             }
             LOG.info("TESTLOG ---- The client is shutdown. Finishing {} thread.", this.thing.getName());
