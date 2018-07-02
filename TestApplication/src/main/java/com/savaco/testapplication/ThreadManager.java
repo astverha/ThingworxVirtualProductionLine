@@ -35,7 +35,6 @@ public class ThreadManager {
 
     public void start() {
         try {
-            client.start();
             if (client.waitForConnection(30000)) {
                 List<AssetThing> assetThings = agent.getAssetsAsThings();
                 for (AssetThing thing : assetThings) {
@@ -58,6 +57,20 @@ public class ThreadManager {
             LOG.info("TESTLOG ---- ThreadManager is stopped");
         } catch (Exception e) {
             LOG.error("TESTLOG ---- An exception during stopping the ThreadManager", e);
+        }
+    }
+    
+    public void pause(){
+        System.out.println("TESTLOG ---- Threads paused\n");
+        for(Thread t: threads){
+            t.interrupt();
+        }
+    }
+    
+    public void resume(){
+        System.out.println("TESTLOG ---- Threads resumed\n");
+        for(Thread t: threads){
+            t.start();
         }
     }
 

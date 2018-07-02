@@ -35,7 +35,6 @@ public class ProductLineClient extends ConnectedThingClient {
     public void startInitialization() {
         try {
             List<AssetThing> things = this.agent.getAssetsAsThings();
-            this.start();
 
             if (this.waitForConnection(20000)) {
                 for (AssetThing thing : things) {
@@ -57,16 +56,25 @@ public class ProductLineClient extends ConnectedThingClient {
                         LOG.warn("TESTLOG ---- Thing is not connected. (ProductLineClient.java)");
                     }
                 }
-                ThreadManager tManager = new ThreadManager(agent);
-                tManager.start();
             } else {
                 LOG.warn("TESTLOG ---- Client did not connect within 30 seconds. Exiting...\n");
             }
-            TimeUnit.MINUTES.sleep(15);
-            this.shutdown();
         } catch (Exception e) {
             LOG.warn("TESTLOG ---- An exception occurred while initializing the client.\n", e);
         }
         LOG.warn("TESTLOG ---- ProductLineClient is done. Exiting...");
+    }
+
+    public void startSimulation() {
+        try {
+            ThreadManager tManager = new ThreadManager(agent);
+            tManager.start();
+            TimeUnit.SECONDS.sleep(30);
+            tManager.pause();
+            TimeUnit.SECONDS.sleep(15);
+            tManager.resume();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
