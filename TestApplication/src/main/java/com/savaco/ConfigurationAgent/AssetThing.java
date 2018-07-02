@@ -82,50 +82,54 @@ public class AssetThing extends VirtualThing {
         oldProductionRate = currentProductionRate;
         currentProductionRate = value;
 
-        int currTemp = -200;
-        int currFailure = -200;
+        int temp = -1;
+        int failure = -1;
 
         for (ThingProperty tp : this.getDevice_Properties()) {
-            if (tp.getPropertyName().equals("Temperature")) {
-                currTemp = Integer.parseInt(tp.getValue());
+            if (tp.getPropertyName().equals("ProductionRate")) {
+                tp.setValue(Integer.toString(currentProductionRate));
+            } else if (tp.getPropertyName().equals("Temperature")) {
+                temp = Integer.parseInt(tp.getValue());
             } else if (tp.getPropertyName().equals("PercentageFailure")) {
-                currFailure = Integer.parseInt(tp.getValue());
-            } else if (tp.getPropertyName().equals("ProductionRate")) {
-                this.oldProductionRate = Integer.parseInt(tp.getValue());
+                failure = Integer.parseInt(tp.getValue());
             }
         }
 
-        if (currTemp != -200 && currFailure != -200) {
-
-            int newTemp = currTemp;
-            int newFailure = currFailure;
+        int newTemp = -1;
+        int newFailure = -1;
+        if (temp != -1 && failure != -1) {
+            int tempFluctuation = r.nextInt(Math.abs(currentProductionRate - oldProductionRate)) / 20;
+            int failureFluctuation = r.nextInt(Math.abs(currentProductionRate - oldProductionRate)) / 30;
             if (currentProductionRate - oldProductionRate < 0) {
-                newTemp -= r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 20); //Schommeling van max 5%
-                newFailure -= r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 50);
-            } else {
-                newTemp += r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 20);
-                newFailure += r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 50);
+                while (temp - tempFluctuation < 0) {
+                    tempFluctuation = r.nextInt(Math.abs(currentProductionRate - oldProductionRate)) / 20;
+                }
+                newTemp = temp - tempFluctuation;
+                while (failure - failureFluctuation < 0) {
+                    failureFluctuation = r.nextInt(Math.abs(currentProductionRate - oldProductionRate)) / 30;
+                }
+                newFailure = failure - failureFluctuation;
             }
+        }
 
+        if (newTemp != -1 && newFailure != -1) {
             try {
-                this.setPropertyValue("Temperature", new IntegerPrimitive(newTemp));
-                this.setPropertyValue("PercentageFailure", new IntegerPrimitive(newFailure));
-                this.setPropertyValue("ProductionRate", new IntegerPrimitive(currentProductionRate));
-                LOG.info("TESTLOG ---- Temp: " + currTemp + "->" + newTemp + "\tFail: " + currFailure + "->" + newFailure + "\tProd: " + oldProductionRate + "->" + currentProductionRate);
-
                 for (ThingProperty tp : this.getDevice_Properties()) {
                     if (tp.getPropertyName().equals("Temperature")) {
-                        tp.setValue(""+newTemp);
+                        tp.setValue(Integer.toString(newTemp));
                     } else if (tp.getPropertyName().equals("PercentageFailure")) {
-                        tp.setValue(""+newFailure);
-                    } else if (tp.getPropertyName().equals("ProductionRate")) {
-                        tp.setValue(""+currentProductionRate);
+                        tp.setValue(Integer.toString(newFailure));
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                
+                this.setPropertyValue("ProductionRate", new IntegerPrimitive(currentProductionRate));
+                this.setPropertyValue("Temperature", new IntegerPrimitive(newTemp));
+                this.setPropertyValue("PercentageFailure", new IntegerPrimitive(newFailure));
+            } catch(Exception e){
+                
             }
         }
+
     }
 
     public List<ThingProperty> getDevice_Properties() {
