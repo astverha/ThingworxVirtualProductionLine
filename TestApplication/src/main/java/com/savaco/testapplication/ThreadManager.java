@@ -109,7 +109,6 @@ public class ThreadManager {
                                         currProdRate = Integer.parseInt(tp.getValue());
                                     }
                                 }
-                                //LOG.info("TESTLOG ---- Change: " + currProdRate*0.1*sign);
                                 this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.1*sign));
                                 
                                 this.thing.updateSubscribedProperties(10000);

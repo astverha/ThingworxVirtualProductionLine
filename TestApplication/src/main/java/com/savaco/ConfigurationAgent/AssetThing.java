@@ -78,7 +78,7 @@ public class AssetThing extends VirtualThing {
     }
 
     public void simulateNewData(int value) {
-        Random r = new Random();
+        Random random = new Random();
         oldProductionRate = currentProductionRate;
         currentProductionRate = value;
 
@@ -99,12 +99,12 @@ public class AssetThing extends VirtualThing {
         //simulate
         int newTemp = -1;
         int newFailure = -1;
-        double deltaProdRate = currentProductionRate/oldProductionRate;
-        LOG.info("TESTLOG ---- deltaProdRate: " + deltaProdRate);
+        double deltaProdRate = currentProductionRate - oldProductionRate;
         if (temp != -1 && failure != -1) {
-            newTemp = temp + 5;
-            newFailure = failure + 5;
-                
+            //DIT MOET GEFIXED WORDEN
+            newTemp = temp + random.nextInt(10);
+            newFailure = failure + random.nextInt(20);
+
             try {
                 //set local
                 for (ThingProperty tp : this.getDevice_Properties()) {
@@ -114,12 +114,14 @@ public class AssetThing extends VirtualThing {
                         tp.setValue(Integer.toString(newFailure));
                     }
                 }
-                
+
                 //set remote
                 this.setPropertyValue("ProductionRate", new IntegerPrimitive(currentProductionRate));
                 this.setPropertyValue("Temperature", new IntegerPrimitive(newTemp));
                 this.setPropertyValue("PercentageFailure", new IntegerPrimitive(newFailure));
-            } catch(Exception e){
+
+                LOG.info("TESTLOG ---- [" + this.getName() +  "] deltaProdRate: " + deltaProdRate + "\ttemp:" + temp + "->" + newTemp + "\tFail:" + failure + "->" + newFailure);
+            } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
         }
