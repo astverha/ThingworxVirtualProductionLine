@@ -41,7 +41,6 @@ public class ProductLineClient extends ConnectedThingClient {
                 for (AssetThing thing : things) {
                     this.bindThing(thing);
                     if (this.isConnected()) {
-                        TimeUnit.SECONDS.sleep(5);
                         try {
                             for (ThingProperty tp : thing.getDevice_Properties()) {
                                 if (StringUtils.isNumeric(tp.getValue())) {
