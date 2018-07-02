@@ -32,7 +32,7 @@ public class ProductLineClient extends ConnectedThingClient {
         this.agent = agent;
     }
 
-    public void startApplication() {
+    public void startInitialization() {
         try {
             List<AssetThing> things = this.agent.getAssetsAsThings();
             this.start();
