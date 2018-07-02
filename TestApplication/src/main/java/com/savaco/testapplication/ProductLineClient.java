@@ -69,7 +69,7 @@ public class ProductLineClient extends ConnectedThingClient {
         try {
             ThreadManager tManager = new ThreadManager(agent);
             tManager.start();
-            TimeUnit.SECONDS.sleep(10);
+            TimeUnit.SECONDS.sleep(15);
             System.out.println("TESTLOG ---- Threads paused");
             tManager.pause();
             TimeUnit.SECONDS.sleep(10);

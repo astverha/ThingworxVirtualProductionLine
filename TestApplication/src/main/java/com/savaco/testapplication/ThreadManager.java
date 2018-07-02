@@ -43,7 +43,7 @@ public class ThreadManager {
             if (client.waitForConnection(30000)) {
                 List<AssetThing> assetThings = agent.getAssetsAsThings();
                 for (AssetThing thing : assetThings) {
-                    Thread agentThread = new Thread(new AgentThreadRunnable(thing, 1));
+                    Thread agentThread = new Thread(new AgentThreadRunnable(thing, 5));
                     agentThread.start();
                 }
             } else {
@@ -100,7 +100,7 @@ public class ThreadManager {
                         if (client.isConnected()) {
                             try {
                                 int currProdRate = 0;
-                                int sign = random.nextInt(1);
+                                int sign = random.nextInt(2);
                                 if(sign == 0){
                                     sign = -1;
                                 }
@@ -109,7 +109,8 @@ public class ThreadManager {
                                         currProdRate = Integer.parseInt(tp.getValue());
                                     }
                                 }
-                                this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.2*sign));
+                                //LOG.info("TESTLOG ---- Change: " + currProdRate*0.1*sign);
+                                this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.1*sign));
                                 
                                 this.thing.updateSubscribedProperties(10000);
                                 //LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());

@@ -85,6 +85,7 @@ public class AssetThing extends VirtualThing {
         int temp = -1;
         int failure = -1;
 
+        //get local
         for (ThingProperty tp : this.getDevice_Properties()) {
             if (tp.getPropertyName().equals("ProductionRate")) {
                 tp.setValue(Integer.toString(currentProductionRate));
@@ -95,25 +96,17 @@ public class AssetThing extends VirtualThing {
             }
         }
 
+        //simulate
         int newTemp = -1;
         int newFailure = -1;
+        double deltaProdRate = currentProductionRate/oldProductionRate;
+        LOG.info("TESTLOG ---- deltaProdRate: " + deltaProdRate);
         if (temp != -1 && failure != -1) {
-            int tempFluctuation = r.nextInt(Math.abs(currentProductionRate - oldProductionRate)) / 20;
-            int failureFluctuation = r.nextInt(Math.abs(currentProductionRate - oldProductionRate)) / 30;
-            if (currentProductionRate - oldProductionRate < 0) {
-                while (temp - tempFluctuation < 0) {
-                    tempFluctuation = r.nextInt(Math.abs(currentProductionRate - oldProductionRate)) / 20;
-                }
-                newTemp = temp - tempFluctuation;
-                while (failure - failureFluctuation < 0) {
-                    failureFluctuation = r.nextInt(Math.abs(currentProductionRate - oldProductionRate)) / 30;
-                }
-                newFailure = failure - failureFluctuation;
-            }
-        }
-
-        if (newTemp != -1 && newFailure != -1) {
+            newTemp = temp + 5;
+            newFailure = failure + 5;
+                
             try {
+                //set local
                 for (ThingProperty tp : this.getDevice_Properties()) {
                     if (tp.getPropertyName().equals("Temperature")) {
                         tp.setValue(Integer.toString(newTemp));
@@ -122,11 +115,12 @@ public class AssetThing extends VirtualThing {
                     }
                 }
                 
+                //set remote
                 this.setPropertyValue("ProductionRate", new IntegerPrimitive(currentProductionRate));
                 this.setPropertyValue("Temperature", new IntegerPrimitive(newTemp));
                 this.setPropertyValue("PercentageFailure", new IntegerPrimitive(newFailure));
             } catch(Exception e){
-                
+                LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
         }
 
