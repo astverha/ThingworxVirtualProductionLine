@@ -12,6 +12,8 @@ import com.thingworx.types.primitives.IntegerPrimitive;
 import com.thingworx.types.primitives.StringPrimitive;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
@@ -59,20 +61,6 @@ public class ThreadManager {
             LOG.error("TESTLOG ---- An exception during stopping the ThreadManager", e);
         }
     }
-    
-    public void pause(){
-        System.out.println("TESTLOG ---- Threads paused\n");
-        for(Thread t: threads){
-            t.interrupt();
-        }
-    }
-    
-    public void resume(){
-        System.out.println("TESTLOG ---- Threads resumed\n");
-        for(Thread t: threads){
-            t.start();
-        }
-    }
 
     private class AgentThreadRunnable implements Runnable {
 
@@ -112,7 +100,7 @@ public class ThreadManager {
                     } else {
                         LOG.warn("TESTLOG ---- Thing is not connected :(");
                     }
-                } catch (Exception e) {
+                } catch (Exception ex) {
                     LOG.warn("TESTLOG ---- Thing {} could not be bound to the client.", this.thing.getName());
                 }
             }

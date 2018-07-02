@@ -69,10 +69,6 @@ public class ProductLineClient extends ConnectedThingClient {
         try {
             ThreadManager tManager = new ThreadManager(agent);
             tManager.start();
-            TimeUnit.SECONDS.sleep(30);
-            tManager.pause();
-            TimeUnit.SECONDS.sleep(15);
-            tManager.resume();
         } catch (Exception e) {
             e.printStackTrace();
         }
