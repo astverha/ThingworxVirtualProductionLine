@@ -68,8 +68,8 @@ public class AssetThing extends VirtualThing {
 
             pd.setAspects(aspects);
             super.defineProperty(pd);
-            
-            if(node.getPropertyName().equals("ProductionRate")){
+
+            if (node.getPropertyName().equals("ProductionRate")) {
                 this.currentProductionRate = Integer.parseInt(node.getValue());
                 this.oldProductionRate = Integer.parseInt(node.getValue());
             }
@@ -82,36 +82,50 @@ public class AssetThing extends VirtualThing {
         oldProductionRate = currentProductionRate;
         currentProductionRate = value;
 
-        ThingProperty temp = null;
-        ThingProperty failure = null;
+        int currTemp = -200;
+        int currFailure = -200;
 
         for (ThingProperty tp : this.getDevice_Properties()) {
             if (tp.getPropertyName().equals("Temperature")) {
-                temp = tp;
+                currTemp = Integer.parseInt(tp.getValue());
             } else if (tp.getPropertyName().equals("PercentageFailure")) {
-                failure = tp;
-            } else if(tp.getPropertyName().equals("ProductionRate")){
+                currFailure = Integer.parseInt(tp.getValue());
+            } else if (tp.getPropertyName().equals("ProductionRate")) {
                 this.oldProductionRate = Integer.parseInt(tp.getValue());
             }
         }
 
-        int newTemp = Integer.parseInt(temp.getValue());
-        int newFailure = Integer.parseInt(failure.getValue());
-        if (currentProductionRate - oldProductionRate < 0) {
-            newTemp -= r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 20); //Schommeling van max 5%
-            newFailure -= r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 50);
-        } else {
-            newTemp += r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 20);
-            newFailure += r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 50);
-        }
+        if (currTemp != -200 && currFailure != -200) {
 
-        try {
-            this.setPropertyValue("Temperature", new IntegerPrimitive(newTemp));
-            this.setPropertyValue("PercentageFailure", new IntegerPrimitive(newFailure));
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+            int newTemp = currTemp;
+            int newFailure = currFailure;
+            if (currentProductionRate - oldProductionRate < 0) {
+                newTemp -= r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 20); //Schommeling van max 5%
+                newFailure -= r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 50);
+            } else {
+                newTemp += r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 20);
+                newFailure += r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 50);
+            }
 
+            try {
+                this.setPropertyValue("Temperature", new IntegerPrimitive(newTemp));
+                this.setPropertyValue("PercentageFailure", new IntegerPrimitive(newFailure));
+                this.setPropertyValue("ProductionRate", new IntegerPrimitive(currentProductionRate));
+                LOG.info("TESTLOG ---- Temp: " + currTemp + "->" + newTemp + "\tFail: " + currFailure + "->" + newFailure + "\tProd: " + oldProductionRate + "->" + currentProductionRate);
+
+                for (ThingProperty tp : this.getDevice_Properties()) {
+                    if (tp.getPropertyName().equals("Temperature")) {
+                        tp.setValue(""+newTemp);
+                    } else if (tp.getPropertyName().equals("PercentageFailure")) {
+                        tp.setValue(""+newFailure);
+                    } else if (tp.getPropertyName().equals("ProductionRate")) {
+                        tp.setValue(""+currentProductionRate);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public List<ThingProperty> getDevice_Properties() {

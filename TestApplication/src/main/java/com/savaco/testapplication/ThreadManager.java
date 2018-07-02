@@ -109,10 +109,10 @@ public class ThreadManager {
                                         currProdRate = Integer.parseInt(tp.getValue());
                                     }
                                 }
-                                this.thing.simulateNewData((int) (currProdRate*1.5*sign));
+                                this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.2*sign));
                                 
                                 this.thing.updateSubscribedProperties(10000);
-                                LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
+                                //LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
                                 Thread.sleep(this.sleepTime * 1000);
                             } catch (Exception e) {
                                 LOG.warn("TESTLOG ---- Exception occurred while updating properties. (ThreadManager.java)");
