@@ -68,6 +68,11 @@ public class AssetThing extends VirtualThing {
 
             pd.setAspects(aspects);
             super.defineProperty(pd);
+            
+            if(node.getPropertyName().equals("ProductionRate")){
+                this.currentProductionRate = Integer.parseInt(node.getValue());
+                this.oldProductionRate = Integer.parseInt(node.getValue());
+            }
         }
         super.initialize();
     }
@@ -85,11 +90,13 @@ public class AssetThing extends VirtualThing {
                 temp = tp;
             } else if (tp.getPropertyName().equals("PercentageFailure")) {
                 failure = tp;
+            } else if(tp.getPropertyName().equals("ProductionRate")){
+                this.oldProductionRate = Integer.parseInt(tp.getValue());
             }
         }
 
         int newTemp = Integer.parseInt(temp.getValue());
-        int newFailure = Integer.parseInt(name);
+        int newFailure = Integer.parseInt(failure.getValue());
         if (currentProductionRate - oldProductionRate < 0) {
             newTemp -= r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 20); //Schommeling van max 5%
             newFailure -= r.nextInt(Math.abs(currentProductionRate - oldProductionRate) / 50);
@@ -100,7 +107,7 @@ public class AssetThing extends VirtualThing {
 
         try {
             this.setPropertyValue("Temperature", new IntegerPrimitive(newTemp));
-            this.setPropertyValue(name, new IntegerPrimitive(newFailure));
+            this.setPropertyValue("PercentageFailure", new IntegerPrimitive(newFailure));
         } catch(Exception e){
             e.printStackTrace();
         }

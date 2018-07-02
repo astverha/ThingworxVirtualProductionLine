@@ -12,6 +12,7 @@ import com.thingworx.types.primitives.IntegerPrimitive;
 import com.thingworx.types.primitives.StringPrimitive;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
@@ -74,6 +75,8 @@ public class ThreadManager {
 
     private class AgentThreadRunnable implements Runnable {
 
+        Random random = new Random();
+        
         private final AssetThing thing;
         private final int sleepTime;
 
@@ -89,30 +92,31 @@ public class ThreadManager {
                     try {
                         Thread.sleep(2);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(ThreadManager.class.getName()).log(Level.SEVERE, null, ex);
+                        LOG.warn("TESTLOG ---- InterruptedException while pausing threads.");
                     }
                 } else {
                     try {
                         client.bindThing(this.thing);
                         if (client.isConnected()) {
                             try {
+                                int currProdRate = 0;
+                                int sign = random.nextInt(1);
+                                if(sign == 0){
+                                    sign = -1;
+                                }
                                 for (ThingProperty tp : this.thing.getDevice_Properties()) {
-                                    if (!tp.getPropertyName().equals("status")) {
-                                        if (StringUtils.isNumeric(tp.getValue())) {
-                                            /*int currVal = Integer.parseInt(tp.getValue());
-                                        int newVal = currVal + 1;
-                                        tp.setValue("" + newVal);
-                                        this.thing.setPropertyValue(tp.getPropertyName(), new IntegerPrimitive(newVal));*/
-                                        } else {
-                                            this.thing.setPropertyValue(tp.getPropertyName(), new StringPrimitive(tp.getValue()));
-                                        }
+                                    if (tp.getPropertyName().equals("ProductionRate")) {
+                                        currProdRate = Integer.parseInt(tp.getValue());
                                     }
                                 }
+                                this.thing.simulateNewData((int) (currProdRate*1.5*sign));
+                                
                                 this.thing.updateSubscribedProperties(10000);
                                 LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
                                 Thread.sleep(this.sleepTime * 1000);
                             } catch (Exception e) {
                                 LOG.warn("TESTLOG ---- Exception occurred while updating properties. (ThreadManager.java)");
+                                e.printStackTrace();
                             }
                         } else {
                             LOG.warn("TESTLOG ---- Thing is not connected :(");
