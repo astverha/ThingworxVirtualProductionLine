@@ -79,17 +79,4 @@ public class ProductLineClient extends ConnectedThingClient {
             e.printStackTrace();
         }
     }
-    
-    /*
-        Specific method to use in GUI
-    */
-    
-    public AssetThing getAssetThingByName(String name){
-        for(AssetThing at : this.agent.getAssetsAsThings()){
-            if(at.getName().equalsIgnoreCase(name)){
-                return at;
-            }
-        }
-        return null;
-    }
 }

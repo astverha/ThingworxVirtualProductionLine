@@ -178,22 +178,6 @@ public class AssetThing extends VirtualThing {
         this.down = isDown;
     }
 
-    
-    /*
-        Specific methods to use in GUI
-    */
-    
-    public String getStatus(){
-        String status = this.getPropertyByName("status").getValue();
-        status = this.convertToState(Integer.parseInt(status)).toString();
-        return status;
-    }
-    
-    public int getProductionRate(){
-        return(Integer.parseInt(this.getPropertyByName("ProductionRate").getValue()));
-    }
-    //////////////////////////////////////
-
     public void setProperty(String propName, String propVal) {
         try {
             for (ThingProperty tp : this.getDevice_Properties()) {
