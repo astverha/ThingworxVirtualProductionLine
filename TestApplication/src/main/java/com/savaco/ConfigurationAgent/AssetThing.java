@@ -91,81 +91,50 @@ public class AssetThing extends VirtualThing {
     public void simulateNewData(int prodRateValue) {
         prodRate = newProdRate;
         newProdRate = prodRateValue;
-        double temp = -1;
-        double failure = -1;
-        for (ThingProperty tp : this.getDevice_Properties()) {
-            if (tp.getPropertyName().equals("ProductionRate")) {
-                tp.setValue(Integer.toString(newProdRate));
-            } else if (tp.getPropertyName().equals("Temperature")) {
-                temp = Double.parseDouble(tp.getValue());
-            } else if (tp.getPropertyName().equals("PercentageFailure")) {
-                failure = Double.parseDouble(tp.getValue());
-            }
-        }
+        this.setProperty("ProductionRate", "" + newProdRate);
+        double temp = Double.parseDouble(this.getPropertyByName("Temperature").getValue());
+        double failure = Double.parseDouble(this.getPropertyByName("PercentageFailure").getValue());
 
         int deltaProdRate = newProdRate - prodRate;
         int sign = 1;
         if (newProdRate < prodRate) {
             sign = -1;
         }
+        
+        //Production rate is down to 0 (no longer running) --> broken or maintenance
         if (newProdRate == 0) {
             try {
-                for (ThingProperty tp : this.getDevice_Properties()) {
-                    if (tp.getPropertyName().equals("PercentageFailure")) {
-                        tp.setValue("" + 100);
-                    } else if (tp.getPropertyName().equals("status")) {
-                        tp.setValue("" + 4);
-                    }
-                }
-                this.setPropertyValue("ProductionRate", new IntegerPrimitive(0));
-                this.setPropertyValue("PercentageFailure", new NumberPrimitive(100));
-                this.setPropertyValue("status", new IntegerPrimitive(4));
-                //LOG.info("TESTLOG ---- [" + this.getName() + "] \tBROKEN" + "\tFail:" + failure + "->" + 100);
+                this.setProperty("Temperature", "" + temp);
+                this.setProperty("PercentageFailure", "" + failure);
+                this.setProperty("status", "" + State.UNPLANNED_DOWNTIME);
                 LOG.info("TESTLOG ---- [" + this.getName() + "] BROKEN");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
-        } else if (temp != -1 && failure != -1 && deltaProdRate != 0) {
+        } //change production rate
+        else if (temp != -1 && failure != -1 && deltaProdRate != 0) {
             double newTemp = temp + (Math.abs(deltaProdRate * 0.05) * sign);
             double newFailure = failure + (Math.abs(deltaProdRate * 0.025) * sign);
             newTemp = (double) Math.round(newTemp * 100d) / 100d;
             newFailure = (double) Math.round(newFailure * 100d) / 100d;
             try {
-                for (ThingProperty tp : this.getDevice_Properties()) {
-                    if (tp.getPropertyName().equals("Temperature")) {
-                        tp.setValue("" + newTemp);
-                    } else if (tp.getPropertyName().equals("PercentageFailure")) {
-                        tp.setValue("" + newFailure);
-                    } else if (tp.getPropertyName().equals("status")) {
-                        tp.setValue("" + 2);
-                    }
-                }
-                this.setPropertyValue("ProductionRate", new IntegerPrimitive(newProdRate));
-                this.setPropertyValue("Temperature", new NumberPrimitive(newTemp));
-                this.setPropertyValue("PercentageFailure", new NumberPrimitive(newFailure));
-                this.setPropertyValue("status", new IntegerPrimitive(2));
-                //LOG.info("TESTLOG ---- [" + this.getName() +  "] \tdeltaProdRate: " + deltaProdRate + "\ttemp:" + temp + "->" + newTemp + "\tFail:" + failure + "->" + newFailure);
-                LOG.info("TESTLOG ---- [\" + this.getName() + \"] RUNNING (changed prodRate)");
+                this.setProperty("Temperature", "" + newTemp);
+                this.setProperty("PercentageFailure", "" + newFailure);
+                this.setProperty("status", "" + State.RUNNING);
+                LOG.info("TESTLOG ---- [" + this.getName() + "] RUNNING (changed prodRate)");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
-        } else {
-            //only randomize temp a little when there is no change in prodrate
+        } //no change in production rate --> just keep running (little temp variation)
+        else {
             Random random = new Random();
             double newTemp = temp + (random.nextDouble() / 10 * temp * (random.nextBoolean() ? 1 : -1));
             newTemp = (double) Math.round(newTemp * 100d) / 100d;
             try {
-                this.setPropertyValue("Temperature", new NumberPrimitive(newTemp));
-                for (ThingProperty tp : this.getDevice_Properties()) {
-                    if (tp.getPropertyName().equals("Temperature")) {
-                        tp.setValue("" + newTemp);
-                    }
-                }
-                //LOG.info("TESTLOG ---- [" + this.getName() + "] \tdeltaProdRate: " + deltaProdRate + "\ttemp:" + temp + "->" + newTemp);
+                this.setProperty("Temperature", "" + newTemp);
                 LOG.info("TESTLOG ---- [" + this.getName() + "] RUNNING");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
-                e.printStackTrace();
             }
         }
     }
@@ -177,20 +146,11 @@ public class AssetThing extends VirtualThing {
 
     public void restartThing(int initialProdRate) {
         try {
-            for (ThingProperty tp : this.getDevice_Properties()) {
-                if (tp.getPropertyName().equals("Temperature")) {
-                    tp.setValue("" + (initialProdRate / 20));
-                } else if (tp.getPropertyName().equals("PercentageFailure")) {
-                    tp.setValue("" + 10);
-                } else if (tp.getPropertyName().equals("status")) {
-                    tp.setValue("" + 2);
-                }
-            }
-            this.setPropertyValue("ProductionRate", new IntegerPrimitive(newProdRate));
-            this.setPropertyValue("Temperature", new NumberPrimitive(initialProdRate / 20));
-            this.setPropertyValue("PercentageFailure", new NumberPrimitive());
-            this.setPropertyValue("status", new IntegerPrimitive(2));
-            LOG.info("TESTLOG ---- [" + this.getName() + "] RESTARTED \tinitProdRate: " + initialProdRate + "\ttemp:" + initialProdRate / 20 + "\tFail:" + 10);
+            this.setProperty("ProductionRate", ""+initialProdRate);
+            this.setProperty("Temperature", ""+initialProdRate/20);
+            this.setProperty("PercentageFailure", ""+10);
+            this.setProperty("status", ""+State.RUNNING);
+            LOG.info("TESTLOG ---- [" + this.getName() + "] RESTARTED");
         } catch (Exception e) {
             LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
         }
@@ -198,11 +158,11 @@ public class AssetThing extends VirtualThing {
     }
 
     public List<ThingProperty> getDevice_Properties() {
-        return device_Properties;
+        return this.device_Properties;
     }
 
     public ThingProperty getPropertyByName(String name) {
-        for (ThingProperty pt : device_Properties) {
+        for (ThingProperty pt : this.device_Properties) {
             if (pt.getPropertyName().equalsIgnoreCase(name)) {
                 return pt;
             }
@@ -242,6 +202,7 @@ public class AssetThing extends VirtualThing {
     public void setIsDown(boolean isDown) {
         this.isDown = isDown;
     }
+
     
     /*
         Specific methods to use in GUI
@@ -255,5 +216,60 @@ public class AssetThing extends VirtualThing {
     
     public int getProductionRate(){
         return(Integer.parseInt(this.getPropertyByName("ProductionRate").getValue()));
+    }
+    //////////////////////////////////////
+
+    public void setProperty(String propName, String propVal) {
+        try {
+            for (ThingProperty tp : this.getDevice_Properties()) {
+                if (tp.getPropertyName().equals(name)) {
+                    tp.setValue("" + propVal);
+                }
+            }
+            if (isInteger(propVal)) {
+                this.setPropertyValue(propName, new IntegerPrimitive(Integer.parseInt(propVal)));
+            } else if (isDouble(propVal)) {
+                double val = (double) Math.round(Double.parseDouble(propVal) * 100d) / 100d;
+                this.setPropertyValue(propName, new NumberPrimitive(val));
+            } else {
+                this.setPropertyValue(propName, new StringPrimitive(propVal));
+            }
+        } catch (Exception e) {
+            LOG.warn("TESTLOG ---- Exception updating property " + propName + "(" + propVal + ") of thing " + this.getName());
+        }
+
+    }
+
+    private static boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        for (; i < length; i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isDouble(String value) {
+        try {
+            Double.parseDouble(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

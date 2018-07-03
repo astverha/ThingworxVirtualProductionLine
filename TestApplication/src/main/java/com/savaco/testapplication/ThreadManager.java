@@ -102,11 +102,7 @@ public class ThreadManager {
                                 if (sign == 0) {
                                     sign = -1;
                                 }
-                                for (ThingProperty tp : this.thing.getDevice_Properties()) {
-                                    if (tp.getPropertyName().equals("ProductionRate")) {
-                                        currProdRate = Integer.parseInt(tp.getValue());
-                                    }
-                                }
+                                currProdRate = Integer.parseInt(thing.getPropertyByName("ProductionRate").getValue());
                                 //this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
                                 /*int rand = random.nextInt(25);
                                 if(rand == 1 && !this.thing.isIsDown()){

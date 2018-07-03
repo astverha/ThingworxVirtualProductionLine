@@ -12,13 +12,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import javafx.concurrent.Task;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Administrator
  */
 public class VirtualProductLineGUI extends javax.swing.JFrame {
+
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(VirtualProductLineGUI.class);
 
     ConfigurationAgent agent;
     ProductLineClient client;
@@ -34,23 +38,27 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         this.agent = agent;
         this.client = agent.getClient();
         this.initializeComponentsFromConfigurationFile();
+        this.startSimulation();
     }
+
     //NOT WORKING
     private void initializeComponentsFromConfigurationFile() {
         try {
             client.start();
             this.updateStatus();    //Use status that was read from configuration file
             client.startInitialization();
+
             TimeUnit.MINUTES.sleep(10);
             client.shutdown();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("An exception occurred during initializing the components");
+
         }
-        
+
     }
 
-    private void updateStatus(){
+    private void updateStatus() {
         this.PBStatusLabelValue.setText(client.getAssetThingByName("Asset_ProducerB").getStatus());
         this.PCStatusLabelValue.setText(client.getAssetThingByName("Asset_ProducerC").getStatus());
         this.AStatusLabelValue.setText(client.getAssetThingByName("Asset_Assembler").getStatus());
@@ -58,6 +66,28 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         this.LStatusLabelValue.setText(client.getAssetThingByName("Asset_Labeler").getStatus());
         this.BStatusLabelValue.setText(client.getAssetThingByName("Asset_BoxingMachine").getStatus());
         this.PStatusLabelValue.setText(client.getAssetThingByName("Asset_Palletizer").getStatus());
+
+    }
+
+    private void startSimulation() {
+        client.startSimulation();
+        this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(null,
+                        "Are you sure to close this window?", "Really Closing?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        System.exit(0);
+                        client.shutdown();
+                    } catch (Exception ex) {
+                        LOG.warn("TESTLOG ---- Exception shutting down client.");
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -857,7 +887,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VirtualProductLineGUI(new ConfigurationAgent("configuration.xml")).setVisible(true);                
+                new VirtualProductLineGUI(new ConfigurationAgent("configuration.xml")).setVisible(true);
             }
         });
     }
@@ -934,4 +964,5 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
     private javax.swing.JPanel QualityChecker;
     private javax.swing.JToggleButton RandomDataButton;
     // End of variables declaration//GEN-END:variables
+
 }
