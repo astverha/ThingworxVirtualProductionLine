@@ -100,7 +100,7 @@ public class AssetThing extends VirtualThing {
         if (newProdRate < prodRate) {
             sign = -1;
         }
-        
+
         //Production rate is down to 0 (no longer running) --> broken or maintenance
         if (newProdRate == 0) {
             try {
@@ -146,10 +146,10 @@ public class AssetThing extends VirtualThing {
 
     public void restartThing(int initialProdRate) {
         try {
-            this.setProperty("ProductionRate", ""+initialProdRate);
-            this.setProperty("Temperature", ""+initialProdRate/20);
-            this.setProperty("PercentageFailure", ""+10);
-            this.setProperty("status", ""+State.RUNNING.ordinal());
+            this.setProperty("ProductionRate", "" + initialProdRate);
+            this.setProperty("Temperature", "" + initialProdRate / 20);
+            this.setProperty("PercentageFailure", "" + 10);
+            this.setProperty("status", "" + State.RUNNING.ordinal());
             LOG.info("TESTLOG ---- [" + this.getName() + "] RESTARTED");
         } catch (Exception e) {
             LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
@@ -163,12 +163,13 @@ public class AssetThing extends VirtualThing {
 
     public ThingProperty getPropertyByName(String name) {
         for (ThingProperty pt : this.device_Properties) {
+            System.out.println("TESTLOGG ---- Naam property: " + pt.getPropertyName());
             if (pt.getPropertyName().equalsIgnoreCase(name)) {
                 return pt;
             }
         }
         return null;
-    }   
+    }
 
     public boolean isDown() {
         return down;
