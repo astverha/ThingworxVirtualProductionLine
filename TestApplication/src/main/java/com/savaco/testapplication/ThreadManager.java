@@ -8,14 +8,9 @@ package com.savaco.testapplication;
 import com.savaco.ConfigurationAgent.AssetThing;
 import com.savaco.ConfigurationAgent.ConfigurationAgent;
 import com.savaco.ConfigurationAgent.ThingProperty;
-import com.thingworx.types.primitives.IntegerPrimitive;
-import com.thingworx.types.primitives.StringPrimitive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -26,9 +21,9 @@ public class ThreadManager {
 
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
 
-    private List<Thread> threads;
-    private ConfigurationAgent agent;
-    private ProductLineClient client;
+    private final List<Thread> threads;
+    private final ConfigurationAgent agent;
+    private final ProductLineClient client;
     private boolean pauseThread;
 
     public ThreadManager(ConfigurationAgent agent) {
@@ -43,8 +38,10 @@ public class ThreadManager {
             if (client.waitForConnection(30000)) {
                 List<AssetThing> assetThings = agent.getAssetsAsThings();
                 for (AssetThing thing : assetThings) {
-                    Thread agentThread = new Thread(new AgentThreadRunnable(thing, 5));
-                    agentThread.start();
+                    if (!thing.getName().contains("Line")) {
+                        Thread agentThread = new Thread(new AgentThreadRunnable(thing, 5));
+                        agentThread.start();
+                    }
                 }
             } else {
                 LOG.warn("TESTLOG ---- ThreadManager client could not connect.");
@@ -76,7 +73,7 @@ public class ThreadManager {
     private class AgentThreadRunnable implements Runnable {
 
         Random random = new Random();
-        
+
         private final AssetThing thing;
         private final int sleepTime;
 
@@ -102,7 +99,7 @@ public class ThreadManager {
                                 //Random updates production rate (should be inputted)
                                 int currProdRate = 0;
                                 int sign = random.nextInt(2);
-                                if(sign == 0){
+                                if (sign == 0) {
                                     sign = -1;
                                 }
                                 for (ThingProperty tp : this.thing.getDevice_Properties()) {
@@ -110,7 +107,8 @@ public class ThreadManager {
                                         currProdRate = Integer.parseInt(tp.getValue());
                                     }
                                 }
-                                this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
+                                //this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
+                                this.thing.simulateNewData(currProdRate);
                                 //-------------------------------
                                 this.thing.updateSubscribedProperties(10000);
                                 //LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());

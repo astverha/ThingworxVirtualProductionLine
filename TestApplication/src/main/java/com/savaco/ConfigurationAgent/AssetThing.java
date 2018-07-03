@@ -76,20 +76,17 @@ public class AssetThing extends VirtualThing {
         }
         super.initialize();
     }
+
     /*
     This method simulates new data for this thing based on the production rate set in the UI
     Even when there are no changes in production rate, temperature must vary.
     When there are changes, temperature, as well as failure rate has to change.
-    */
+     */
     public void simulateNewData(int prodRateValue) {
-        Random random = new Random();
         prodRate = newProdRate;
         newProdRate = prodRateValue;
-
         double temp = -1;
         double failure = -1;
-
-        //get local
         for (ThingProperty tp : this.getDevice_Properties()) {
             if (tp.getPropertyName().equals("ProductionRate")) {
                 tp.setValue(Integer.toString(newProdRate));
@@ -100,40 +97,49 @@ public class AssetThing extends VirtualThing {
             }
         }
 
-        //simulate
-        int deltaProdRate = newProdRate - prodRate;     //difference in new and old production rate
-        int sign = 1;                                   //if prodrate rises, temperature rises, if it drops, temp drops
-        if(newProdRate < prodRate){
+        int deltaProdRate = newProdRate - prodRate;
+        int sign = 1;
+        if (newProdRate < prodRate) {
             sign = -1;
         }
-        if (temp != -1 && failure != -1) {
-            //find new values
-            double newTemp = temp + (Math.abs(deltaProdRate*0.05)*sign);
-            double newFailure = failure + (Math.abs(deltaProdRate*0.025)*sign);
-            //round to two decimals
-            newTemp = (double)Math.round(newTemp * 100d) / 100d;
-            newFailure = (double)Math.round(newFailure * 100d) / 100d;
+        if (temp != -1 && failure != -1 && deltaProdRate != 0) {
+            double newTemp = temp + (Math.abs(deltaProdRate * 0.05) * sign);
+            double newFailure = failure + (Math.abs(deltaProdRate * 0.025) * sign);
+            newTemp = (double) Math.round(newTemp * 100d) / 100d;
+            newFailure = (double) Math.round(newFailure * 100d) / 100d;
             try {
-                //set local
                 for (ThingProperty tp : this.getDevice_Properties()) {
                     if (tp.getPropertyName().equals("Temperature")) {
-                        tp.setValue(""+newTemp);
+                        tp.setValue("" + newTemp);
                     } else if (tp.getPropertyName().equals("PercentageFailure")) {
-                        tp.setValue(""+newFailure);
+                        tp.setValue("" + newFailure);
                     }
                 }
-
-                //set remote
                 this.setPropertyValue("ProductionRate", new IntegerPrimitive(newProdRate));
                 this.setPropertyValue("Temperature", new NumberPrimitive(newTemp));
                 this.setPropertyValue("PercentageFailure", new NumberPrimitive(newFailure));
-
-                LOG.info("TESTLOG ---- [" + this.getName() +  "] \tdeltaProdRate: " + deltaProdRate + "\ttemp:" + temp + "->" + newTemp + "\tFail:" + failure + "->" + newFailure);
+                //LOG.info("TESTLOG ---- [" + this.getName() +  "] \tdeltaProdRate: " + deltaProdRate + "\ttemp:" + temp + "->" + newTemp + "\tFail:" + failure + "->" + newFailure);
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
+        } else {
+            //only randomize temp a little when there is no change in prodrate
+            Random random = new Random();
+            double newTemp = temp + (random.nextDouble() / 10 * temp * ( random.nextBoolean() ? 1 : -1 ));
+            newTemp = (double) Math.round(newTemp * 100d) / 100d;
+            try {
+                this.setPropertyValue("Temperature", new NumberPrimitive(newTemp));
+                for (ThingProperty tp : this.getDevice_Properties()) {
+                    if (tp.getPropertyName().equals("Temperature")) {
+                        tp.setValue("" + newTemp);
+                    }
+                }
+                LOG.info("TESTLOG ---- [" + this.getName() +  "] \tdeltaProdRate: " + deltaProdRate + "\ttemp:" + temp + "->" + newTemp);
+            } catch (Exception e) {
+                LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
+                e.printStackTrace();
+            }
         }
-
     }
 
     public List<ThingProperty> getDevice_Properties() {
