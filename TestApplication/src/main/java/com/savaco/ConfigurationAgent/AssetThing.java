@@ -162,13 +162,13 @@ public class AssetThing extends VirtualThing {
     }
 
     public ThingProperty getPropertyByName(String name) {
+        ThingProperty tp = null;
         for (ThingProperty pt : this.device_Properties) {
-            System.out.println("TESTLOGG ---- Naam property: " + pt.getPropertyName());
             if (pt.getPropertyName().equalsIgnoreCase(name)) {
-                return pt;
+                tp = pt;
             }
         }
-        return null;
+        return tp;
     }
 
     public boolean isDown() {
@@ -182,7 +182,7 @@ public class AssetThing extends VirtualThing {
     public void setProperty(String propName, String propVal) {
         try {
             for (ThingProperty tp : this.getDevice_Properties()) {
-                if (tp.getPropertyName().equals(name)) {
+                if (tp.getPropertyName().equals(propName)) {
                     tp.setValue("" + propVal);
                 }
             }

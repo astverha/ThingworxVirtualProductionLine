@@ -23,37 +23,40 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
     public VirtualProductLineUI(UIAgent agent) {
         initComponents();
         this.agent = agent;
-        new Timer(1000, taskPerformer).start();
+        updateStatus();
+        updateProdRates();
+        new Timer(5000, taskPerformer).start();
     }
     
     ActionListener taskPerformer = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent evt){
             updateStatus();
-            //updateProdRates();
+            updateProdRates();
         }
     };
     
     public void updateStatus(){
         agent.getAllStatus();
-        /*this.PBStatus.setText(agent.getStatus().get(1));
-        this.PCStatus.setText(agent.getStatus().get(2));
-        this.AStatus.setText(agent.getStatus().get(3));
-        this.QCStatus.setText(agent.getStatus().get(4));
-        this.LStatus.setText(agent.getStatus().get(5));
-        this.BStatus.setText(agent.getStatus().get(6));
-        this.PStatus.setText(agent.getStatus().get(7));*/
+        this.PBStatus.setText(agent.getStatus().get(0));
+        this.PCStatus.setText(agent.getStatus().get(1));
+        this.AStatus.setText(agent.getStatus().get(2));
+        this.QCStatus.setText(agent.getStatus().get(3));
+        this.LStatus.setText(agent.getStatus().get(4));
+        this.BStatus.setText(agent.getStatus().get(5));
+        this.PStatus.setText(agent.getStatus().get(6));
     }
     
     public void updateProdRates(){
         agent.getAllProdRates();
-        this.PBStatus.setText(agent.getProdRates().get(1).toString());
-        this.PCStatus.setText(agent.getProdRates().get(2).toString());
-        this.AStatus.setText(agent.getProdRates().get(3).toString());
-        this.QCStatus.setText(agent.getProdRates().get(4).toString());
-        this.LStatus.setText(agent.getProdRates().get(5).toString());
-        this.BStatus.setText(agent.getProdRates().get(6).toString());
-        this.PStatus.setText(agent.getProdRates().get(7).toString());
+        System.out.println("TESTLOG ---- ProdRate machine 1: " + agent.getProdRates().get(1));
+        this.PBProdRate.setValue(agent.getProdRates().get(1));
+        this.PCProdRate.setValue(agent.getProdRates().get(2));
+        this.AProdRate.setValue(agent.getProdRates().get(3));
+        this.QCProdRate.setValue(agent.getProdRates().get(4));
+        this.LProdRate.setValue(agent.getProdRates().get(5));
+        this.BProdRate.setValue(agent.getProdRates().get(6));
+        this.PProdRate.setValue(agent.getProdRates().get(7));
     }
 
     /**

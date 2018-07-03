@@ -42,7 +42,7 @@ public class ThreadManager {
             GUIThread.start();
 
             //Start program
-            /*if (client.waitForConnection(30000)) {
+            if (client.waitForConnection(30000)) {
                 List<AssetThing> assetThings = agent.getAssetsAsThings();
                 for (AssetThing thing : assetThings) {
                     if (!thing.getName().contains("Line")) {
@@ -52,7 +52,7 @@ public class ThreadManager {
                 }
             } else {
                 LOG.warn("TESTLOG ---- ThreadManager client could not connect.");
-            }*/
+            }
         } catch (Exception e) {
             LOG.warn("TESTLOG ---- Exception starting the ThreadManager.");
         }
@@ -111,8 +111,8 @@ public class ThreadManager {
                                     sign = -1;
                                 }
                                 currProdRate = Integer.parseInt(thing.getPropertyByName("ProductionRate").getValue());
-                                //this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
-                                int rand = random.nextInt(20);
+                                this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
+                                /*int rand = random.nextInt(20);
                                 if (rand == 1 && !this.thing.isDown()) {
                                     this.thing.setDown(true);
                                     this.thing.breakThing();
@@ -122,7 +122,7 @@ public class ThreadManager {
                                     } else {
                                         this.thing.simulateNewData(currProdRate);
                                     }
-                                }
+                                }*/
                                 //-------------------------------
                                 this.thing.updateSubscribedProperties(10000);
                                 //LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
