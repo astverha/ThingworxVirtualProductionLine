@@ -13,7 +13,6 @@ import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.types.primitives.IntegerPrimitive;
 import com.thingworx.types.primitives.StringPrimitive;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
@@ -62,19 +61,13 @@ public class ProductLineClient extends ConnectedThingClient {
         } catch (Exception e) {
             LOG.warn("TESTLOG ---- An exception occurred while initializing the client.\n", e);
         }
-        LOG.warn("TESTLOG ---- ProductLineClient is done. Exiting...");
+        LOG.warn("TESTLOG ---- ProductLineClient has finished initializing.");
     }
 
     public void startSimulation() {
         try {
             ThreadManager tManager = new ThreadManager(agent);
             tManager.start();
-            /*TimeUnit.SECONDS.sleep(15);
-            System.out.println("TESTLOG ---- Threads paused");
-            tManager.pause();
-            TimeUnit.SECONDS.sleep(10);
-            System.out.println("TESTLOG ---- Threads resumed");
-            tManager.resume();*/
         } catch (Exception e) {
             e.printStackTrace();
         }

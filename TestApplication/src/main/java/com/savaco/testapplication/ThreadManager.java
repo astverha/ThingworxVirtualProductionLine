@@ -7,7 +7,6 @@ package com.savaco.testapplication;
 
 import com.savaco.ConfigurationAgent.AssetThing;
 import com.savaco.ConfigurationAgent.ConfigurationAgent;
-import com.savaco.ConfigurationAgent.ThingProperty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
