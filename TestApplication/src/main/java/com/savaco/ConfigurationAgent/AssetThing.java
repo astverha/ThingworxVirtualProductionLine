@@ -208,7 +208,7 @@ public class AssetThing extends VirtualThing {
             }
         }
         return null;
-    }
+    }   
 
     public State convertToState(int numb) {
         State status = null;
@@ -241,5 +241,19 @@ public class AssetThing extends VirtualThing {
 
     public void setIsDown(boolean isDown) {
         this.isDown = isDown;
+    }
+    
+    /*
+        Specific methods to use in GUI
+    */
+    
+    public String getStatus(){
+        String status = this.getPropertyByName("status").getValue();
+        status = this.convertToState(Integer.parseInt(status)).toString();
+        return status;
+    }
+    
+    public int getProductionRate(){
+        return(Integer.parseInt(this.getPropertyByName("ProductionRate").getValue()));
     }
 }

@@ -33,34 +33,31 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.agent = agent;
         this.client = agent.getClient();
+        this.initializeComponentsFromConfigurationFile();
     }
-
+    //NOT WORKING
     private void initializeComponentsFromConfigurationFile() {
         try {
             client.start();
-            Task t = new Task() {
-                @Override
-                protected Object call() throws Exception {
-                    client.startInitialization();
-                    TimeUnit.MINUTES.sleep(10);
-                    client.shutdown();
-                    return null;
-                }
-            };
+            this.updateStatus();    //Use status that was read from configuration file
+            client.startInitialization();
+            TimeUnit.MINUTES.sleep(10);
+            client.shutdown();
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("An exception occurred during initializing the components");
         }
-
+        
     }
 
-    private void updateStatus() {
-        this.PBStatusLabelValue.setText(this.agent.getAssetsAsThings().get(1).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
-        this.PCStatusLabelValue.setText(this.agent.getAssetsAsThings().get(2).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
-        this.AStatusLabelValue.setText(this.agent.getAssetsAsThings().get(3).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
-        this.QCStatusLabelValue.setText(this.agent.getAssetsAsThings().get(4).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
-        this.LStatusLabelValue.setText(this.agent.getAssetsAsThings().get(5).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
-        this.BStatusLabelValue.setText(this.agent.getAssetsAsThings().get(6).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
-        this.PStatusLabelValue.setText(this.agent.getAssetsAsThings().get(7).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
+    private void updateStatus(){
+        this.PBStatusLabelValue.setText(client.getAssetThingByName("Asset_ProducerB").getStatus());
+        this.PCStatusLabelValue.setText(client.getAssetThingByName("Asset_ProducerC").getStatus());
+        this.AStatusLabelValue.setText(client.getAssetThingByName("Asset_Assembler").getStatus());
+        this.QCStatusLabelValue.setText(client.getAssetThingByName("Asset_QualityChecker").getStatus());
+        this.LStatusLabelValue.setText(client.getAssetThingByName("Asset_Labeler").getStatus());
+        this.BStatusLabelValue.setText(client.getAssetThingByName("Asset_BoxingMachine").getStatus());
+        this.PStatusLabelValue.setText(client.getAssetThingByName("Asset_Palletizer").getStatus());
     }
 
     /**
@@ -337,7 +334,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         QualityCheckerLayout.setVerticalGroup(
             QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QualityCheckerLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(QualityCheckerLayout.createSequentialGroup()
                         .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -552,7 +549,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
                 .addGroup(PalletizerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PBreakButton)
                     .addComponent(PMaintenanceButton))
-                .addGap(36, 36, 36))
+                .addContainerGap())
         );
 
         Boxer.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Boxer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
@@ -644,8 +641,6 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         });
 
         PBMaintenanceButton.setLabel("Maintenance");
-
-        PBStatusLabelValue.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
 
         javax.swing.GroupLayout ProducerBLayout = new javax.swing.GroupLayout(ProducerB);
         ProducerB.setLayout(ProducerBLayout);
@@ -754,28 +749,22 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ProducerB, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ProducerC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Assembler, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Boxer, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(Assembler, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(QualityChecker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ProducerB, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ProducerC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(25, 25, 25)
-                                .addComponent(Labeler, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                        .addComponent(Labeler, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(Boxer, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(QualityChecker, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Optionespanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Palletizer, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Palletizer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
         );
 
@@ -821,7 +810,6 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
             at.restartThing(500);
         }
         this.updateStatus();
-
     }//GEN-LAST:event_PBBreakButtonActionPerformed
 
     private void RandomDataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RandomDataButtonActionPerformed
@@ -869,7 +857,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VirtualProductLineGUI(new ConfigurationAgent("configuration.xml")).setVisible(true);
+                new VirtualProductLineGUI(new ConfigurationAgent("configuration.xml")).setVisible(true);                
             }
         });
     }
