@@ -106,7 +106,7 @@ public class AssetThing extends VirtualThing {
             try {
                 this.setProperty("Temperature", "" + temp);
                 this.setProperty("PercentageFailure", "" + failure);
-                this.setProperty("status", "" + State.UNPLANNED_DOWNTIME.toString());
+                this.setProperty("status", "" + State.UNPLANNED_DOWNTIME.ordinal());
                 LOG.info("TESTLOG ---- [" + this.getName() + "] BROKEN");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
@@ -120,7 +120,7 @@ public class AssetThing extends VirtualThing {
             try {
                 this.setProperty("Temperature", "" + newTemp);
                 this.setProperty("PercentageFailure", "" + newFailure);
-                this.setProperty("status", "" + State.RUNNING.toString());
+                this.setProperty("status", "" + State.RUNNING.ordinal());
                 LOG.info("TESTLOG ---- [" + this.getName() + "] RUNNING (changed prodRate)");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
@@ -149,7 +149,7 @@ public class AssetThing extends VirtualThing {
             this.setProperty("ProductionRate", ""+initialProdRate);
             this.setProperty("Temperature", ""+initialProdRate/20);
             this.setProperty("PercentageFailure", ""+10);
-            this.setProperty("status", ""+State.RUNNING.toString());
+            this.setProperty("status", ""+State.RUNNING.ordinal());
             LOG.info("TESTLOG ---- [" + this.getName() + "] RESTARTED");
         } catch (Exception e) {
             LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
@@ -169,31 +169,6 @@ public class AssetThing extends VirtualThing {
         }
         return null;
     }   
-
-    public State convertToState(int numb) {
-        State status = null;
-        switch (numb) {
-            case 0:
-                status = State.NOT_CONFIGURED;
-                break;
-            case 1:
-                status = State.WARNING;
-                break;
-            case 2:
-                status = State.RUNNING;
-                break;
-            case 3:
-                status = State.PLANNED_DOWNTIME;
-                break;
-            case 4:
-                status = State.UNPLANNED_DOWNTIME;
-                break;
-            case 5:
-                status = State.UNAVAILABLE;
-                break;
-        }
-        return status;
-    }
 
     public boolean isDown() {
         return down;
