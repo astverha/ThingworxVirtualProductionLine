@@ -86,7 +86,6 @@ public class AssetThing extends VirtualThing {
     When there are changes, temperature, as well as failure rate has to change.
      */
     public void simulateNewData(int prodRateValue) {
-        this.isDown = false;
         prodRate = newProdRate;
         newProdRate = prodRateValue;
         double temp = -1;
@@ -111,10 +110,13 @@ public class AssetThing extends VirtualThing {
                 for (ThingProperty tp : this.getDevice_Properties()) {
                     if (tp.getPropertyName().equals("PercentageFailure")) {
                         tp.setValue("" + 100);
+                    } else if (tp.getPropertyName().equals("status")){
+                        tp.setValue("" + 4);
                     }
                 }
                 this.setPropertyValue("ProductionRate", new IntegerPrimitive(0));
                 this.setPropertyValue("PercentageFailure", new NumberPrimitive(100));
+                this.setPropertyValue("status", new IntegerPrimitive(4));
                 LOG.info("TESTLOG ---- [" + this.getName() + "] \tBROKEN" + "\tFail:" + failure + "->" + 100);
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
@@ -171,14 +173,17 @@ public class AssetThing extends VirtualThing {
                     tp.setValue("" + (initialProdRate/20));
                 } else if (tp.getPropertyName().equals("PercentageFailure")) {
                     tp.setValue("" + 10);
+                } else if (tp.getPropertyName().equals("status")) {
+                    tp.setValue("" + 2);
                 }
             }
             this.setPropertyValue("ProductionRate", new IntegerPrimitive(newProdRate));
             this.setPropertyValue("Temperature", new NumberPrimitive(initialProdRate/20));
             this.setPropertyValue("PercentageFailure", new NumberPrimitive());
+            this.setPropertyValue("status", new IntegerPrimitive(2));
             LOG.info("TESTLOG ---- [" + this.getName() +  "] RESTARTED \tinitProdRate: " + initialProdRate + "\ttemp:" + initialProdRate/20 + "\tFail:" + 10);
         } catch (Exception e) {
-            LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
+            LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
         }
         this.isDown = false;
     }

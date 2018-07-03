@@ -108,8 +108,8 @@ public class ThreadManager {
                                     }
                                 }
                                 //this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
-                                int rand = random.nextInt(10);
-                                if(rand == 1){
+                                int rand = random.nextInt(25);
+                                if(rand == 1 && !this.thing.isIsDown()){
                                     this.thing.setIsDown(true);
                                     this.thing.breakThing();
                                 } else {
