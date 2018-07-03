@@ -104,18 +104,17 @@ public class ThreadManager {
                                 }
                                 currProdRate = Integer.parseInt(thing.getPropertyByName("ProductionRate").getValue());
                                 //this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
-                                /*int rand = random.nextInt(25);
-                                if(rand == 1 && !this.thing.isIsDown()){
-                                    this.thing.setIsDown(true);
+                                int rand = random.nextInt(20);
+                                if(rand == 1 && !this.thing.isDown()){
+                                    this.thing.setDown(true);
                                     this.thing.breakThing();
                                 } else {
-                                    if(this.thing.isIsDown()){
+                                    if(this.thing.isDown()){
                                         this.thing.restartThing(500);
                                     } else {
                                         this.thing.simulateNewData(currProdRate);
                                     }
-                                }*/
-                                this.thing.simulateNewData(currProdRate);
+                                }
                                 //-------------------------------
                                 this.thing.updateSubscribedProperties(10000);
                                 //LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
