@@ -121,7 +121,7 @@ public class AssetThing extends VirtualThing {
                 this.setPropertyValue("PercentageFailure", new NumberPrimitive(100));
                 this.setPropertyValue("status", new IntegerPrimitive(4));
                 //LOG.info("TESTLOG ---- [" + this.getName() + "] \tBROKEN" + "\tFail:" + failure + "->" + 100);
-                LOG.info("TESTLOG ---- [\" + this.getName() + \"] BROKEN");
+                LOG.info("TESTLOG ---- [" + this.getName() + "] BROKEN");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
