@@ -1,4 +1,4 @@
-package com.savaco.ConfigurationAgent;
+package com.savaco.configurationagent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

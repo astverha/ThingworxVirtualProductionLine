@@ -1,4 +1,4 @@
-package com.savaco.ConfigurationAgent;
+package com.savaco.configurationagent;
 
 import java.io.File;
 import java.io.IOException;

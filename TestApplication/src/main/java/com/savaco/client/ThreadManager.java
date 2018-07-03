@@ -1,7 +1,8 @@
-package com.savaco.testapplication;
+package com.savaco.client;
 
-import com.savaco.ConfigurationAgent.AssetThing;
-import com.savaco.ConfigurationAgent.ConfigurationAgent;
+import com.savaco.client.ProductLineClient;
+import com.savaco.configurationagent.AssetThing;
+import com.savaco.configurationagent.ConfigurationAgent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

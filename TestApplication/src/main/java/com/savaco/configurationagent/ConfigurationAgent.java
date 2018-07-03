@@ -1,6 +1,6 @@
-package com.savaco.ConfigurationAgent;
+package com.savaco.configurationagent;
 
-import com.savaco.testapplication.ProductLineClient;
+import com.savaco.client.ProductLineClient;
 import com.thingworx.communications.client.ClientConfigurator;
 import java.io.File;
 import java.util.ArrayList;

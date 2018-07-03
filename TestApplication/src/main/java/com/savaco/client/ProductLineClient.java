@@ -1,8 +1,8 @@
-package com.savaco.testapplication;
+package com.savaco.client;
 
-import com.savaco.ConfigurationAgent.ThingProperty;
-import com.savaco.ConfigurationAgent.AssetThing;
-import com.savaco.ConfigurationAgent.ConfigurationAgent;
+import com.savaco.configurationagent.ThingProperty;
+import com.savaco.configurationagent.AssetThing;
+import com.savaco.configurationagent.ConfigurationAgent;
 import com.thingworx.communications.client.ClientConfigurator;
 import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.types.primitives.IntegerPrimitive;

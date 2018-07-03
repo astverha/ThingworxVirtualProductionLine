@@ -1,4 +1,4 @@
-package com.savaco.ConfigurationAgent;
+package com.savaco.configurationagent;
 
 public class ThingProperty {
     private final String propertyName;

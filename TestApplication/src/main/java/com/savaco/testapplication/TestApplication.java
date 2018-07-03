@@ -1,6 +1,7 @@
 package com.savaco.testapplication;
 
-import com.savaco.ConfigurationAgent.ConfigurationAgent;
+import com.savaco.client.ProductLineClient;
+import com.savaco.configurationagent.ConfigurationAgent;
 import java.util.concurrent.TimeUnit;
 
 public class TestApplication {
