@@ -30,7 +30,7 @@
 						<Name>Temperature</Name>
 						<Min>20</Min>
 						<Max>50</Max>
-						<Value>21</Value>
+						<Value>25</Value>
 					</Property>
 					<Property>
 						<Name>BufferQuantity</Name>
@@ -67,7 +67,7 @@
 						<Name>Temperature</Name>
 						<Min>50</Min>
 						<Max>200</Max>
-						<Value>125</Value>
+						<Value>25</Value>
 					</Property>
 					<Property>
 						<Name>BufferQuantity</Name>

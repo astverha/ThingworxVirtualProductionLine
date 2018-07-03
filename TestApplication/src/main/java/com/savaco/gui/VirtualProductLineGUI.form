@@ -178,10 +178,8 @@
               </Group>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="Boxer" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
-                      <Component id="Palletizer" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="Boxer" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
+                  <Component id="Palletizer" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
                   <Component id="Labeler" min="-2" pref="180" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="203" max="32767" attributes="0"/>

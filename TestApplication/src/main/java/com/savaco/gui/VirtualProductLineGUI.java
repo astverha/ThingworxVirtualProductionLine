@@ -35,7 +35,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         Task task = new Task() {
             @Override
             protected Object call() throws Exception {
-               client.startApplication();
+               client.startInitialization();
                return null;
             }
         };
