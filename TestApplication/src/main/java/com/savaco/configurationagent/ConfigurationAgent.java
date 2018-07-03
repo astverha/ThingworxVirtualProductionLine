@@ -71,6 +71,16 @@ public final class ConfigurationAgent {
         return things;
     }
     
+    public AssetThing getAssetThingByName(String name){
+        AssetThing thing = null;
+        for(AssetThing at : this.getAssetsAsThings()){
+            if(at.getName().equalsIgnoreCase(name)){
+                thing = at;
+            }
+        }
+        return thing;
+    }
+    
     public String getServerName() {
         return serverName;
     }
