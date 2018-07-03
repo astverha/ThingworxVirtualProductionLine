@@ -58,8 +58,8 @@ public class ProductLineClient extends ConnectedThingClient {
                         LOG.warn("TESTLOG ---- Thing is not connected. (ProductLineClient.java)");
                     }
                 }
-                ThreadManager tManager = new ThreadManager(agent);
-                tManager.start();
+                /*ThreadManager tManager = new ThreadManager(agent);
+                tManager.start();*/
             } else {
                 LOG.warn("TESTLOG ---- Client did not connect within 30 seconds. Exiting...\n");
             }

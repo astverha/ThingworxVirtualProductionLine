@@ -12,9 +12,9 @@ import com.savaco.ConfigurationAgent.ConfigurationAgent;
  * @author Administrator
  */
 public class TestApplication {
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         ConfigurationAgent config = new ConfigurationAgent("configuration.xml");
         ProductLineClient client = config.getClient();
         client.startApplication();
-    }
+    }*/
 }

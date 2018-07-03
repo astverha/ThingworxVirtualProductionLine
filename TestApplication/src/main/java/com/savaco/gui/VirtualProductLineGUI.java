@@ -5,17 +5,41 @@
  */
 package com.savaco.gui;
 
+import com.savaco.ConfigurationAgent.AssetThing;
+import com.savaco.ConfigurationAgent.ConfigurationAgent;
+import com.savaco.testapplication.ProductLineClient;
+import javafx.concurrent.Task;
+import javax.swing.border.Border;
+
 /**
  *
  * @author Administrator
  */
 public class VirtualProductLineGUI extends javax.swing.JFrame {
-
+    
+    ConfigurationAgent agent;
+    
     /**
      * Creates new form VirtualProductLineGUI
+     * @param agent
      */
-    public VirtualProductLineGUI() {
+    public VirtualProductLineGUI(ConfigurationAgent agent) {
         initComponents();
+        setLocationRelativeTo(null);
+        this.agent = agent;
+        this.initializeComponentsFromConfigurationFile();
+    }
+    
+    private void initializeComponentsFromConfigurationFile(){
+        ProductLineClient client = this.agent.getClient();
+        Task task = new Task() {
+            @Override
+            protected Object call() throws Exception {
+               client.startApplication();
+               return null;
+            }
+        };
+        task.run();
     }
 
     /**
@@ -27,662 +51,701 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel7 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        ProducerBBreak = new javax.swing.JButton();
-        ProducerBMaintenance = new javax.swing.JButton();
-        PBStatus1 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        ProducerCBreak = new javax.swing.JButton();
-        ProducerCMaintenance = new javax.swing.JButton();
-        PCStatus = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
-        AssemblerMaintenance = new javax.swing.JButton();
-        AssemblerBreak = new javax.swing.JButton();
-        AStatus = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        QualityCheckerMaintenance = new javax.swing.JButton();
-        QualityCheckerBreak = new javax.swing.JButton();
-        QCStatus1 = new javax.swing.JLabel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
-        LabelerMaintenance = new javax.swing.JButton();
-        LabelerBreak = new javax.swing.JButton();
-        LStatus = new javax.swing.JLabel();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
-        BoxerMaintenance = new javax.swing.JButton();
-        BoxerBreak = new javax.swing.JButton();
-        BStatus = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jTextField14 = new javax.swing.JTextField();
-        PalletizerMaintenance = new javax.swing.JButton();
-        PalletizerBreak = new javax.swing.JButton();
-        PStatus = new javax.swing.JLabel();
+        ProducerBPanel3 = new javax.swing.JPanel();
+        PBStatusLabel3 = new javax.swing.JLabel();
+        PBLabelStatusValue3 = new javax.swing.JLabel();
+        PBPRLabel3 = new javax.swing.JLabel();
+        PBPRValue3 = new javax.swing.JSpinner();
+        PBDetailsButton3 = new javax.swing.JButton();
+        PBBreakButton3 = new javax.swing.JButton();
+        PBMaintenanceButton3 = new javax.swing.JButton();
+        ProducerC = new javax.swing.JPanel();
+        PCStatusLabel = new javax.swing.JLabel();
+        PBLabelStatusValue1 = new javax.swing.JLabel();
+        PCPRLabel = new javax.swing.JLabel();
+        PCPRValue = new javax.swing.JSpinner();
+        PCDetailsButton = new javax.swing.JButton();
+        PCBreakButton = new javax.swing.JButton();
+        PCMaintenanceButton = new javax.swing.JButton();
+        PCStatusLabelValue1 = new javax.swing.JLabel();
+        QualityChecker = new javax.swing.JPanel();
+        QCStatusLabel = new javax.swing.JLabel();
+        PBLabelStatusValue2 = new javax.swing.JLabel();
+        QCPRLabel = new javax.swing.JLabel();
+        QCPRValue = new javax.swing.JSpinner();
+        QCDetailsButton = new javax.swing.JButton();
+        QCBreakButton = new javax.swing.JButton();
+        QCMaintenanceButton = new javax.swing.JButton();
+        QCStatusLabelValue1 = new javax.swing.JLabel();
+        Assembler = new javax.swing.JPanel();
+        AStatusLabel = new javax.swing.JLabel();
+        PBLabelStatusValue4 = new javax.swing.JLabel();
+        APRLabel = new javax.swing.JLabel();
+        APRValue = new javax.swing.JSpinner();
+        ADetailsButton = new javax.swing.JButton();
+        ABreakButton = new javax.swing.JButton();
+        AMaintenanceButton = new javax.swing.JButton();
+        AStatusLabelValue = new javax.swing.JLabel();
+        Labeler = new javax.swing.JPanel();
+        LStatusLabel = new javax.swing.JLabel();
+        PBLabelStatusValue5 = new javax.swing.JLabel();
+        LPRLabel = new javax.swing.JLabel();
+        LPRValue = new javax.swing.JSpinner();
+        LDetailsButton = new javax.swing.JButton();
+        LBreakButton = new javax.swing.JButton();
+        LMaintenanceButton = new javax.swing.JButton();
+        QCStatusLabelValue = new javax.swing.JLabel();
+        Palletizer = new javax.swing.JPanel();
+        PStatusLabel = new javax.swing.JLabel();
+        PBLabelStatusValue6 = new javax.swing.JLabel();
+        PPRLabel = new javax.swing.JLabel();
+        PPRValue = new javax.swing.JSpinner();
+        PDetailsButton = new javax.swing.JButton();
+        PBreakButton = new javax.swing.JButton();
+        PMaintenanceButton = new javax.swing.JButton();
+        QCStatusLabelValue3 = new javax.swing.JLabel();
+        Boxer = new javax.swing.JPanel();
+        BStatusLabel = new javax.swing.JLabel();
+        PBLabelStatusValue7 = new javax.swing.JLabel();
+        BPRLabel = new javax.swing.JLabel();
+        BPRValue = new javax.swing.JSpinner();
+        BDetailsButton = new javax.swing.JButton();
+        BBreakButton = new javax.swing.JButton();
+        BMaintenanceButton = new javax.swing.JButton();
+        QCStatusLabelValue2 = new javax.swing.JLabel();
+        ProducerB = new javax.swing.JPanel();
+        PBStatusLabel1 = new javax.swing.JLabel();
+        PBLabelStatusValue8 = new javax.swing.JLabel();
+        PBPRLabel = new javax.swing.JLabel();
+        PBPRValue = new javax.swing.JSpinner();
+        PBDetailsButton = new javax.swing.JButton();
+        PBBreakButton = new javax.swing.JButton();
+        PBMaintenanceButton = new javax.swing.JButton();
+        PBStatusLabelValue = new javax.swing.JLabel();
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Producer b", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
+        ProducerBPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Assembler", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
+        PBStatusLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        PBStatusLabel3.setText("Status: ");
+
+        PBPRLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        PBPRLabel3.setText("Production Rate: ");
+
+        PBDetailsButton3.setLabel("Details...");
+        PBDetailsButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PBDetailsButton3ActionPerformed(evt);
+            }
+        });
+
+        PBBreakButton3.setLabel("Break");
+
+        PBMaintenanceButton3.setLabel("Maintenance");
+
+        javax.swing.GroupLayout ProducerBPanel3Layout = new javax.swing.GroupLayout(ProducerBPanel3);
+        ProducerBPanel3.setLayout(ProducerBPanel3Layout);
+        ProducerBPanel3Layout.setHorizontalGroup(
+            ProducerBPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ProducerBPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ProducerBPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ProducerBPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(PBDetailsButton3)
+                        .addGroup(ProducerBPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PBStatusLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(ProducerBPanel3Layout.createSequentialGroup()
+                                .addComponent(PBPRLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(PBPRValue3, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(ProducerBPanel3Layout.createSequentialGroup()
+                        .addComponent(PBBreakButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PBMaintenanceButton3)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PBLabelStatusValue3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 154, Short.MAX_VALUE)
+        ProducerBPanel3Layout.setVerticalGroup(
+            ProducerBPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ProducerBPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(PBLabelStatusValue3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(111, 111, 111))
+            .addGroup(ProducerBPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(PBStatusLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(ProducerBPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PBPRLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PBPRValue3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addComponent(PBDetailsButton3)
+                .addGap(18, 18, 18)
+                .addGroup(ProducerBPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PBBreakButton3)
+                    .addComponent(PBMaintenanceButton3))
+                .addContainerGap())
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Virtual product line");
-        setPreferredSize(new java.awt.Dimension(900, 650));
+        setTitle("VirtualProductLine");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName("MainFrame"); // NOI18N
         setResizable(false);
+        setSize(new java.awt.Dimension(800, 650));
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 622, Short.MAX_VALUE)
-        );
+        ProducerC.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Producer C", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
 
-        jTabbedPane1.addTab("Activity", jPanel5);
+        PCStatusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        PCStatusLabel.setText("Status: ");
 
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Producer b", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
-        jPanel6.setPreferredSize(new java.awt.Dimension(200, 180));
+        PCPRLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        PCPRLabel.setText("Production Rate: ");
 
-        jLabel1.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        jLabel1.setText("Production Rate: ");
-
-        jLabel2.setText("Status: ");
-
-        ProducerBBreak.setText("Break");
-        ProducerBBreak.addActionListener(new java.awt.event.ActionListener() {
+        PCDetailsButton.setLabel("Details...");
+        PCDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProducerBBreakActionPerformed(evt);
+                PCDetailsButtonActionPerformed(evt);
             }
         });
 
-        ProducerBMaintenance.setText("Maintenance");
-        ProducerBMaintenance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProducerBMaintenanceActionPerformed(evt);
-            }
-        });
+        PCBreakButton.setLabel("Break");
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        PCMaintenanceButton.setLabel("Maintenance");
+
+        javax.swing.GroupLayout ProducerCLayout = new javax.swing.GroupLayout(ProducerC);
+        ProducerC.setLayout(ProducerCLayout);
+        ProducerCLayout.setHorizontalGroup(
+            ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ProducerCLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(ProducerBMaintenance)
-                        .addGap(18, 18, 18)
-                        .addComponent(ProducerBBreak)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(10, 10, 10)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addGap(101, 101, 101)
-                    .addComponent(PBStatus1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(20, 20, 20)))
+                .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PCDetailsButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(PCStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(ProducerCLayout.createSequentialGroup()
+                        .addComponent(PCPRLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PCPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ProducerCLayout.createSequentialGroup()
+                        .addComponent(PCBreakButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PCMaintenanceButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PBLabelStatusValue1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(ProducerCLayout.createSequentialGroup()
+                    .addGap(93, 93, 93)
+                    .addComponent(PCStatusLabelValue1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(110, 110, 110)))
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        ProducerCLayout.setVerticalGroup(
+            ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ProducerCLayout.createSequentialGroup()
+                .addContainerGap(12, Short.MAX_VALUE)
+                .addComponent(PBLabelStatusValue1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(111, 111, 111))
+            .addGroup(ProducerCLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(PCStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PCPRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PCPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addComponent(PCDetailsButton)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ProducerBBreak)
-                    .addComponent(ProducerBMaintenance))
+                .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PCBreakButton)
+                    .addComponent(PCMaintenanceButton))
                 .addContainerGap())
-            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addGap(59, 59, 59)
-                    .addComponent(PBStatus1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(70, Short.MAX_VALUE)))
+            .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(ProducerCLayout.createSequentialGroup()
+                    .addGap(21, 21, 21)
+                    .addComponent(PCStatusLabelValue1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(107, 107, 107)))
         );
 
-        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Producer c", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
-        jPanel8.setPreferredSize(new java.awt.Dimension(200, 180));
+        QualityChecker.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quality Checker", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        jLabel3.setText("Production Rate: ");
+        QCStatusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        QCStatusLabel.setText("Status: ");
 
-        jLabel4.setText("Status: ");
+        QCPRLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        QCPRLabel.setText("Production Rate: ");
 
-        ProducerCBreak.setText("Break");
-        ProducerCBreak.addActionListener(new java.awt.event.ActionListener() {
+        QCDetailsButton.setLabel("Details...");
+        QCDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProducerCBreakActionPerformed(evt);
+                QCDetailsButtonActionPerformed(evt);
             }
         });
 
-        ProducerCMaintenance.setText("Maintenance");
-        ProducerCMaintenance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProducerCMaintenanceActionPerformed(evt);
-            }
-        });
+        QCBreakButton.setLabel("Break");
 
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
+        QCMaintenanceButton.setLabel("Maintenance");
+
+        javax.swing.GroupLayout QualityCheckerLayout = new javax.swing.GroupLayout(QualityChecker);
+        QualityChecker.setLayout(QualityCheckerLayout);
+        QualityCheckerLayout.setHorizontalGroup(
+            QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(QualityCheckerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(ProducerCMaintenance)
+                .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(QCDetailsButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(QCStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(QualityCheckerLayout.createSequentialGroup()
+                        .addComponent(QCPRLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(QCPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(QualityCheckerLayout.createSequentialGroup()
+                        .addComponent(QCBreakButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(QCMaintenanceButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PBLabelStatusValue2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(QualityCheckerLayout.createSequentialGroup()
+                    .addGap(93, 93, 93)
+                    .addComponent(QCStatusLabelValue1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(110, 110, 110)))
+        );
+        QualityCheckerLayout.setVerticalGroup(
+            QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(QualityCheckerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(PBLabelStatusValue2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(111, 111, 111))
+            .addGroup(QualityCheckerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(QCStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(QCPRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(QCPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addComponent(QCDetailsButton)
+                .addGap(18, 18, 18)
+                .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(QCBreakButton)
+                    .addComponent(QCMaintenanceButton))
+                .addContainerGap())
+            .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(QualityCheckerLayout.createSequentialGroup()
+                    .addGap(21, 21, 21)
+                    .addComponent(QCStatusLabelValue1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(107, Short.MAX_VALUE)))
+        );
+
+        Assembler.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Assembler", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
+
+        AStatusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        AStatusLabel.setText("Status: ");
+
+        APRLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        APRLabel.setText("Production Rate: ");
+
+        ADetailsButton.setLabel("Details...");
+        ADetailsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ADetailsButtonActionPerformed(evt);
+            }
+        });
+
+        ABreakButton.setLabel("Break");
+
+        AMaintenanceButton.setLabel("Maintenance");
+
+        javax.swing.GroupLayout AssemblerLayout = new javax.swing.GroupLayout(Assembler);
+        Assembler.setLayout(AssemblerLayout);
+        AssemblerLayout.setHorizontalGroup(
+            AssemblerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AssemblerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AssemblerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ADetailsButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(AssemblerLayout.createSequentialGroup()
+                        .addComponent(AStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(ProducerCBreak)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
+                        .addComponent(AStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(AssemblerLayout.createSequentialGroup()
+                        .addComponent(APRLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(APRValue, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(AssemblerLayout.createSequentialGroup()
+                        .addComponent(ABreakButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(AMaintenanceButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PBLabelStatusValue4, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        AssemblerLayout.setVerticalGroup(
+            AssemblerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AssemblerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(PBLabelStatusValue4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(111, 111, 111))
+            .addGroup(AssemblerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AssemblerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AssemblerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(APRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(APRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addComponent(ADetailsButton)
+                .addGap(18, 18, 18)
+                .addGroup(AssemblerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ABreakButton)
+                    .addComponent(AMaintenanceButton))
+                .addContainerGap())
+        );
+
+        Labeler.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Labeler", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
+
+        LStatusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        LStatusLabel.setText("Status: ");
+
+        LPRLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        LPRLabel.setText("Production Rate: ");
+
+        LDetailsButton.setLabel("Details...");
+        LDetailsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LDetailsButtonActionPerformed(evt);
+            }
+        });
+
+        LBreakButton.setLabel("Break");
+
+        LMaintenanceButton.setLabel("Maintenance");
+
+        javax.swing.GroupLayout LabelerLayout = new javax.swing.GroupLayout(Labeler);
+        Labeler.setLayout(LabelerLayout);
+        LabelerLayout.setHorizontalGroup(
+            LabelerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LabelerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(LabelerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LDetailsButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(LabelerLayout.createSequentialGroup()
+                        .addComponent(LStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(QCStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(LabelerLayout.createSequentialGroup()
+                        .addComponent(LPRLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(LPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(LabelerLayout.createSequentialGroup()
+                        .addComponent(LBreakButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(LMaintenanceButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PBLabelStatusValue5, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        LabelerLayout.setVerticalGroup(
+            LabelerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LabelerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(LabelerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(QCStatusLabelValue, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(LabelerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(LabelerLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(PBLabelStatusValue5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(111, 111, 111))
+                    .addGroup(LabelerLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(PCStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField3))))
-                .addContainerGap())
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(PCStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ProducerCBreak)
-                    .addComponent(ProducerCMaintenance))
-                .addContainerGap())
-        );
-
-        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Assembler", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
-        jPanel9.setPreferredSize(new java.awt.Dimension(200, 180));
-
-        jLabel5.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        jLabel5.setText("Production Rate: ");
-
-        jLabel6.setText("Status: ");
-
-        AssemblerMaintenance.setText("Maintenance");
-        AssemblerMaintenance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AssemblerMaintenanceActionPerformed(evt);
-            }
-        });
-
-        AssemblerBreak.setText("Break");
-        AssemblerBreak.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AssemblerBreakActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(10, 10, 10)
-                        .addComponent(jTextField8))
-                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel9Layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addGap(63, 63, 63)
-                            .addComponent(AStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel9Layout.createSequentialGroup()
-                            .addComponent(AssemblerMaintenance)
-                            .addGap(18, 18, 18)
-                            .addComponent(AssemblerBreak))))
-                .addContainerGap())
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(AStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AssemblerBreak)
-                    .addComponent(AssemblerMaintenance))
-                .addContainerGap())
-        );
-
-        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quality Checker", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
-        jPanel10.setPreferredSize(new java.awt.Dimension(200, 180));
-
-        jLabel8.setText("Status: ");
-
-        jLabel7.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        jLabel7.setText("Production Rate: ");
-
-        jLabel9.setText("Desired quota: ");
-
-        QualityCheckerMaintenance.setText("Maintenance");
-        QualityCheckerMaintenance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                QualityCheckerMaintenanceActionPerformed(evt);
-            }
-        });
-
-        QualityCheckerBreak.setText("Break");
-        QualityCheckerBreak.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                QualityCheckerBreakActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(10, 10, 10)
-                        .addComponent(jTextField6))
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addComponent(QualityCheckerMaintenance)
+                        .addGroup(LabelerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(LPRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
+                        .addComponent(LDetailsButton)
                         .addGap(18, 18, 18)
-                        .addComponent(QualityCheckerBreak)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel8))
-                        .addGap(27, 27, 27)
-                        .addComponent(jTextField7)))
-                .addContainerGap())
-            .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel10Layout.createSequentialGroup()
-                    .addGap(101, 101, 101)
-                    .addComponent(QCStatus1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(20, 20, 20)))
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel8)
-                .addGap(26, 26, 26)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(QualityCheckerBreak)
-                    .addComponent(QualityCheckerMaintenance))
-                .addContainerGap())
-            .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel10Layout.createSequentialGroup()
-                    .addGap(59, 59, 59)
-                    .addComponent(QCStatus1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(70, Short.MAX_VALUE)))
+                        .addGroup(LabelerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LBreakButton)
+                            .addComponent(LMaintenanceButton))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
-        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Labeler", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
-        jPanel11.setPreferredSize(new java.awt.Dimension(200, 180));
+        Palletizer.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Palletizer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
 
-        jLabel10.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        jLabel10.setText("Production Rate: ");
+        PStatusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        PStatusLabel.setText("Status: ");
 
-        jLabel11.setText("Status: ");
+        PPRLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        PPRLabel.setText("Production Rate: ");
 
-        LabelerMaintenance.setText("Maintenance");
-        LabelerMaintenance.addActionListener(new java.awt.event.ActionListener() {
+        PDetailsButton.setLabel("Details...");
+        PDetailsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LabelerMaintenanceActionPerformed(evt);
+                PDetailsButtonActionPerformed(evt);
             }
         });
 
-        LabelerBreak.setText("Break");
-        LabelerBreak.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LabelerBreakActionPerformed(evt);
-            }
-        });
+        PBreakButton.setLabel("Break");
 
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
+        PMaintenanceButton.setLabel("Maintenance");
+
+        javax.swing.GroupLayout PalletizerLayout = new javax.swing.GroupLayout(Palletizer);
+        Palletizer.setLayout(PalletizerLayout);
+        PalletizerLayout.setHorizontalGroup(
+            PalletizerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PalletizerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel11Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(26, 26, 26)
-                        .addComponent(jTextField10))
-                    .addGroup(jPanel11Layout.createSequentialGroup()
-                        .addComponent(LabelerMaintenance)
+                .addGroup(PalletizerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PDetailsButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(PalletizerLayout.createSequentialGroup()
+                        .addComponent(PStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(LabelerBreak)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel11Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addGap(77, 77, 77)
-                        .addComponent(LStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addComponent(LStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelerBreak)
-                    .addComponent(LabelerMaintenance))
-                .addGap(26, 26, 26))
-        );
-
-        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Boxer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
-        jPanel12.setPreferredSize(new java.awt.Dimension(200, 180));
-
-        jLabel12.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        jLabel12.setText("Production Rate: ");
-
-        jLabel13.setText("Status: ");
-
-        BoxerMaintenance.setText("Maintenance");
-        BoxerMaintenance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BoxerMaintenanceActionPerformed(evt);
-            }
-        });
-
-        BoxerBreak.setText("Break");
-        BoxerBreak.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BoxerBreakActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addGap(10, 10, 10)
-                        .addComponent(jTextField12))
-                    .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel12Layout.createSequentialGroup()
-                            .addComponent(jLabel13)
-                            .addGap(63, 63, 63)
-                            .addComponent(BStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel12Layout.createSequentialGroup()
-                            .addComponent(BoxerMaintenance)
-                            .addGap(18, 18, 18)
-                            .addComponent(BoxerBreak))))
-                .addContainerGap())
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13)
-                    .addComponent(BStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BoxerBreak)
-                    .addComponent(BoxerMaintenance))
-                .addGap(28, 28, 28))
-        );
-
-        jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Palletizer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
-        jPanel13.setPreferredSize(new java.awt.Dimension(200, 180));
-
-        jLabel14.setFont(new java.awt.Font("Gadugi", 0, 12)); // NOI18N
-        jLabel14.setText("Production Rate: ");
-
-        jLabel15.setText("Status: ");
-
-        PalletizerMaintenance.setText("Maintenance");
-        PalletizerMaintenance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PalletizerMaintenanceActionPerformed(evt);
-            }
-        });
-
-        PalletizerBreak.setText("Break");
-        PalletizerBreak.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PalletizerBreakActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-        jPanel13.setLayout(jPanel13Layout);
-        jPanel13Layout.setHorizontalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel13Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
+                        .addComponent(QCStatusLabelValue3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(PalletizerLayout.createSequentialGroup()
+                        .addComponent(PPRLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField14))
-                    .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel13Layout.createSequentialGroup()
-                            .addComponent(jLabel15)
-                            .addGap(63, 63, 63)
-                            .addComponent(PStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel13Layout.createSequentialGroup()
-                            .addComponent(PalletizerMaintenance)
-                            .addGap(18, 18, 18)
-                            .addComponent(PalletizerBreak))))
+                        .addComponent(PPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PalletizerLayout.createSequentialGroup()
+                        .addComponent(PBreakButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PMaintenanceButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PBLabelStatusValue6, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        PalletizerLayout.setVerticalGroup(
+            PalletizerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PalletizerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PalletizerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(QCStatusLabelValue3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(PalletizerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PalletizerLayout.createSequentialGroup()
+                        .addGroup(PalletizerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(PPRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
+                        .addComponent(PDetailsButton)
+                        .addGap(18, 18, 18)
+                        .addGroup(PalletizerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PBreakButton)
+                            .addComponent(PMaintenanceButton)))
+                    .addComponent(PBLabelStatusValue6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36))
+        );
+
+        Boxer.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Boxer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
+
+        BStatusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        BStatusLabel.setText("Status: ");
+
+        BPRLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        BPRLabel.setText("Production Rate: ");
+
+        BDetailsButton.setLabel("Details...");
+        BDetailsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BDetailsButtonActionPerformed(evt);
+            }
+        });
+
+        BBreakButton.setLabel("Break");
+
+        BMaintenanceButton.setLabel("Maintenance");
+
+        javax.swing.GroupLayout BoxerLayout = new javax.swing.GroupLayout(Boxer);
+        Boxer.setLayout(BoxerLayout);
+        BoxerLayout.setHorizontalGroup(
+            BoxerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BoxerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(BoxerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BDetailsButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(BoxerLayout.createSequentialGroup()
+                        .addComponent(BStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(QCStatusLabelValue2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(BoxerLayout.createSequentialGroup()
+                        .addComponent(BPRLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(BoxerLayout.createSequentialGroup()
+                        .addComponent(BBreakButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BMaintenanceButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PBLabelStatusValue7, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        BoxerLayout.setVerticalGroup(
+            BoxerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BoxerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(BoxerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(QCStatusLabelValue2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(BoxerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BoxerLayout.createSequentialGroup()
+                        .addGroup(BoxerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(BPRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
+                        .addComponent(BDetailsButton)
+                        .addGap(18, 18, 18)
+                        .addGroup(BoxerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(BBreakButton)
+                            .addComponent(BMaintenanceButton)))
+                    .addComponent(PBLabelStatusValue7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36))
+        );
+
+        ProducerB.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Producer B", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
+
+        PBStatusLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        PBStatusLabel1.setText("Status: ");
+
+        PBPRLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        PBPRLabel.setText("Production Rate: ");
+
+        PBDetailsButton.setLabel("Details...");
+        PBDetailsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PBDetailsButtonActionPerformed(evt);
+            }
+        });
+
+        PBBreakButton.setLabel("Break");
+
+        PBMaintenanceButton.setLabel("Maintenance");
+
+        javax.swing.GroupLayout ProducerBLayout = new javax.swing.GroupLayout(ProducerB);
+        ProducerB.setLayout(ProducerBLayout);
+        ProducerBLayout.setHorizontalGroup(
+            ProducerBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ProducerBLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ProducerBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(PBDetailsButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(ProducerBLayout.createSequentialGroup()
+                        .addComponent(PBStatusLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(PBStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(ProducerBLayout.createSequentialGroup()
+                        .addComponent(PBPRLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PBPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ProducerBLayout.createSequentialGroup()
+                        .addComponent(PBBreakButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(PBMaintenanceButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PBLabelStatusValue8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        ProducerBLayout.setVerticalGroup(
+            ProducerBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ProducerBLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(PBLabelStatusValue8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(111, 111, 111))
+            .addGroup(ProducerBLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ProducerBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PBStatusLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PBStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ProducerBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PBPRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PBPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addComponent(PBDetailsButton)
+                .addGap(18, 18, 18)
+                .addGroup(ProducerBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PBBreakButton)
+                    .addComponent(PBMaintenanceButton))
                 .addContainerGap())
         );
-        jPanel13Layout.setVerticalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel13Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addComponent(PStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PalletizerBreak)
-                    .addComponent(PalletizerMaintenance))
-                .addGap(28, 28, 28))
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(156, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Machines", jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Labeler, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ProducerB, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ProducerC, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Boxer, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Palletizer, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Assembler, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(QualityChecker, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ProducerC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Assembler, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(QualityChecker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ProducerB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(Boxer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Palletizer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Labeler, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(203, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void PalletizerBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PalletizerBreakActionPerformed
+    private void PCDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PCDetailsButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_PalletizerBreakActionPerformed
+    }//GEN-LAST:event_PCDetailsButtonActionPerformed
 
-    private void PalletizerMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PalletizerMaintenanceActionPerformed
+    private void QCDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QCDetailsButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_PalletizerMaintenanceActionPerformed
+    }//GEN-LAST:event_QCDetailsButtonActionPerformed
 
-    private void BoxerBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoxerBreakActionPerformed
+    private void PBDetailsButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PBDetailsButton3ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_BoxerBreakActionPerformed
+    }//GEN-LAST:event_PBDetailsButton3ActionPerformed
 
-    private void BoxerMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoxerMaintenanceActionPerformed
+    private void ADetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ADetailsButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_BoxerMaintenanceActionPerformed
+    }//GEN-LAST:event_ADetailsButtonActionPerformed
 
-    private void LabelerBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LabelerBreakActionPerformed
+    private void LDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LDetailsButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_LabelerBreakActionPerformed
+    }//GEN-LAST:event_LDetailsButtonActionPerformed
 
-    private void LabelerMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LabelerMaintenanceActionPerformed
+    private void PDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PDetailsButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_LabelerMaintenanceActionPerformed
+    }//GEN-LAST:event_PDetailsButtonActionPerformed
 
-    private void QualityCheckerBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QualityCheckerBreakActionPerformed
+    private void BDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BDetailsButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_QualityCheckerBreakActionPerformed
+    }//GEN-LAST:event_BDetailsButtonActionPerformed
 
-    private void QualityCheckerMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QualityCheckerMaintenanceActionPerformed
+    private void PBDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PBDetailsButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_QualityCheckerMaintenanceActionPerformed
-
-    private void AssemblerBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AssemblerBreakActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AssemblerBreakActionPerformed
-
-    private void AssemblerMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AssemblerMaintenanceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AssemblerMaintenanceActionPerformed
-
-    private void ProducerCMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProducerCMaintenanceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ProducerCMaintenanceActionPerformed
-
-    private void ProducerCBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProducerCBreakActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ProducerCBreakActionPerformed
-
-    private void ProducerBMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProducerBMaintenanceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ProducerBMaintenanceActionPerformed
-
-    private void ProducerBBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProducerBBreakActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ProducerBBreakActionPerformed
+    }//GEN-LAST:event_PBDetailsButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -714,66 +777,82 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VirtualProductLineGUI().setVisible(true);
+                new VirtualProductLineGUI(new ConfigurationAgent("configuration.xml")).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AStatus;
-    private javax.swing.JButton AssemblerBreak;
-    private javax.swing.JButton AssemblerMaintenance;
-    private javax.swing.JLabel BStatus;
-    private javax.swing.JButton BoxerBreak;
-    private javax.swing.JButton BoxerMaintenance;
-    private javax.swing.JLabel LStatus;
-    private javax.swing.JButton LabelerBreak;
-    private javax.swing.JButton LabelerMaintenance;
-    private javax.swing.JLabel PBStatus1;
-    private javax.swing.JLabel PCStatus;
-    private javax.swing.JLabel PStatus;
-    private javax.swing.JButton PalletizerBreak;
-    private javax.swing.JButton PalletizerMaintenance;
-    private javax.swing.JButton ProducerBBreak;
-    private javax.swing.JButton ProducerBMaintenance;
-    private javax.swing.JButton ProducerCBreak;
-    private javax.swing.JButton ProducerCMaintenance;
-    private javax.swing.JLabel QCStatus1;
-    private javax.swing.JButton QualityCheckerBreak;
-    private javax.swing.JButton QualityCheckerMaintenance;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JButton ABreakButton;
+    private javax.swing.JButton ADetailsButton;
+    private javax.swing.JButton AMaintenanceButton;
+    private javax.swing.JLabel APRLabel;
+    private javax.swing.JSpinner APRValue;
+    private javax.swing.JLabel AStatusLabel;
+    private javax.swing.JLabel AStatusLabelValue;
+    private javax.swing.JPanel Assembler;
+    private javax.swing.JButton BBreakButton;
+    private javax.swing.JButton BDetailsButton;
+    private javax.swing.JButton BMaintenanceButton;
+    private javax.swing.JLabel BPRLabel;
+    private javax.swing.JSpinner BPRValue;
+    private javax.swing.JLabel BStatusLabel;
+    private javax.swing.JPanel Boxer;
+    private javax.swing.JButton LBreakButton;
+    private javax.swing.JButton LDetailsButton;
+    private javax.swing.JButton LMaintenanceButton;
+    private javax.swing.JLabel LPRLabel;
+    private javax.swing.JSpinner LPRValue;
+    private javax.swing.JLabel LStatusLabel;
+    private javax.swing.JPanel Labeler;
+    private javax.swing.JButton PBBreakButton;
+    private javax.swing.JButton PBBreakButton3;
+    private javax.swing.JButton PBDetailsButton;
+    private javax.swing.JButton PBDetailsButton3;
+    private javax.swing.JLabel PBLabelStatusValue1;
+    private javax.swing.JLabel PBLabelStatusValue2;
+    private javax.swing.JLabel PBLabelStatusValue3;
+    private javax.swing.JLabel PBLabelStatusValue4;
+    private javax.swing.JLabel PBLabelStatusValue5;
+    private javax.swing.JLabel PBLabelStatusValue6;
+    private javax.swing.JLabel PBLabelStatusValue7;
+    private javax.swing.JLabel PBLabelStatusValue8;
+    private javax.swing.JButton PBMaintenanceButton;
+    private javax.swing.JButton PBMaintenanceButton3;
+    private javax.swing.JLabel PBPRLabel;
+    private javax.swing.JLabel PBPRLabel3;
+    private javax.swing.JSpinner PBPRValue;
+    private javax.swing.JSpinner PBPRValue3;
+    private javax.swing.JLabel PBStatusLabel1;
+    private javax.swing.JLabel PBStatusLabel3;
+    private javax.swing.JLabel PBStatusLabelValue;
+    private javax.swing.JButton PBreakButton;
+    private javax.swing.JButton PCBreakButton;
+    private javax.swing.JButton PCDetailsButton;
+    private javax.swing.JButton PCMaintenanceButton;
+    private javax.swing.JLabel PCPRLabel;
+    private javax.swing.JSpinner PCPRValue;
+    private javax.swing.JLabel PCStatusLabel;
+    private javax.swing.JLabel PCStatusLabelValue1;
+    private javax.swing.JButton PDetailsButton;
+    private javax.swing.JButton PMaintenanceButton;
+    private javax.swing.JLabel PPRLabel;
+    private javax.swing.JSpinner PPRValue;
+    private javax.swing.JLabel PStatusLabel;
+    private javax.swing.JPanel Palletizer;
+    private javax.swing.JPanel ProducerB;
+    private javax.swing.JPanel ProducerBPanel3;
+    private javax.swing.JPanel ProducerC;
+    private javax.swing.JButton QCBreakButton;
+    private javax.swing.JButton QCDetailsButton;
+    private javax.swing.JButton QCMaintenanceButton;
+    private javax.swing.JLabel QCPRLabel;
+    private javax.swing.JSpinner QCPRValue;
+    private javax.swing.JLabel QCStatusLabel;
+    private javax.swing.JLabel QCStatusLabelValue;
+    private javax.swing.JLabel QCStatusLabelValue1;
+    private javax.swing.JLabel QCStatusLabelValue2;
+    private javax.swing.JLabel QCStatusLabelValue3;
+    private javax.swing.JPanel QualityChecker;
     // End of variables declaration//GEN-END:variables
 }
