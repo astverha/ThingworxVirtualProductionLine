@@ -99,6 +99,7 @@ public class ThreadManager {
                         client.bindThing(this.thing);
                         if (client.isConnected()) {
                             try {
+                                //Random updates production rate (should be inputted)
                                 int currProdRate = 0;
                                 int sign = random.nextInt(2);
                                 if(sign == 0){
@@ -109,8 +110,8 @@ public class ThreadManager {
                                         currProdRate = Integer.parseInt(tp.getValue());
                                     }
                                 }
-                                this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.1*sign));
-                                
+                                this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
+                                //-------------------------------
                                 this.thing.updateSubscribedProperties(10000);
                                 //LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
                                 Thread.sleep(this.sleepTime * 1000);

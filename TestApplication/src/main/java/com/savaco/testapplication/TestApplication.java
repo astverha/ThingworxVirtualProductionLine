@@ -20,6 +20,7 @@ public class TestApplication {
         try {
             client.start();
             client.startInitialization();
+            TimeUnit.SECONDS.sleep(5);
             client.startSimulation();
             TimeUnit.MINUTES.sleep(15);
             client.shutdown();
