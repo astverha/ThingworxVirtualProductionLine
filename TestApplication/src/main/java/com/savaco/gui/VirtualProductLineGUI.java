@@ -10,14 +10,21 @@ import com.savaco.ConfigurationAgent.ConfigurationAgent;
 import com.savaco.testapplication.ProductLineClient;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.concurrent.Task;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Administrator
  */
 public class VirtualProductLineGUI extends javax.swing.JFrame {
+    
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(VirtualProductLineGUI.class);
 
     ConfigurationAgent agent;
     ProductLineClient client;
@@ -33,17 +40,41 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         this.agent = agent;
         this.client = agent.getClient();
         this.initializeComponentsFromConfigurationFile();
+        this.startSimulation();
     }
 
     private void initializeComponentsFromConfigurationFile() {
         try {
             client.start();
             client.startInitialization();
+            TimeUnit.SECONDS.sleep(5);
+            client.startSimulation();
             this.updateStatus();
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("An exception occurred while initializing the components");
         }
 
+    }
+
+    private void startSimulation() {
+        client.startSimulation();
+        this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(null,
+                        "Are you sure to close this window?", "Really Closing?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    try {
+                        System.exit(0);
+                        client.shutdown();
+                    } catch (Exception ex) {
+                        LOG.warn("TESTLOG ---- Exception shutting down client.");
+                    }
+                }
+            }
+        });
     }
 
     private void updateStatus() {
@@ -926,4 +957,5 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
     private javax.swing.JPanel QualityChecker;
     private javax.swing.JToggleButton RandomDataButton;
     // End of variables declaration//GEN-END:variables
+
 }
