@@ -24,8 +24,11 @@
 				<ThingName>Asset_ProducerB</ThingName>
 				<Name>ProducerB</Name>
 				<Description>Produces part B of the product</Description>
-				<DataFrequencyPerHour>600</DataFrequencyPerHour>
 				<PropertyDefinitions>
+					<Property>
+						<Name>SimulationSpeed</Name>
+                                                <Value>5</Value>
+					</Property>
 					<Property>
 						<Name>Temperature</Name>
 						<Min>20</Min>
@@ -61,8 +64,11 @@
 				<ThingName>Asset_ProducerC</ThingName>
 				<Name>ProducerC</Name>
 				<Description>Produces part C of the product</Description>
-				<DataFrequencyPerHour>600</DataFrequencyPerHour>
 				<PropertyDefinitions>
+					<Property>
+						<Name>SimulationSpeed</Name>
+                                                <Value>5</Value>
+					</Property>
 					<Property>
 						<Name>Temperature</Name>
 						<Min>50</Min>
@@ -98,8 +104,11 @@
 				<ThingName>Asset_Assembler</ThingName>
 				<Name>Assembler</Name>
 				<Description>Assembles 2xA, 2xB, 1xC into product</Description>
-				<DataFrequencyPerHour>600</DataFrequencyPerHour>
 				<PropertyDefinitions>
+					<Property>
+						<Name>SimulationSpeed</Name>
+                                                <Value>4</Value>
+					</Property>
 					<Property>
 						<Name>Temperature</Name>
 						<Min>20</Min>
@@ -150,8 +159,11 @@
 				<ThingName>Asset_QualityChecker</ThingName>
 				<Name>QualityChecker</Name>
 				<Description>Checks quality of assembled products, removes bad products</Description>
-				<DataFrequencyPerHour>600</DataFrequencyPerHour>
 				<PropertyDefinitions>
+					<Property>
+						<Name>SimulationSpeed</Name>
+                                                <Value>6</Value>
+					</Property>
 					<Property>
 						<Name>Temperature</Name>
 						<Min>20</Min>
@@ -203,8 +215,11 @@
 				<ThingName>Asset_Labeler</ThingName>
 				<Name>Labeler</Name>
 				<Description>Labels checked products</Description>
-				<DataFrequencyPerHour>600</DataFrequencyPerHour>
 				<PropertyDefinitions>
+					<Property>
+						<Name>SimulationSpeed</Name>
+                                                <Value>4</Value>
+					</Property>
 					<Property>
 						<Name>Temperature</Name>
 						<Min>20</Min>
@@ -240,8 +255,11 @@
 				<ThingName>Asset_BoxingMachine</ThingName>
 				<Name>BoxingMachine</Name>
 				<Description>Boxes labeled products</Description>
-				<DataFrequencyPerHour>600</DataFrequencyPerHour>
 				<PropertyDefinitions>
+					<Property>
+						<Name>SimulationSpeed</Name>
+                                                <Value>3</Value>
+					</Property>
 					<Property>
 						<Name>Temperature</Name>
 						<Min>20</Min>
@@ -277,8 +295,11 @@
 				<ThingName>Asset_Palletizer</ThingName>
 				<Name>Palletizer</Name>
 				<Description>Puts boxes on pallet</Description>
-				<DataFrequencyPerHour>600</DataFrequencyPerHour>
 				<PropertyDefinitions>
+					<Property>
+						<Name>SimulationSpeed</Name>
+                                                <Value>6</Value>
+					</Property>
 					<Property>
 						<Name>Temperature</Name>
 						<Min>20</Min>

@@ -9,7 +9,6 @@ public class Asset {
     private final String name;
     private final String thingName;
     private final String description;
-    private final int frequentie;
     
     /**
      * 
@@ -18,11 +17,10 @@ public class Asset {
      * @param description
      * @param frequentie 
      */
-    public Asset(String name, String thingName, String description, int frequentie){
+    public Asset(String name, String thingName, String description){
         this.name = name;
         this.thingName = thingName;
         this.description = description;
-        this.frequentie = frequentie;
         properties = new ArrayList<>();
     }
 
@@ -32,10 +30,6 @@ public class Asset {
 
     public String getName() {
         return name;
-    }
-
-    public int getFrequentie() {
-        return frequentie;
     }
 
     public String getThingName() {

@@ -37,6 +37,7 @@ public class ThreadManager {
                 List<AssetThing> assetThings = agent.getAssetsAsThings();
                 for (AssetThing thing : assetThings) {
                     if (!thing.getName().contains("Line")) {
+                        System.out.println("TESTLOG ---- " + thing.getName() + " Timing:" + Integer.parseInt(thing.getPropertyByName("SimulationSpeed").getValue()));
                         Thread agentThread = new Thread(new AgentThreadRunnable(thing, 5));
                         agentThread.start();
                     }

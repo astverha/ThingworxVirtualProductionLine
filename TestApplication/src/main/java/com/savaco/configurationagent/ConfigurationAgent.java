@@ -33,6 +33,7 @@ public final class ConfigurationAgent {
             
         } catch (Exception e) {
             LOG.error("TESTLOG ---- There was an error reading the file \'{}\'", file);
+            e.printStackTrace();
         }
     }
     

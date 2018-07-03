@@ -59,7 +59,7 @@ public class ReadXML {
                 Element assetDefinitions = (Element) productionLine.getChildren("AssetDefinitions").get(0);
                 List<Element> assets = assetDefinitions.getChildren("Asset");
                 for (Element asset : assets) {
-                    Asset machine = new Asset(asset.getChildText("Name"), asset.getChildText("ThingName"), asset.getChildText("Description"), Integer.parseInt(asset.getChildText("DataFrequencyPerHour")));
+                    Asset machine = new Asset(asset.getChildText("Name"), asset.getChildText("ThingName"), asset.getChildText("Description"));
 
                     //PROPERTIES OF AN ASSET
                     Element assetPropertyDefinitions = (Element) asset.getChildren("PropertyDefinitions").get(0);
