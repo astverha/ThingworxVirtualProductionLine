@@ -154,9 +154,13 @@
                   <Component id="Boxer" alignment="0" min="-2" pref="215" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="10" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="Palletizer" alignment="0" min="-2" pref="215" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="Palletizer" min="-2" pref="215" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="Optionespanel" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
                       <Component id="Assembler" min="-2" pref="215" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="QualityChecker" min="-2" pref="215" max="-2" attributes="0"/>
@@ -177,12 +181,13 @@
                   <Component id="ProducerB" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="Optionespanel" max="32767" attributes="0"/>
                   <Component id="Boxer" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
                   <Component id="Palletizer" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
-                  <Component id="Labeler" min="-2" pref="180" max="-2" attributes="0"/>
+                  <Component id="Labeler" alignment="0" pref="0" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="202" max="32767" attributes="0"/>
+              <EmptySpace pref="224" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -991,6 +996,48 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="PBStatusLabelValue">
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="Optionespanel">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Options">
+              <Font PropertyName="font" name="Gadugi" size="14" style="2"/>
+            </TitledBorder>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="RandomDataButton" pref="183" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="RandomDataButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JToggleButton" name="RandomDataButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Simulate random data"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RandomDataButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
