@@ -117,7 +117,8 @@ public class AssetThing extends VirtualThing {
                 this.setPropertyValue("ProductionRate", new IntegerPrimitive(0));
                 this.setPropertyValue("PercentageFailure", new NumberPrimitive(100));
                 this.setPropertyValue("status", new IntegerPrimitive(4));
-                LOG.info("TESTLOG ---- [" + this.getName() + "] \tBROKEN" + "\tFail:" + failure + "->" + 100);
+                //LOG.info("TESTLOG ---- [" + this.getName() + "] \tBROKEN" + "\tFail:" + failure + "->" + 100);
+                LOG.info("TESTLOG ---- [\" + this.getName() + \"] BROKEN");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
@@ -132,12 +133,16 @@ public class AssetThing extends VirtualThing {
                         tp.setValue("" + newTemp);
                     } else if (tp.getPropertyName().equals("PercentageFailure")) {
                         tp.setValue("" + newFailure);
+                    } else if (tp.getPropertyName().equals("status")) {
+                        tp.setValue("" + 2);
                     }
                 }
                 this.setPropertyValue("ProductionRate", new IntegerPrimitive(newProdRate));
                 this.setPropertyValue("Temperature", new NumberPrimitive(newTemp));
                 this.setPropertyValue("PercentageFailure", new NumberPrimitive(newFailure));
+                this.setPropertyValue("status", new IntegerPrimitive(2));
                 //LOG.info("TESTLOG ---- [" + this.getName() +  "] \tdeltaProdRate: " + deltaProdRate + "\ttemp:" + temp + "->" + newTemp + "\tFail:" + failure + "->" + newFailure);
+                LOG.info("TESTLOG ---- [\" + this.getName() + \"] RUNNING (changed prodRate)");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
@@ -153,7 +158,8 @@ public class AssetThing extends VirtualThing {
                         tp.setValue("" + newTemp);
                     }
                 }
-                LOG.info("TESTLOG ---- [" + this.getName() + "] \tdeltaProdRate: " + deltaProdRate + "\ttemp:" + temp + "->" + newTemp);
+                //LOG.info("TESTLOG ---- [" + this.getName() + "] \tdeltaProdRate: " + deltaProdRate + "\ttemp:" + temp + "->" + newTemp);
+                LOG.info("TESTLOG ---- [" + this.getName() + "] RUNNING");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
                 e.printStackTrace();
