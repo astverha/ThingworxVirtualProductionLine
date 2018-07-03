@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.savaco.ConfigurationAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Administrator
- */
 public class Asset {
     
     private final List<ThingProperty> properties;
@@ -20,6 +11,13 @@ public class Asset {
     private final String description;
     private final int frequentie;
     
+    /**
+     * 
+     * @param name
+     * @param thingName
+     * @param description
+     * @param frequentie 
+     */
     public Asset(String name, String thingName, String description, int frequentie){
         this.name = name;
         this.thingName = thingName;

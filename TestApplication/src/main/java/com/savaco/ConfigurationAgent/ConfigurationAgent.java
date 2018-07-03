@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.savaco.ConfigurationAgent;
 
 import com.savaco.testapplication.ProductLineClient;
@@ -12,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Administrator
- */
 public final class ConfigurationAgent {
     
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ConfigurationAgent.class);
@@ -25,6 +16,10 @@ public final class ConfigurationAgent {
     private List<Line> lines;
     private ProductLineClient client;
     
+    /**
+     * Initializes the ConfigurationClass. Supply the path to the XML file.
+     * @param file 
+     */
     public ConfigurationAgent(String file) {
         try {
             ClassLoader loader = getClass().getClassLoader();
@@ -41,6 +36,10 @@ public final class ConfigurationAgent {
         }
     }
     
+    /**
+     * Returns the configuration variables needed for a Thingworx connection.
+     * @return 
+     */
     public ClientConfigurator getConfiguration() {
         ClientConfigurator config = new ClientConfigurator();
         config.setUri(serverName);
@@ -49,6 +48,10 @@ public final class ConfigurationAgent {
         return config;
     }
     
+    /**
+     * Returns the assets constructed based on the XML as Virtual Things (AssetThing)
+     * @return 
+     */
     public List<AssetThing> getAssetsAsThings() {
         List<AssetThing> things = new ArrayList<>();
         try {

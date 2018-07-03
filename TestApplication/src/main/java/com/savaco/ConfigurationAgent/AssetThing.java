@@ -70,7 +70,6 @@ public class AssetThing extends VirtualThing {
             aspects.put(Aspects.ASPECT_ISREADONLY, new BooleanPrimitive(true));
             aspects.put("pushType", new StringPrimitive(DataChangeType.ALWAYS.name()));
             aspects.put(Aspects.ASPECT_ISLOGGED, new BooleanPrimitive(true));
-            //aspects.put(Aspects.ASPECT_DEFAULTVALUE, new BooleanPrimitive(true));
 
             pd.setAspects(aspects);
             super.defineProperty(pd);
@@ -83,10 +82,9 @@ public class AssetThing extends VirtualThing {
         super.initialize();
     }
 
-    /*
-    This method simulates new data for this thing based on the production rate set in the UI
-    Even when there are no changes in production rate, temperature must vary.
-    When there are changes, temperature, as well as failure rate has to change.
+    /**
+     * Simulates parameters based on the production rate of a machine.
+     * @param prodRateValue Production Rate at which to simulate the machine
      */
     public void simulateNewData(int prodRateValue) {
         prodRate = newProdRate;
@@ -101,7 +99,6 @@ public class AssetThing extends VirtualThing {
             sign = -1;
         }
         
-        //Production rate is down to 0 (no longer running) --> broken or maintenance
         if (newProdRate == 0) {
             try {
                 this.setProperty("Temperature", "" + temp);
@@ -111,7 +108,7 @@ public class AssetThing extends VirtualThing {
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
-        } //change production rate
+        }
         else if (temp != -1 && failure != -1 && deltaProdRate != 0) {
             double newTemp = temp + (Math.abs(deltaProdRate * 0.05) * sign);
             double newFailure = failure + (Math.abs(deltaProdRate * 0.025) * sign);
@@ -125,7 +122,7 @@ public class AssetThing extends VirtualThing {
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
-        } //no change in production rate --> just keep running (little temp variation)
+        }
         else {
             Random random = new Random();
             double newTemp = temp + (random.nextDouble() / 10 * temp * (random.nextBoolean() ? 1 : -1));
@@ -139,11 +136,18 @@ public class AssetThing extends VirtualThing {
         }
     }
 
+    /**
+     * breaks a machine (UNPLANNED_DOWNTIME and ProductionRate to zero)
+     */
     public void breakThing() {
         this.simulateNewData(0);
         this.down = true;
     }
 
+    /**
+     * Restarts a machine with a production rate of initialProdRate
+     * @param initialProdRate 
+     */
     public void restartThing(int initialProdRate) {
         try {
             this.setProperty("ProductionRate", ""+initialProdRate);
@@ -157,10 +161,19 @@ public class AssetThing extends VirtualThing {
         this.down = false;
     }
 
+    /**
+     * Grants access to device properties
+     * @return 
+     */
     public List<ThingProperty> getDevice_Properties() {
         return this.device_Properties;
     }
 
+    /**
+     * Gets a ThingProperty by the property name
+     * @param name
+     * @return 
+     */
     public ThingProperty getPropertyByName(String name) {
         for (ThingProperty pt : this.device_Properties) {
             if (pt.getPropertyName().equalsIgnoreCase(name)) {
@@ -170,14 +183,27 @@ public class AssetThing extends VirtualThing {
         return null;
     }   
 
+    /**
+     * Checks whether a machine is down. Returns true if the machine is down (production rate = 0)
+     * @return 
+     */
     public boolean isDown() {
         return down;
     }
 
+    /**
+     * Sets the down boolean. 
+     * @param isDown 
+     */
     public void setDown(boolean isDown) {
         this.down = isDown;
     }
 
+    /**
+     * Sets the value of a property locally as well as remotely.
+     * @param propName
+     * @param propVal 
+     */
     public void setProperty(String propName, String propVal) {
         try {
             for (ThingProperty tp : this.getDevice_Properties()) {
@@ -197,9 +223,13 @@ public class AssetThing extends VirtualThing {
             LOG.warn("TESTLOG ---- Exception updating property " + propName + "(" + propVal + ") of thing " + this.getName());
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * Checks whether or not a string can be parsed as an integer.
+     * @param str
+     * @return 
+     */
     private static boolean isInteger(String str) {
         if (str == null) {
             return false;
@@ -224,6 +254,11 @@ public class AssetThing extends VirtualThing {
         return true;
     }
 
+    /**
+     * Checks whether or not a string can be parsed as a double.
+     * @param value
+     * @return 
+     */
     private boolean isDouble(String value) {
         try {
             Double.parseDouble(value);

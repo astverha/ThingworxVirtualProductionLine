@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.savaco.testapplication;
 
 import com.savaco.ConfigurationAgent.AssetThing;
@@ -12,10 +7,6 @@ import java.util.List;
 import java.util.Random;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Administrator
- */
 public class ThreadManager {
 
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
@@ -25,6 +16,10 @@ public class ThreadManager {
     private final ProductLineClient client;
     private boolean pauseThread;
 
+    /**
+     * 
+     * @param agent 
+     */
     public ThreadManager(ConfigurationAgent agent) {
         this.agent = agent;
         this.client = agent.getClient();
@@ -32,6 +27,9 @@ public class ThreadManager {
         pauseThread = false;
     }
 
+    /**
+     * Starts threads.
+     */
     public void start() {
         try {
             if (client.waitForConnection(30000)) {
@@ -50,6 +48,9 @@ public class ThreadManager {
         }
     }
 
+    /**
+     * Stops threads.
+     */
     public void stop() {
         try {
             for (Thread thread : this.threads) {
@@ -61,14 +62,20 @@ public class ThreadManager {
         }
     }
 
+    /**
+     * Pauses thread execution.
+     */
     public void pause() {
         pauseThread = true;
     }
 
+    /**
+     * Resumes thread execution.
+     */
     public void resume() {
         pauseThread = false;
     }
-
+    
     private class AgentThreadRunnable implements Runnable {
 
         Random random = new Random();
@@ -76,11 +83,19 @@ public class ThreadManager {
         private final AssetThing thing;
         private final int sleepTime;
 
+        /**
+         * 
+         * @param thing
+         * @param sleepTime 
+         */
         public AgentThreadRunnable(AssetThing thing, int sleepTime) {
             this.thing = thing;
             this.sleepTime = sleepTime;
         }
 
+        /**
+         * Thread execution method. Contains a loop simulating the data.
+         */
         @Override
         public void run() {
             while (!client.isShutdown()) {

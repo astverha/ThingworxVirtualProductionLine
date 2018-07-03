@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.savaco.testapplication;
 
 import com.savaco.ConfigurationAgent.ThingProperty;
@@ -16,21 +11,25 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Administrator
- */
 public class ProductLineClient extends ConnectedThingClient {
 
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
 
     private final ConfigurationAgent agent;
 
+    /**
+     * @param agent
+     * @param config
+     * @throws Exception 
+     */
     public ProductLineClient(ConfigurationAgent agent, ClientConfigurator config) throws Exception {
         super(config);
         this.agent = agent;
     }
 
+    /**
+     * Initializes the Virtual Things based on the Assets in the ConfigurationAgent.
+     */
     public void startInitialization() {
         try {
             List<AssetThing> things = this.agent.getAssetsAsThings();
@@ -64,12 +63,15 @@ public class ProductLineClient extends ConnectedThingClient {
         LOG.warn("TESTLOG ---- ProductLineClient has finished initializing.");
     }
 
+    /**
+     * Starts simulation of the Virtual Production Line.
+     */
     public void startSimulation() {
         try {
             ThreadManager tManager = new ThreadManager(agent);
             tManager.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.warn("TESTLOG ---- Exception starting the simulation.");
         }
     }
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.savaco.ConfigurationAgent;
 
 import java.io.File;
@@ -15,10 +10,6 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Administrator
- */
 public class ReadXML {
 
     private static String serverName;
@@ -26,6 +17,11 @@ public class ReadXML {
 
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ReadXML.class);
 
+    /**
+     * 
+     * @param file
+     * @return 
+     */
     public static List<Line> read(File file) {
 
         SAXBuilder builder = new SAXBuilder();
