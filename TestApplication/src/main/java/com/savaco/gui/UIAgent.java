@@ -26,6 +26,20 @@ public class UIAgent {
         prodRates = new ArrayList<>();
         this.agent = agent;
     }
+    
+    public void breakMachine(String name){
+        AssetThing thing = agent.getAssetThingByName(name);
+        if(thing != null){
+            thing.breakThing();
+        }
+    }
+    
+    public void restartMachine(String name){
+        AssetThing thing = agent.getAssetThingByName(name);
+        if(thing != null){
+            thing.restartThing(500);
+        }
+    }
 
     public void getAllStatus() {
         status.clear();
@@ -47,6 +61,10 @@ public class UIAgent {
                 prodRates.add(Integer.parseInt(pt.getValue()));
             }
         }
+    }
+    
+    public AssetThing getAssetThing(String name){
+        return agent.getAssetThingByName(name);
     }
 
     public List<String> getStatus() {

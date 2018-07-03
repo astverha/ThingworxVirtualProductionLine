@@ -49,7 +49,6 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
     
     public void updateProdRates(){
         agent.getAllProdRates();
-        System.out.println("TESTLOG ---- ProdRate machine 1: " + agent.getProdRates().get(1));
         this.PBProdRate.setValue(agent.getProdRates().get(1));
         this.PCProdRate.setValue(agent.getProdRates().get(2));
         this.AProdRate.setValue(agent.getProdRates().get(3));
@@ -74,42 +73,49 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         PBProdRate = new javax.swing.JSpinner();
         PBDetails = new javax.swing.JButton();
+        PBBreak = new javax.swing.JButton();
         ProducerBPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         PCStatus = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         PCProdRate = new javax.swing.JSpinner();
         PCDetails = new javax.swing.JButton();
+        PCBreak = new javax.swing.JButton();
         ProducerBPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         AStatus = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         AProdRate = new javax.swing.JSpinner();
         ADetails = new javax.swing.JButton();
+        ABreak = new javax.swing.JButton();
         ProducerBPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         QCStatus = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         QCProdRate = new javax.swing.JSpinner();
         QCDetails = new javax.swing.JButton();
+        QCBreak = new javax.swing.JButton();
         ProducerBPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         LStatus = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         LProdRate = new javax.swing.JSpinner();
         LDetails = new javax.swing.JButton();
+        LBreak = new javax.swing.JButton();
         ProducerBPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         BStatus = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         BProdRate = new javax.swing.JSpinner();
         BDetails = new javax.swing.JButton();
+        BBreak = new javax.swing.JButton();
         ProducerBPanel6 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         PStatus = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         PProdRate = new javax.swing.JSpinner();
         PDetails = new javax.swing.JButton();
+        PBreak = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("VirtualProductLie"); // NOI18N
@@ -127,6 +133,13 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
 
         PBDetails.setText("Details...");
 
+        PBBreak.setText("Break");
+        PBBreak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PBBreakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ProducerBPanelLayout = new javax.swing.GroupLayout(ProducerBPanel);
         ProducerBPanel.setLayout(ProducerBPanelLayout);
         ProducerBPanelLayout.setHorizontalGroup(
@@ -139,12 +152,14 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(PBStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ProducerBPanelLayout.createSequentialGroup()
-                        .addGroup(ProducerBPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(PBDetails)
-                            .addGroup(ProducerBPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(PBProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(ProducerBPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ProducerBPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(PBDetails)
+                                .addGroup(ProducerBPanelLayout.createSequentialGroup()
+                                    .addComponent(jLabel8)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(PBProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(PBBreak, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -161,7 +176,9 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                     .addComponent(PBProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(PBDetails)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(PBBreak)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         ProducerBPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Producer C"));
@@ -176,6 +193,13 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
 
         PCDetails.setText("Details...");
 
+        PCBreak.setText("Break");
+        PCBreak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PCBreakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ProducerBPanel1Layout = new javax.swing.GroupLayout(ProducerBPanel1);
         ProducerBPanel1.setLayout(ProducerBPanel1Layout);
         ProducerBPanel1Layout.setHorizontalGroup(
@@ -188,12 +212,14 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(PCStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ProducerBPanel1Layout.createSequentialGroup()
-                        .addGroup(ProducerBPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(PCDetails)
-                            .addGroup(ProducerBPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(PCProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(ProducerBPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ProducerBPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(PCDetails)
+                                .addGroup(ProducerBPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel9)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(PCProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(PCBreak, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 20, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -210,7 +236,9 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                     .addComponent(PCProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(PCDetails)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(PCBreak)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         ProducerBPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Assembler"));
@@ -225,6 +253,13 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
 
         ADetails.setText("Details...");
 
+        ABreak.setText("Break");
+        ABreak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ABreakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ProducerBPanel2Layout = new javax.swing.GroupLayout(ProducerBPanel2);
         ProducerBPanel2.setLayout(ProducerBPanel2Layout);
         ProducerBPanel2Layout.setHorizontalGroup(
@@ -238,12 +273,14 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                         .addComponent(AStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(20, 20, 20))
                     .addGroup(ProducerBPanel2Layout.createSequentialGroup()
-                        .addGroup(ProducerBPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ADetails)
-                            .addGroup(ProducerBPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(AProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(ProducerBPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ProducerBPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(ADetails)
+                                .addGroup(ProducerBPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel10)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(AProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(ABreak, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(30, Short.MAX_VALUE))))
         );
         ProducerBPanel2Layout.setVerticalGroup(
@@ -259,7 +296,9 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                     .addComponent(AProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(ADetails)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(ABreak)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         ProducerBPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Quality Checker"));
@@ -274,6 +313,13 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
 
         QCDetails.setText("Details...");
 
+        QCBreak.setText("Break");
+        QCBreak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                QCBreakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ProducerBPanel3Layout = new javax.swing.GroupLayout(ProducerBPanel3);
         ProducerBPanel3.setLayout(ProducerBPanel3Layout);
         ProducerBPanel3Layout.setHorizontalGroup(
@@ -286,12 +332,14 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(QCStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ProducerBPanel3Layout.createSequentialGroup()
-                        .addGroup(ProducerBPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(QCDetails)
-                            .addGroup(ProducerBPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(QCProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(ProducerBPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ProducerBPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(QCDetails)
+                                .addGroup(ProducerBPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel11)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(QCProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(QCBreak, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 24, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -308,7 +356,9 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                     .addComponent(QCProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(QCDetails)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(QCBreak)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         ProducerBPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Labeler"));
@@ -323,6 +373,13 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
 
         LDetails.setText("Details...");
 
+        LBreak.setText("Break");
+        LBreak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LBreakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ProducerBPanel4Layout = new javax.swing.GroupLayout(ProducerBPanel4);
         ProducerBPanel4.setLayout(ProducerBPanel4Layout);
         ProducerBPanel4Layout.setHorizontalGroup(
@@ -335,12 +392,14 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(LStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ProducerBPanel4Layout.createSequentialGroup()
-                        .addGroup(ProducerBPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(LDetails)
-                            .addGroup(ProducerBPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(LProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(ProducerBPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ProducerBPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(LDetails)
+                                .addGroup(ProducerBPanel4Layout.createSequentialGroup()
+                                    .addComponent(jLabel12)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(LProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(LBreak, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -357,7 +416,9 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                     .addComponent(LProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(LDetails)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(LBreak)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         ProducerBPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Boxing Machine"));
@@ -372,6 +433,13 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
 
         BDetails.setText("Details...");
 
+        BBreak.setText("Break");
+        BBreak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BBreakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ProducerBPanel5Layout = new javax.swing.GroupLayout(ProducerBPanel5);
         ProducerBPanel5.setLayout(ProducerBPanel5Layout);
         ProducerBPanel5Layout.setHorizontalGroup(
@@ -384,12 +452,14 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ProducerBPanel5Layout.createSequentialGroup()
-                        .addGroup(ProducerBPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BDetails)
-                            .addGroup(ProducerBPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(BProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(ProducerBPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ProducerBPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(BDetails)
+                                .addGroup(ProducerBPanel5Layout.createSequentialGroup()
+                                    .addComponent(jLabel13)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(BProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(BBreak, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -406,7 +476,9 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                     .addComponent(BProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(BDetails)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(BBreak)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         ProducerBPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Palletizer"));
@@ -421,6 +493,13 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
 
         PDetails.setText("Details...");
 
+        PBreak.setText("Break");
+        PBreak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PBreakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ProducerBPanel6Layout = new javax.swing.GroupLayout(ProducerBPanel6);
         ProducerBPanel6.setLayout(ProducerBPanel6Layout);
         ProducerBPanel6Layout.setHorizontalGroup(
@@ -433,12 +512,14 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(PStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ProducerBPanel6Layout.createSequentialGroup()
-                        .addGroup(ProducerBPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(PDetails)
-                            .addGroup(ProducerBPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel14)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(PProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(ProducerBPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ProducerBPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(PDetails)
+                                .addGroup(ProducerBPanel6Layout.createSequentialGroup()
+                                    .addComponent(jLabel14)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(PProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(PBreak, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 24, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -455,7 +536,9 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                     .addComponent(PProdRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(PDetails)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(PBreak)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -500,6 +583,83 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void PBBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PBBreakActionPerformed
+        if(this.PBBreak.getText().equalsIgnoreCase("Break")){
+            agent.breakMachine("Asset_ProducerB");
+            this.PBBreak.setText("Restart");
+        } else {
+            agent.restartMachine("Asset_ProducerB");
+            this.PBBreak.setText("Break");
+        }
+        updateStatus();
+    }//GEN-LAST:event_PBBreakActionPerformed
+
+    private void PCBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PCBreakActionPerformed
+        if(this.PCBreak.getText().equalsIgnoreCase("Break")){
+            agent.breakMachine("Asset_ProducerC");
+            this.PCBreak.setText("Restart");
+        } else {
+            agent.restartMachine("Asset_ProducerC");
+            this.PCBreak.setText("Break");
+        }
+        updateStatus();
+    }//GEN-LAST:event_PCBreakActionPerformed
+
+    private void ABreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ABreakActionPerformed
+        if(this.ABreak.getText().equalsIgnoreCase("Break")){
+            agent.breakMachine("Asset_Assembler");
+            this.ABreak.setText("Restart");
+        } else {
+            agent.restartMachine("Asset_Assembler");
+            this.ABreak.setText("Break");
+        }
+        updateStatus();
+    }//GEN-LAST:event_ABreakActionPerformed
+
+    private void QCBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QCBreakActionPerformed
+        if(this.QCBreak.getText().equalsIgnoreCase("Break")){
+            agent.breakMachine("Asset_QualityChecker");
+            this.QCBreak.setText("Restart");
+        } else {
+            agent.restartMachine("Asset_QualityChecker");
+            this.QCBreak.setText("Break");
+        }
+        updateStatus();
+    }//GEN-LAST:event_QCBreakActionPerformed
+
+    private void LBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LBreakActionPerformed
+        if(this.LBreak.getText().equalsIgnoreCase("Break")){
+            agent.breakMachine("Asset_Labeler");
+            this.LBreak.setText("Restart");
+        } else {
+            agent.restartMachine("Asset_Labeler");
+            this.LBreak.setText("Break");
+        }
+        updateStatus();
+    }//GEN-LAST:event_LBreakActionPerformed
+
+    private void BBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BBreakActionPerformed
+        if(this.BBreak.getText().equalsIgnoreCase("Break")){
+            agent.breakMachine("Asset_BoxingMachine");
+            this.BBreak.setText("Restart");
+        } else {
+            agent.restartMachine("Asset_BoxingMachine");
+            this.BBreak.setText("Break");
+        }
+        updateStatus();
+    }//GEN-LAST:event_BBreakActionPerformed
+
+    private void PBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PBreakActionPerformed
+        if(this.PBreak.getText().equalsIgnoreCase("Break")){
+            agent.breakMachine("Asset_Palletizer");
+            this.PBreak.setText("Restart");
+        } else {
+            agent.restartMachine("Asset_Palletizer");
+            this.PBreak.setText("Break");
+        }
+        updateStatus();
+    }//GEN-LAST:event_PBreakActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -536,18 +696,24 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ABreak;
     private javax.swing.JButton ADetails;
     private javax.swing.JSpinner AProdRate;
     private javax.swing.JLabel AStatus;
+    private javax.swing.JButton BBreak;
     private javax.swing.JButton BDetails;
     private javax.swing.JSpinner BProdRate;
     private javax.swing.JLabel BStatus;
+    private javax.swing.JButton LBreak;
     private javax.swing.JButton LDetails;
     private javax.swing.JSpinner LProdRate;
     private javax.swing.JLabel LStatus;
+    private javax.swing.JButton PBBreak;
     private javax.swing.JButton PBDetails;
     private javax.swing.JSpinner PBProdRate;
     private javax.swing.JLabel PBStatus;
+    private javax.swing.JButton PBreak;
+    private javax.swing.JButton PCBreak;
     private javax.swing.JButton PCDetails;
     private javax.swing.JSpinner PCProdRate;
     private javax.swing.JLabel PCStatus;
@@ -561,6 +727,7 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
     private javax.swing.JPanel ProducerBPanel4;
     private javax.swing.JPanel ProducerBPanel5;
     private javax.swing.JPanel ProducerBPanel6;
+    private javax.swing.JButton QCBreak;
     private javax.swing.JButton QCDetails;
     private javax.swing.JSpinner QCProdRate;
     private javax.swing.JLabel QCStatus;
