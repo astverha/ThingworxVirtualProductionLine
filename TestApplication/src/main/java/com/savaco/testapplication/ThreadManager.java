@@ -108,7 +108,17 @@ public class ThreadManager {
                                     }
                                 }
                                 //this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
-                                this.thing.simulateNewData(currProdRate);
+                                int rand = random.nextInt(10);
+                                if(rand == 1){
+                                    this.thing.setIsDown(true);
+                                    this.thing.breakThing();
+                                } else {
+                                    if(this.thing.isIsDown()){
+                                        this.thing.restartThing(500);
+                                    } else {
+                                        this.thing.simulateNewData(currProdRate);
+                                    }
+                                }
                                 //-------------------------------
                                 this.thing.updateSubscribedProperties(10000);
                                 //LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
