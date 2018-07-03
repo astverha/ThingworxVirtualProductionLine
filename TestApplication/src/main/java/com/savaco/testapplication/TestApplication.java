@@ -17,7 +17,7 @@ public class TestApplication {
     public static void main(String[] args) {
         ConfigurationAgent config = new ConfigurationAgent("configuration.xml");
         ProductLineClient client = config.getClient();
-        try {
+        /*try {
             client.start();
             client.startInitialization();
             TimeUnit.SECONDS.sleep(5);
@@ -26,6 +26,6 @@ public class TestApplication {
             client.shutdown();
         } catch(Exception e){
             e.printStackTrace();
-        }
+        }*/
     }
 }

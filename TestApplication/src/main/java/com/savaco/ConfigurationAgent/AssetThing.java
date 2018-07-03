@@ -19,6 +19,8 @@ import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
 
 public class AssetThing extends VirtualThing {
+   
+    public enum State { NOT_CONFIGURED, WARNING, RUNNING, PLANNED_DOWNTIME, UNPLANNED_DOWNTIME, UNAVAILABLE};
 
     private static final Logger LOG = LoggerFactory.getLogger(AssetThing.class);
 
@@ -144,5 +146,33 @@ public class AssetThing extends VirtualThing {
 
     public List<ThingProperty> getDevice_Properties() {
         return device_Properties;
+    }
+    
+    public ThingProperty getPropertyByName(String name){
+        for(ThingProperty pt: device_Properties){
+            if(pt.getPropertyName().equalsIgnoreCase(name)){
+                return pt;
+            }
+        }
+        return null;
+    }
+    
+    public State convertToState(int numb){
+        State status = null;
+        switch(numb){
+            case 0:  status = State.NOT_CONFIGURED;
+                break;
+            case 1: status = State.WARNING;
+                break;
+            case 2: status = State.RUNNING;
+                break;
+            case 3: status = State.PLANNED_DOWNTIME;
+                break;
+            case 4: status = State.UNPLANNED_DOWNTIME;
+                break;
+            case 5: status = State.UNAVAILABLE;
+                break;
+        }
+        return status;
     }
 }

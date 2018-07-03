@@ -40,6 +40,18 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
             }
         };
         task.run();
+        this.updateStatus();
+        
+    }
+    
+    private void updateStatus(){
+        this.PBStatusLabelValue.setText(this.agent.getAssetsAsThings().get(1).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
+        this.PCStatusLabelValue.setText(this.agent.getAssetsAsThings().get(2).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());        
+        this.AStatusLabelValue.setText(this.agent.getAssetsAsThings().get(3).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
+        this.QCStatusLabelValue.setText(this.agent.getAssetsAsThings().get(4).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
+        this.LStatusLabelValue.setText(this.agent.getAssetsAsThings().get(5).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
+        this.BStatusLabelValue.setText(this.agent.getAssetsAsThings().get(6).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
+        this.PStatusLabelValue.setText(this.agent.getAssetsAsThings().get(7).convertToState(Integer.parseInt(this.agent.getAssetsAsThings().get(1).getPropertyByName("status").getValue())).toString());
     }
 
     /**
@@ -67,7 +79,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         PCDetailsButton = new javax.swing.JButton();
         PCBreakButton = new javax.swing.JButton();
         PCMaintenanceButton = new javax.swing.JButton();
-        PCStatusLabelValue1 = new javax.swing.JLabel();
+        PCStatusLabelValue = new javax.swing.JLabel();
         QualityChecker = new javax.swing.JPanel();
         QCStatusLabel = new javax.swing.JLabel();
         PBLabelStatusValue2 = new javax.swing.JLabel();
@@ -76,7 +88,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         QCDetailsButton = new javax.swing.JButton();
         QCBreakButton = new javax.swing.JButton();
         QCMaintenanceButton = new javax.swing.JButton();
-        QCStatusLabelValue1 = new javax.swing.JLabel();
+        QCStatusLabelValue = new javax.swing.JLabel();
         Assembler = new javax.swing.JPanel();
         AStatusLabel = new javax.swing.JLabel();
         PBLabelStatusValue4 = new javax.swing.JLabel();
@@ -94,7 +106,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         LDetailsButton = new javax.swing.JButton();
         LBreakButton = new javax.swing.JButton();
         LMaintenanceButton = new javax.swing.JButton();
-        QCStatusLabelValue = new javax.swing.JLabel();
+        LStatusLabelValue = new javax.swing.JLabel();
         Palletizer = new javax.swing.JPanel();
         PStatusLabel = new javax.swing.JLabel();
         PBLabelStatusValue6 = new javax.swing.JLabel();
@@ -103,7 +115,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         PDetailsButton = new javax.swing.JButton();
         PBreakButton = new javax.swing.JButton();
         PMaintenanceButton = new javax.swing.JButton();
-        QCStatusLabelValue3 = new javax.swing.JLabel();
+        PStatusLabelValue = new javax.swing.JLabel();
         Boxer = new javax.swing.JPanel();
         BStatusLabel = new javax.swing.JLabel();
         PBLabelStatusValue7 = new javax.swing.JLabel();
@@ -112,7 +124,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         BDetailsButton = new javax.swing.JButton();
         BBreakButton = new javax.swing.JButton();
         BMaintenanceButton = new javax.swing.JButton();
-        QCStatusLabelValue2 = new javax.swing.JLabel();
+        BStatusLabelValue = new javax.swing.JLabel();
         ProducerB = new javax.swing.JPanel();
         PBStatusLabel1 = new javax.swing.JLabel();
         PBLabelStatusValue8 = new javax.swing.JLabel();
@@ -221,7 +233,10 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(PCDetailsButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(PCStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(ProducerCLayout.createSequentialGroup()
+                        .addComponent(PCStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(PCStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ProducerCLayout.createSequentialGroup()
                         .addComponent(PCPRLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -233,37 +248,30 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PBLabelStatusValue1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(ProducerCLayout.createSequentialGroup()
-                    .addGap(93, 93, 93)
-                    .addComponent(PCStatusLabelValue1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(110, 110, 110)))
         );
         ProducerCLayout.setVerticalGroup(
             ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ProducerCLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
-                .addComponent(PBLabelStatusValue1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(111, 111, 111))
-            .addGroup(ProducerCLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(PCStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PCPRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PCPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addComponent(PCDetailsButton)
-                .addGap(18, 18, 18)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProducerCLayout.createSequentialGroup()
+                .addContainerGap(13, Short.MAX_VALUE)
                 .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PCBreakButton)
-                    .addComponent(PCMaintenanceButton))
-                .addContainerGap())
-            .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(ProducerCLayout.createSequentialGroup()
-                    .addGap(21, 21, 21)
-                    .addComponent(PCStatusLabelValue1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(107, 107, 107)))
+                    .addGroup(ProducerCLayout.createSequentialGroup()
+                        .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PCStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(PCStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(PCPRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PCPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
+                        .addComponent(PCDetailsButton)
+                        .addGap(18, 18, 18)
+                        .addGroup(ProducerCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PCBreakButton)
+                            .addComponent(PCMaintenanceButton))
+                        .addContainerGap())
+                    .addGroup(ProducerCLayout.createSequentialGroup()
+                        .addComponent(PBLabelStatusValue1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(111, 111, 111))))
         );
 
         QualityChecker.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quality Checker", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
@@ -293,7 +301,10 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(QCDetailsButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(QCStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(QualityCheckerLayout.createSequentialGroup()
+                        .addComponent(QCStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(QCStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(QualityCheckerLayout.createSequentialGroup()
                         .addComponent(QCPRLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -305,37 +316,32 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PBLabelStatusValue2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(QualityCheckerLayout.createSequentialGroup()
-                    .addGap(93, 93, 93)
-                    .addComponent(QCStatusLabelValue1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(110, 110, 110)))
         );
         QualityCheckerLayout.setVerticalGroup(
             QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(QualityCheckerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(PBLabelStatusValue2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(111, 111, 111))
-            .addGroup(QualityCheckerLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(QCStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(QCPRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(QCPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addComponent(QCDetailsButton)
-                .addGap(18, 18, 18)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, QualityCheckerLayout.createSequentialGroup()
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(QCBreakButton)
-                    .addComponent(QCMaintenanceButton))
-                .addContainerGap())
-            .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(QualityCheckerLayout.createSequentialGroup()
-                    .addGap(21, 21, 21)
-                    .addComponent(QCStatusLabelValue1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(107, Short.MAX_VALUE)))
+                    .addGroup(QualityCheckerLayout.createSequentialGroup()
+                        .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(QCStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(QualityCheckerLayout.createSequentialGroup()
+                                .addComponent(QCStatusLabelValue, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(QCPRLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(QCPRValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
+                        .addComponent(QCDetailsButton)
+                        .addGap(18, 18, 18)
+                        .addGroup(QualityCheckerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(QCBreakButton)
+                            .addComponent(QCMaintenanceButton))
+                        .addContainerGap())
+                    .addGroup(QualityCheckerLayout.createSequentialGroup()
+                        .addComponent(PBLabelStatusValue2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(111, 111, 111))))
         );
 
         Assembler.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Assembler", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Gadugi", 0, 14))); // NOI18N
@@ -435,7 +441,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
                     .addGroup(LabelerLayout.createSequentialGroup()
                         .addComponent(LStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(QCStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(LStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(LabelerLayout.createSequentialGroup()
                         .addComponent(LPRLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -453,7 +459,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
             .addGroup(LabelerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(LabelerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(QCStatusLabelValue, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LStatusLabelValue, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(LStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(LabelerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(LabelerLayout.createSequentialGroup()
@@ -504,7 +510,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
                     .addGroup(PalletizerLayout.createSequentialGroup()
                         .addComponent(PStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(QCStatusLabelValue3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(PStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(PalletizerLayout.createSequentialGroup()
                         .addComponent(PPRLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -522,7 +528,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PalletizerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PalletizerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(QCStatusLabelValue3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(PalletizerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -570,7 +576,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
                     .addGroup(BoxerLayout.createSequentialGroup()
                         .addComponent(BStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
-                        .addComponent(QCStatusLabelValue2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(BStatusLabelValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(BoxerLayout.createSequentialGroup()
                         .addComponent(BPRLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -587,7 +593,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BoxerLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(BoxerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(QCStatusLabelValue2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BStatusLabelValue, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BStatusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(BoxerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -621,6 +627,11 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
         });
 
         PBBreakButton.setLabel("Break");
+        PBBreakButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PBBreakButtonActionPerformed(evt);
+            }
+        });
 
         PBMaintenanceButton.setLabel("Maintenance");
 
@@ -705,11 +716,10 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
                     .addComponent(ProducerB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(Boxer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Palletizer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Boxer, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Palletizer, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Labeler, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addContainerGap(202, Short.MAX_VALUE))
         );
 
         pack();
@@ -746,6 +756,10 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
     private void PBDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PBDetailsButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PBDetailsButtonActionPerformed
+
+    private void PBBreakButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PBBreakButtonActionPerformed
+        AssetThing at = this.agent.getAssetsAsThings().get(1);
+    }//GEN-LAST:event_PBBreakButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -797,6 +811,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
     private javax.swing.JLabel BPRLabel;
     private javax.swing.JSpinner BPRValue;
     private javax.swing.JLabel BStatusLabel;
+    private javax.swing.JLabel BStatusLabelValue;
     private javax.swing.JPanel Boxer;
     private javax.swing.JButton LBreakButton;
     private javax.swing.JButton LDetailsButton;
@@ -804,6 +819,7 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
     private javax.swing.JLabel LPRLabel;
     private javax.swing.JSpinner LPRValue;
     private javax.swing.JLabel LStatusLabel;
+    private javax.swing.JLabel LStatusLabelValue;
     private javax.swing.JPanel Labeler;
     private javax.swing.JButton PBBreakButton;
     private javax.swing.JButton PBBreakButton3;
@@ -833,12 +849,13 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
     private javax.swing.JLabel PCPRLabel;
     private javax.swing.JSpinner PCPRValue;
     private javax.swing.JLabel PCStatusLabel;
-    private javax.swing.JLabel PCStatusLabelValue1;
+    private javax.swing.JLabel PCStatusLabelValue;
     private javax.swing.JButton PDetailsButton;
     private javax.swing.JButton PMaintenanceButton;
     private javax.swing.JLabel PPRLabel;
     private javax.swing.JSpinner PPRValue;
     private javax.swing.JLabel PStatusLabel;
+    private javax.swing.JLabel PStatusLabelValue;
     private javax.swing.JPanel Palletizer;
     private javax.swing.JPanel ProducerB;
     private javax.swing.JPanel ProducerBPanel3;
@@ -850,9 +867,6 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
     private javax.swing.JSpinner QCPRValue;
     private javax.swing.JLabel QCStatusLabel;
     private javax.swing.JLabel QCStatusLabelValue;
-    private javax.swing.JLabel QCStatusLabelValue1;
-    private javax.swing.JLabel QCStatusLabelValue2;
-    private javax.swing.JLabel QCStatusLabelValue3;
     private javax.swing.JPanel QualityChecker;
     // End of variables declaration//GEN-END:variables
 }
