@@ -207,7 +207,7 @@ public class AssetThing extends VirtualThing {
     public void setProperty(String propName, String propVal) {
         try {
             for (ThingProperty tp : this.getDevice_Properties()) {
-                if (tp.getPropertyName().equals(name)) {
+                if (tp.getPropertyName().equals(propName)) {
                     tp.setValue("" + propVal);
                 }
             }
