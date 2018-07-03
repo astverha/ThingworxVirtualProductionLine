@@ -36,8 +36,13 @@ public class VirtualProductLineGUI extends javax.swing.JFrame {
     }
 
     private void initializeComponentsFromConfigurationFile() {
-        client.startInitialization();
-        this.updateStatus();
+        try {
+            client.start();
+            client.startInitialization();
+            this.updateStatus();
+        } catch(Exception e){
+            System.out.println("An exception occurred while initializing the components");
+        }
 
     }
 
