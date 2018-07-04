@@ -6,8 +6,10 @@ import org.slf4j.LoggerFactory;
 import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
+import com.thingworx.relationships.RelationshipTypes.ThingworxEntityTypes;
 import com.thingworx.types.BaseTypes;
 import com.thingworx.types.collections.AspectCollection;
+import com.thingworx.types.collections.ValueCollection;
 import com.thingworx.types.constants.Aspects;
 import com.thingworx.types.constants.DataChangeType;
 import com.thingworx.types.primitives.BooleanPrimitive;
@@ -82,8 +84,23 @@ public class AssetThing extends VirtualThing {
         super.initialize();
     }
 
+    private void produce() throws Exception {
+        //if not a line and not down, produce
+        if (!this.getName().contains("Line") && !this.isDown()) {
+            int amountToProduce = newProdRate / 60 * Integer.parseInt(this.getPropertyByName("SimulationSpeed").getValue());
+            if (amountToProduce < 1) {
+                amountToProduce = 1;
+            }
+            for (int i = 0; i < amountToProduce; i++) {
+                ValueCollection params = new ValueCollection();
+                client.invokeService(ThingworxEntityTypes.Things, this.getName(), "Produce", params, 1000);
+            }
+        }
+    }
+
     /**
      * Simulates parameters based on the production rate of a machine.
+     *
      * @param prodRateValue Production Rate at which to simulate the machine
      */
     public void simulateNewData(int prodRateValue) {
@@ -104,13 +121,10 @@ public class AssetThing extends VirtualThing {
             try {
                 this.setProperty("Temperature", "" + temp);
                 this.setProperty("PercentageFailure", "" + failure);
-                this.setProperty("status", "" + State.UNPLANNED_DOWNTIME.ordinal());
-                LOG.info("TESTLOG ---- [" + this.getName() + "] BROKEN");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
-        }
-        else if (temp != -1 && failure != -1 && deltaProdRate != 0) {
+        } else if (temp != -1 && failure != -1 && deltaProdRate != 0) {
             double newTemp = temp + (Math.abs(deltaProdRate * 0.05) * sign);
             double newFailure = failure + (Math.abs(deltaProdRate * 0.025) * sign);
             newTemp = (double) Math.round(newTemp * 100d) / 100d;
@@ -123,17 +137,23 @@ public class AssetThing extends VirtualThing {
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
-        }
-        else {
+        } else {
             Random random = new Random();
             double newTemp = temp + (random.nextDouble() / 10 * temp * (random.nextBoolean() ? 1 : -1));
             newTemp = (double) Math.round(newTemp * 100d) / 100d;
             try {
                 this.setProperty("Temperature", "" + newTemp);
+                this.setProperty("status", "" + State.RUNNING.ordinal());
                 LOG.info("TESTLOG ---- [" + this.getName() + "] RUNNING");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
             }
+        }
+        try {
+            this.produce();
+        } catch (Exception e) {
+            LOG.warn("TESTLOG ---- Exception invoking produce service in " + this.getClass());
+            e.printStackTrace();
         }
     }
 
@@ -141,13 +161,27 @@ public class AssetThing extends VirtualThing {
      * breaks a machine (UNPLANNED_DOWNTIME and ProductionRate to zero)
      */
     public void breakThing() {
+        this.setProperty("status", "" + State.UNPLANNED_DOWNTIME.ordinal());
+        LOG.info("TESTLOG ---- [" + this.getName() + "] BROKEN");
+        this.simulateNewData(0);
+        this.down = true;
+    }
+
+    /**
+     * puts a machine under maintenance (PLANNED_DOWNTIME and ProductionRate to
+     * zero)
+     */
+    public void performMaintenance() {
+        this.setProperty("status", "" + State.PLANNED_DOWNTIME.ordinal());
+        LOG.info("TESTLOG ---- [" + this.getName() + "] UNDER MAINTENANCE");
         this.simulateNewData(0);
         this.down = true;
     }
 
     /**
      * Restarts a machine with a production rate of initialProdRate
-     * @param initialProdRate 
+     *
+     * @param initialProdRate
      */
     public void restartThing(int initialProdRate) {
         try {
@@ -164,7 +198,8 @@ public class AssetThing extends VirtualThing {
 
     /**
      * Grants access to device properties
-     * @return 
+     *
+     * @return
      */
     public List<ThingProperty> getDevice_Properties() {
         return this.device_Properties;
@@ -172,8 +207,9 @@ public class AssetThing extends VirtualThing {
 
     /**
      * Gets a ThingProperty by the property name
+     *
      * @param name
-     * @return 
+     * @return
      */
     public ThingProperty getPropertyByName(String name) {
         ThingProperty tp = null;
@@ -186,16 +222,19 @@ public class AssetThing extends VirtualThing {
     }
 
     /**
-     * Checks whether a machine is down. Returns true if the machine is down (production rate = 0)
-     * @return 
+     * Checks whether a machine is down. Returns true if the machine is down
+     * (production rate = 0)
+     *
+     * @return
      */
     public boolean isDown() {
         return down;
     }
 
     /**
-     * Sets the down boolean. 
-     * @param isDown 
+     * Sets the down boolean.
+     *
+     * @param isDown
      */
     public void setDown(boolean isDown) {
         this.down = isDown;
@@ -203,8 +242,9 @@ public class AssetThing extends VirtualThing {
 
     /**
      * Sets the value of a property locally as well as remotely.
+     *
      * @param propName
-     * @param propVal 
+     * @param propVal
      */
     public void setProperty(String propName, String propVal) {
         try {
@@ -229,8 +269,9 @@ public class AssetThing extends VirtualThing {
 
     /**
      * Checks whether or not a string can be parsed as an integer.
+     *
      * @param str
-     * @return 
+     * @return
      */
     private static boolean isInteger(String str) {
         if (str == null) {
@@ -258,8 +299,9 @@ public class AssetThing extends VirtualThing {
 
     /**
      * Checks whether or not a string can be parsed as a double.
+     *
      * @param value
-     * @return 
+     * @return
      */
     private boolean isDouble(String value) {
         try {
