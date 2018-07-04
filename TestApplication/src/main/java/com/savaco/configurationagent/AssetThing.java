@@ -93,7 +93,8 @@ public class AssetThing extends VirtualThing {
         //if not a line and not down, produce
         if (!this.getName().contains("Line") && !this.isDown()) {
             //calculate amount to be produced
-            int amountToProduce = newProdRate * Integer.parseInt(this.getPropertyByName("SimulationSpeed").getValue());
+            //int amountToProduce = newProdRate / 60 * Integer.parseInt(this.getPropertyByName("SimulationSpeed").getValue());
+            int amountToProduce = 20;
             if (amountToProduce < 1) {
                 amountToProduce = 1;
             }
