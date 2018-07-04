@@ -82,22 +82,22 @@ public class AssetThing extends VirtualThing {
                 // Set pushedStatus, Temperature and NextAsset
                 if (tp.getName().equals("pushedStatus")) {
                     this.setRemoteProperty(tp.getName(), tp.getValue());
-                } else if(tp.getName().equals("Temperature")){
+                } else if (tp.getName().equals("Temperature")) {
                     this.setRemoteProperty(tp.getName(), tp.getValue());
-                } else if(tp.getName().equals("NextAsset")){
+                } else if (tp.getName().equals("NextAsset")) {
                     this.setRemoteProperty(tp.getName(), "Asset_" + tp.getValue());
-                } else if(tp.getName().equals("ProductionRate")){
+                } else if (tp.getName().equals("ProductionRate")) {
                     this.prodRate = Integer.parseInt(tp.getValue());
-                } else if(tp.getName().equals("PercentageFailure")){
+                } else if (tp.getName().equals("PercentageFailure")) {
                     this.failure = Double.parseDouble(tp.getValue());
                 }
             }
-            
+
             // Initialize BufferQuantity, GoodCount and BadCount
             this.setRemoteProperty("BufferQuantity", Integer.toString(5000));
             this.setRemoteProperty("GoodCount", Double.toString(0.0));
             this.setRemoteProperty("BadCount", Double.toString(0.0));
-            
+
             // Wait for updates
             this.updateSubscribedProperties(1000);
         } catch (Exception e) {
@@ -121,6 +121,15 @@ public class AssetThing extends VirtualThing {
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property of thing {).", AssetThing.class, this.getName());
         }
+    }
+
+    public ThingProperty getPropertyByName(String name) {
+        for (ThingProperty tp : this.assetProperties) {
+            if(tp.getName().equals(name)){
+                return tp;
+            }
+        }
+        return null;
     }
 
     @Override

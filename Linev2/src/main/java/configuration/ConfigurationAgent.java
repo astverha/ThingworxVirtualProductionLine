@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.List;
 import org.slf4j.LoggerFactory;
 
-public class ConfigurationAgent {
+public final class ConfigurationAgent {
     
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ConfigurationAgent.class);
     
@@ -23,6 +23,8 @@ public class ConfigurationAgent {
             File xmlFile = new File(loader.getResource(fileName).getFile());
             
             lines = ReadXML.read(xmlFile);
+            this.classToThingConversion();
+            
             this.serverName = ReadXML.getServerName();
             this.appKey = ReadXML.getAppKey();
         } catch (Exception e){

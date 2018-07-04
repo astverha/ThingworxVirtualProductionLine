@@ -1,13 +1,9 @@
 package com.stage.client;
 
-import com.thingworx.communications.client.ClientConfigurator;
 import com.thingworx.communications.client.ConnectedThingClient;
-import com.thingworx.types.primitives.IntegerPrimitive;
 import configuration.AssetThing;
 import configuration.ConfigurationAgent;
-import configuration.ThingProperty;
 import org.slf4j.LoggerFactory;
-import utils.Utilities;
 
 public class ThingworxClient extends ConnectedThingClient {
 
