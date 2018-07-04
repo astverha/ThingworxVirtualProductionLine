@@ -93,19 +93,19 @@ public class AssetThing extends VirtualThing {
         //if not a line and not down, produce
         if (!this.getName().contains("Line") && !this.isDown()) {
             //calculate amount to be produced
-            int amountToProduce = newProdRate / 60 * Integer.parseInt(this.getPropertyByName("SimulationSpeed").getValue());
+            //int amountToProduce = newProdRate / 60 * Integer.parseInt(this.getPropertyByName("SimulationSpeed").getValue());
+            int amountToProduce = 20;
             if (amountToProduce < 1) {
                 amountToProduce = 1;
             }
             //invoke Produce service
-            for (int i = 0; i < amountToProduce; i++) {
-                ValueCollection params = new ValueCollection();
-                try {
-                    client.invokeService(ThingworxEntityTypes.Things, this.getName(), "Produce", params, 1000);
-                } catch (Exception e) {
-                    LOG.warn("TESTLOG ---- Exception invoking produce service in " + this.getClass());
-                    e.printStackTrace();
-                }
+            ValueCollection params = new ValueCollection();
+            params.put("amount", new IntegerPrimitive(amountToProduce));
+            try {
+                client.invokeService(ThingworxEntityTypes.Things, this.getName(), "Produce", params, 1000);
+            } catch (Exception e) {
+                LOG.warn("TESTLOG ---- Exception invoking produce service in " + this.getClass());
+                e.printStackTrace();
             }
         }
     }
