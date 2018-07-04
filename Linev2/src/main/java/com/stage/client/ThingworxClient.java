@@ -23,16 +23,25 @@ public class ThingworxClient extends ConnectedThingClient {
     public void initThingworx() {
         try {
             if (this.waitForConnection(20000)) {
-                for(AssetThing myThing : this.agent.getThings()){
+                for (AssetThing myThing : this.agent.getThings()) {
                     this.bindThing(myThing);
-                    if(this.isConnected()){
+                    if (this.isConnected()) {
                         myThing.initializeProperties();
                     }
                 }
             }
         } catch (Exception e) {
-            LOG.error("NOTIFICATIE [ERROR] - {} - Timed out waiting for client to connect to Thingworx.", ThingworxClient.class);
+            LOG.error("NOTIFICATIE [ERROR] - {} - Timed out waiting for client to connect to Thingworx (initThingworx).", ThingworxClient.class);
         }
     }
 
+    public void startSimulation(int runTime) {
+        try {
+            ThreadManager tManager = new ThreadManager(agent);
+            tManager.start();
+        } catch (Exception e) {
+            LOG.error("NOTIFICATIE [ERROR] - {} - Failed to start simulation (startSimulation).", ThingworxClient.class);
+        }
+
+    }
 }
