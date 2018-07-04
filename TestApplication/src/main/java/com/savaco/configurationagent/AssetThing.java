@@ -118,7 +118,7 @@ public class AssetThing extends VirtualThing {
     public void simulateNewData(int prodRateValue) {
         prodRate = newProdRate;
         newProdRate = prodRateValue;
-        this.setProperty("ProductionRate", "" + newProdRate);
+        this.setPropertyStringString("ProductionRate", "" + newProdRate);
         double temp = Double.parseDouble(this.getPropertyByName("Temperature").getValue());
         double failure = Double.parseDouble(this.getPropertyByName("PercentageFailure").getValue());
 
@@ -131,8 +131,8 @@ public class AssetThing extends VirtualThing {
         //Production rate is down to 0 (no longer running) --> broken or maintenance
         if (newProdRate == 0) {
             try {
-                this.setProperty("Temperature", "" + temp);
-                this.setProperty("PercentageFailure", "" + 100);
+                this.setPropertyStringString("Temperature", "" + temp);
+                this.setPropertyStringString("PercentageFailure", "" + 100);
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
@@ -142,9 +142,9 @@ public class AssetThing extends VirtualThing {
             newTemp = (double) Math.round(newTemp * 100d) / 100d;
             newFailure = (double) Math.round(newFailure * 100d) / 100d;
             try {
-                this.setProperty("Temperature", "" + newTemp);
-                this.setProperty("PercentageFailure", "" + newFailure);
-                this.setProperty("status", "" + State.RUNNING.ordinal());
+                this.setPropertyStringString("Temperature", "" + newTemp);
+                this.setPropertyStringString("PercentageFailure", "" + newFailure);
+                this.setPropertyStringString("status", "" + State.RUNNING.ordinal());
                 LOG.info("TESTLOG ---- [" + this.getName() + "] RUNNING (changed prodRate)");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
@@ -154,8 +154,8 @@ public class AssetThing extends VirtualThing {
             double newTemp = temp + (random.nextDouble() / 10 * temp * (random.nextBoolean() ? 1 : -1));
             newTemp = (double) Math.round(newTemp * 100d) / 100d;
             try {
-                this.setProperty("Temperature", "" + newTemp);
-                this.setProperty("status", "" + State.RUNNING.ordinal());
+                this.setPropertyStringString("Temperature", "" + newTemp);
+                this.setPropertyStringString("status", "" + State.RUNNING.ordinal());
                 LOG.info("TESTLOG ---- [" + this.getName() + "] RUNNING");
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
@@ -168,7 +168,7 @@ public class AssetThing extends VirtualThing {
      * breaks a machine (UNPLANNED_DOWNTIME and ProductionRate to zero)
      */
     public void breakThing() {
-        this.setProperty("status", "" + State.UNPLANNED_DOWNTIME.ordinal());
+        this.setPropertyStringString("status", "" + State.UNPLANNED_DOWNTIME.ordinal());
         LOG.info("TESTLOG ---- [" + this.getName() + "] BROKEN");
         this.simulateNewData(0);
         this.down = true;
@@ -179,7 +179,7 @@ public class AssetThing extends VirtualThing {
      * zero)
      */
     public void performMaintenance() {
-        this.setProperty("status", "" + State.PLANNED_DOWNTIME.ordinal());
+        this.setPropertyStringString("status", "" + State.PLANNED_DOWNTIME.ordinal());
         LOG.info("TESTLOG ---- [" + this.getName() + "] UNDER MAINTENANCE");
         this.simulateNewData(0);
         this.down = true;
@@ -192,10 +192,10 @@ public class AssetThing extends VirtualThing {
      */
     public void restartThing(int initialProdRate) {
         try {
-            this.setProperty("ProductionRate", "" + initialProdRate);
-            this.setProperty("Temperature", "" + initialProdRate / 20);
-            this.setProperty("PercentageFailure", "" + 10);
-            this.setProperty("status", "" + State.RUNNING.ordinal());
+            this.setPropertyStringString("ProductionRate", "" + initialProdRate);
+            this.setPropertyStringString("Temperature", "" + initialProdRate / 20);
+            this.setPropertyStringString("PercentageFailure", "" + 10);
+            this.setPropertyStringString("status", "" + State.RUNNING.ordinal());
             LOG.info("TESTLOG ---- [" + this.getName() + "] RESTARTED");
         } catch (Exception e) {
             LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
@@ -253,7 +253,7 @@ public class AssetThing extends VirtualThing {
      * @param propName
      * @param propVal
      */
-    public void setProperty(String propName, String propVal) {
+    public void setPropertyStringString(String propName, String propVal) {
         try {
             for (ThingProperty tp : this.getDevice_Properties()) {
                 if (tp.getPropertyName().equals(propName)) {

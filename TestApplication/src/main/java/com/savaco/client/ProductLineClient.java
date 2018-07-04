@@ -41,9 +41,9 @@ public class ProductLineClient extends ConnectedThingClient {
                         try {
                             for (ThingProperty tp : thing.getDevice_Properties()) {
                                 if (StringUtils.isNumeric(tp.getValue())) {
-                                    thing.setPropertyValue(tp.getPropertyName(), new IntegerPrimitive(Integer.parseInt(tp.getValue())));
+                                    thing.setProperty(tp.getPropertyName(), new IntegerPrimitive(Integer.parseInt(tp.getValue())));
                                 } else {
-                                    thing.setPropertyValue(tp.getPropertyName(), new StringPrimitive(tp.getValue()));
+                                    thing.setProperty(tp.getPropertyName(), new StringPrimitive(tp.getValue()));
                                 }
                                 LOG.info("TESTLOG ---- " + tp.getPropertyName() + "(" + tp.getValue() + ") has been set.");
                             }

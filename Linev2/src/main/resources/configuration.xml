@@ -1,0 +1,144 @@
+<DataSimulator>
+    <ServerConfiguration>
+        <Server>ws://iottest07:80/Thingworx/WS</Server>
+        <AppKey>434cfef9-9993-478f-ad49-0738fb8948b3</AppKey>
+    </ServerConfiguration>
+    
+    <ProductionLine>
+        <Name>Linev2</Name>
+        <Description>Virtual production line</Description>
+        <PropertyDefinitions>
+            <Property>
+                <Name>pushedStatus</Name>
+                <Value>2</Value>
+            </Property>
+            <Property>
+                <Name>SimulationSpeed</Name>
+                <Value>5</Value>
+            </Property>
+        </PropertyDefinitions>
+        
+        <AssetDefinitions>
+            <Asset>
+                <Name>Bprod</Name>
+                <PropertyDefinitions>
+                    <Property>
+                        <Name>pushedStatus</Name>
+                        <Value>2</Value>
+                    </Property>
+                    <Property>
+                        <Name>ProductionRate</Name>
+                        <Value>600</Value>
+                    </Property>
+                    <Property>
+                        <Name>PercentageFailure</Name>
+                        <Value>40</Value>
+                    </Property>
+                    <Property>
+                        <Name>NextAsset</Name>
+                        <Value>Assembly</Value>
+                    </Property>
+                    
+                    <Property>
+                        <Name>Temperature</Name>
+                        <Value>25</Value>
+                    </Property>
+                </PropertyDefinitions>
+            </Asset> 
+            
+            <Asset>
+                <Name>Cprod</Name>
+                <PropertyDefinitions>
+                    <Property>
+                        <Name>pushedStatus</Name>
+                        <Value>2</Value>
+                    </Property>
+                    <Property>
+                        <Name>ProductionRate</Name>
+                        <Value>500</Value>
+                    </Property>
+                    <Property>
+                        <Name>PercentageFailure</Name>
+                        <Value>30</Value>
+                    </Property>
+                    <Property>
+                        <Name>NextAsset</Name>
+                        <Value>Assembly</Value>
+                    </Property>
+                    
+                    <Property>
+                        <Name>Temperature</Name>
+                        <Value>15</Value>
+                    </Property>
+                </PropertyDefinitions>
+            </Asset>
+            
+            <Asset>
+                <Name>Assembly</Name>
+                <PropertyDefinitions>
+                    <Property>
+                        <Name>pushedStatus</Name>
+                        <Value>2</Value>
+                    </Property>
+                    <Property>
+                        <Name>ProductionRate</Name>
+                        <Value>300</Value>
+                    </Property>
+                    <Property>
+                        <Name>PercentageFailure</Name>
+                        <Value>10</Value>
+                    </Property>
+                    <Property>
+                        <Name>NextAsset</Name>
+                        <Value>Label</Value>
+                    </Property>
+                    
+                    <Property>
+                        <Name>Temperature</Name>
+                        <Value>35</Value>
+                    </Property>
+                    <Property>
+                        <Name>StockA</Name>
+                        <Value>2000</Value>
+                    </Property>
+                    <Property>
+                        <Name>StockB</Name>
+                        <Value>2000</Value>
+                    </Property>
+                    <Property>
+                        <Name>StockC</Name>
+                        <Value>1000</Value>
+                    </Property>
+                </PropertyDefinitions>
+            </Asset>
+            
+            <Asset>
+                <Name>Label</Name>
+                <PropertyDefinitions>
+                    <Property>
+                        <Name>pushedStatus</Name>
+                        <Value>2</Value>
+                    </Property>
+                    <Property>
+                        <Name>ProductionRate</Name>
+                        <Value>300</Value>
+                    </Property>
+                    <Property>
+                        <Name>PercentageFailure</Name>
+                        <Value>5</Value>
+                    </Property>
+                    <Property>
+                        <Name>NextAsset</Name>
+                        <Value>null</Value>
+                    </Property>
+                    
+                    <Property>
+                        <Name>Temperature</Name>
+                        <Value>25</Value>
+                    </Property>
+                </PropertyDefinitions>
+            </Asset>
+            
+        </AssetDefinitions>
+    </ProductionLine>
+</DataSimulator>
