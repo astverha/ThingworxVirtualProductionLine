@@ -1,6 +1,8 @@
 package configuration;
 
+import com.stage.client.ThingworxClient;
 import com.thingworx.communications.client.ClientConfigurator;
+import java.io.File;
 import java.util.List;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +14,8 @@ public class ConfigurationAgent {
     private String appKey;
     private List<Line> lines;
     private List<AssetThing> things;
+    
+    private ThingworxClient client;
     
     public ConfigurationAgent(String fileName){
         try {
@@ -37,10 +41,10 @@ public class ConfigurationAgent {
     public void classToThingConversion(){
         try {
             for(Line line : lines){
-                AssetThing lineThing = new AssetThing("Line_" + line.getName(), TypeEnum.LINE, line.getProperties());
+                AssetThing lineThing = new AssetThing("Line_" + line.getName(), TypeEnum.LINE, line.getProperties(), client);
                 things.add(lineThing);
                 for(Asset asset : line.getAssets()){
-                    AssetThing assetThing = new AssetThing("Asset_" + asset.getName(), TypeEnum.ASSET, asset.getProperties());
+                    AssetThing assetThing = new AssetThing("Asset_" + asset.getName(), TypeEnum.ASSET, asset.getProperties(), client);
                     things.add(assetThing);
                 }
             }
@@ -60,5 +64,9 @@ public class ConfigurationAgent {
 
     public List<AssetThing> getThings() {
         return things;
+    }
+
+    public void setClient(ThingworxClient client) {
+        this.client = client;
     }
 }

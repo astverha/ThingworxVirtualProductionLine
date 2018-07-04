@@ -5,6 +5,7 @@
  */
 package configuration;
 
+import com.stage.client.ThingworxClient;
 import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
@@ -30,13 +31,13 @@ public class AssetThing extends VirtualThing {
     private static final Logger LOG = LoggerFactory.getLogger(AssetThing.class);
 
     private final String name;
-    private final ConnectedThingClient client;
+    private final TypeEnum type;
     private final List<ThingProperty> assetProperties;
 
-    public AssetThing(String name, String description, ConnectedThingClient client, List<ThingProperty> assetProperties) {
-        super(name, description, client);
+    public AssetThing(String name, TypeEnum type, List<ThingProperty> assetProperties, ThingworxClient client) {
+        super(name, "", client);
         this.name = name;
-        this.client = client;
+        this.type = type;
         this.assetProperties = assetProperties;
 
         try {
@@ -46,11 +47,11 @@ public class AssetThing extends VirtualThing {
                 AspectCollection aspects = new AspectCollection();
 
                 if (StringUtils.isNumeric(node.getValue())) {
-                    pd = new PropertyDefinition(node.getPropertyName(), " ", BaseTypes.NUMBER);
+                    pd = new PropertyDefinition(node.getName(), "", BaseTypes.NUMBER);
                 } else if ("true".equals(node.getValue()) || "false".equals(node.getValue())) {
-                    pd = new PropertyDefinition(node.getPropertyName(), " ", BaseTypes.BOOLEAN);
+                    pd = new PropertyDefinition(node.getName(), "", BaseTypes.BOOLEAN);
                 } else {
-                    pd = new PropertyDefinition(node.getPropertyName(), " ", BaseTypes.STRING);
+                    pd = new PropertyDefinition(node.getName(), "", BaseTypes.STRING);
                 }
 
                 aspects.put(Aspects.ASPECT_DATACHANGETYPE, new StringPrimitive("VALUE"));
@@ -69,6 +70,10 @@ public class AssetThing extends VirtualThing {
         }
     }
 
+    public void initializeProperties(){
+        
+    }
+    
     @Override
     public String getName() {
         return name;
@@ -77,5 +82,4 @@ public class AssetThing extends VirtualThing {
     public List<ThingProperty> getAssetProperties() {
         return assetProperties;
     }
-
 }

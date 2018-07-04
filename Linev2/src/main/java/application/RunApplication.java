@@ -14,6 +14,7 @@ public class RunApplication {
         try {
             //Initialization of ThingworxClient (responsible for connection to thingworx)
             ThingworxClient client = new ThingworxClient(agent);
+            agent.setClient(client);
             
             //Sets the initial values of the things in Thingworx
             client.initThingworx();

@@ -33,5 +33,8 @@ public class Line {
     public List<ThingProperty> getProperties(){
         return properties;
     }
-    
+
+    public String getName() {
+        return name;
+    }
 }
