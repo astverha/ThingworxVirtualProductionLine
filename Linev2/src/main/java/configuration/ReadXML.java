@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package configuration;
 
 import java.io.File;
@@ -13,10 +8,6 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Administrator
- */
 public class ReadXML {
     private static String serverName;
     private static String appKey;

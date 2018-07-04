@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package configuration;
 
 import com.stage.client.ThingworxClient;
@@ -26,10 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.Utilities;
 
-/**
- *
- * @author Administrator
- */
 public class AssetThing extends VirtualThing {
 
     private static final Logger LOG = LoggerFactory.getLogger(AssetThing.class);
