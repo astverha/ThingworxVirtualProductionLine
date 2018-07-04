@@ -5,8 +5,16 @@
  */
 package com.savaco.gui;
 
+import com.savaco.configurationagent.ThingProperty;
+import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
@@ -19,24 +27,34 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
      * Creates new form VirtualProductLineUI
      */
     UIAgent agent;
-    
+    JFrame detailsFrame;
+    String machineDetails;
+
     public VirtualProductLineUI(UIAgent agent) {
         initComponents();
+        this.setLocation(20, 40);
+        this.detailsFrame = new JFrame();
+        this.detailsFrame.setSize(400, 500);
+        this.detailsFrame.setLocation(this.getX() + this.getWidth() + 5, this.getY());
+
         this.agent = agent;
         updateStatus();
         updateProdRates();
         new Timer(5000, taskPerformer).start();
     }
-    
-    ActionListener taskPerformer = new ActionListener(){
+
+    ActionListener taskPerformer = new ActionListener() {
         @Override
-        public void actionPerformed(ActionEvent evt){
+        public void actionPerformed(ActionEvent evt) {
             updateStatus();
             updateProdRates();
+            if (detailsFrame.isVisible()) {
+                updateDetailsFrame(machineDetails);
+            }
         }
     };
-    
-    public void updateStatus(){
+
+    public void updateStatus() {
         agent.getAllStatus();
         this.PBStatus.setText(agent.getStatus().get(0));
         this.PCStatus.setText(agent.getStatus().get(1));
@@ -46,9 +64,9 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         this.BStatus.setText(agent.getStatus().get(5));
         this.PStatus.setText(agent.getStatus().get(6));
     }
-    
-    public void updateProdRates(){
-        agent.getAllProdRates();
+
+    public void updateProdRates() {
+        agent.getAllProdRates();       
         this.PBProdRate.setValue(agent.getProdRates().get(1));
         this.PCProdRate.setValue(agent.getProdRates().get(2));
         this.AProdRate.setValue(agent.getProdRates().get(3));
@@ -56,6 +74,35 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         this.LProdRate.setValue(agent.getProdRates().get(5));
         this.BProdRate.setValue(agent.getProdRates().get(6));
         this.PProdRate.setValue(agent.getProdRates().get(7));
+
+    }
+
+    public void updateDetailsFrame(String name) {
+        createDetailsFrame(name);
+    }
+
+    public void createDetailsFrame(String machineName) {
+        this.machineDetails = machineName;
+        detailsFrame.getContentPane().removeAll();
+        detailsFrame.setTitle("Details van " + machineName);
+
+        List<ThingProperty> thingProps = agent.getAssetThing(machineName).getDevice_Properties();
+        JPanel mainPanel = new JPanel(new GridLayout(thingProps.size(), 2, 5, 5));
+        mainPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        detailsFrame.add(mainPanel);
+        for (ThingProperty tp : thingProps) {
+            JLabel label = new JLabel(tp.getPropertyName() + ": ");
+            JLabel value;
+            if(tp.getPropertyName().equals("status")){
+                 value = new JLabel(agent.getAssetThing(machineName).convertIntToState(Integer.parseInt(tp.getValue())));
+            } else {
+                value = new JLabel(tp.getValue());
+            }
+            mainPanel.add(label);
+            mainPanel.add(value);
+        }
+
+        detailsFrame.setVisible(true);
     }
 
     /**
@@ -132,6 +179,11 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         jLabel8.setText("Production Rate:");
 
         PBDetails.setText("Details...");
+        PBDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PBDetailsActionPerformed(evt);
+            }
+        });
 
         PBBreak.setText("Break");
         PBBreak.addActionListener(new java.awt.event.ActionListener() {
@@ -192,6 +244,11 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         jLabel9.setText("Production Rate:");
 
         PCDetails.setText("Details...");
+        PCDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PCDetailsActionPerformed(evt);
+            }
+        });
 
         PCBreak.setText("Break");
         PCBreak.addActionListener(new java.awt.event.ActionListener() {
@@ -252,6 +309,11 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         jLabel10.setText("Production Rate:");
 
         ADetails.setText("Details...");
+        ADetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ADetailsActionPerformed(evt);
+            }
+        });
 
         ABreak.setText("Break");
         ABreak.addActionListener(new java.awt.event.ActionListener() {
@@ -312,6 +374,11 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         jLabel11.setText("Production Rate:");
 
         QCDetails.setText("Details...");
+        QCDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                QCDetailsActionPerformed(evt);
+            }
+        });
 
         QCBreak.setText("Break");
         QCBreak.addActionListener(new java.awt.event.ActionListener() {
@@ -372,6 +439,11 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         jLabel12.setText("Production Rate:");
 
         LDetails.setText("Details...");
+        LDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LDetailsActionPerformed(evt);
+            }
+        });
 
         LBreak.setText("Break");
         LBreak.addActionListener(new java.awt.event.ActionListener() {
@@ -432,6 +504,11 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         jLabel13.setText("Production Rate:");
 
         BDetails.setText("Details...");
+        BDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BDetailsActionPerformed(evt);
+            }
+        });
 
         BBreak.setText("Break");
         BBreak.addActionListener(new java.awt.event.ActionListener() {
@@ -492,6 +569,11 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         jLabel14.setText("Production Rate:");
 
         PDetails.setText("Details...");
+        PDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PDetailsActionPerformed(evt);
+            }
+        });
 
         PBreak.setText("Break");
         PBreak.addActionListener(new java.awt.event.ActionListener() {
@@ -549,9 +631,8 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(ProducerBPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(ProducerBPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                        .addComponent(ProducerBPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)))
+                    .addComponent(ProducerBPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                    .addComponent(ProducerBPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))
                 .addGap(121, 121, 121)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(ProducerBPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
@@ -584,7 +665,7 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void PBBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PBBreakActionPerformed
-        if(this.PBBreak.getText().equalsIgnoreCase("Break")){
+        if (this.PBBreak.getText().equalsIgnoreCase("Break")) {
             agent.breakMachine("Asset_ProducerB");
             this.PBBreak.setText("Restart");
         } else {
@@ -595,7 +676,7 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
     }//GEN-LAST:event_PBBreakActionPerformed
 
     private void PCBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PCBreakActionPerformed
-        if(this.PCBreak.getText().equalsIgnoreCase("Break")){
+        if (this.PCBreak.getText().equalsIgnoreCase("Break")) {
             agent.breakMachine("Asset_ProducerC");
             this.PCBreak.setText("Restart");
         } else {
@@ -606,7 +687,7 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
     }//GEN-LAST:event_PCBreakActionPerformed
 
     private void ABreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ABreakActionPerformed
-        if(this.ABreak.getText().equalsIgnoreCase("Break")){
+        if (this.ABreak.getText().equalsIgnoreCase("Break")) {
             agent.breakMachine("Asset_Assembler");
             this.ABreak.setText("Restart");
         } else {
@@ -617,7 +698,7 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ABreakActionPerformed
 
     private void QCBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QCBreakActionPerformed
-        if(this.QCBreak.getText().equalsIgnoreCase("Break")){
+        if (this.QCBreak.getText().equalsIgnoreCase("Break")) {
             agent.breakMachine("Asset_QualityChecker");
             this.QCBreak.setText("Restart");
         } else {
@@ -628,7 +709,7 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
     }//GEN-LAST:event_QCBreakActionPerformed
 
     private void LBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LBreakActionPerformed
-        if(this.LBreak.getText().equalsIgnoreCase("Break")){
+        if (this.LBreak.getText().equalsIgnoreCase("Break")) {
             agent.breakMachine("Asset_Labeler");
             this.LBreak.setText("Restart");
         } else {
@@ -639,7 +720,7 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
     }//GEN-LAST:event_LBreakActionPerformed
 
     private void BBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BBreakActionPerformed
-        if(this.BBreak.getText().equalsIgnoreCase("Break")){
+        if (this.BBreak.getText().equalsIgnoreCase("Break")) {
             agent.breakMachine("Asset_BoxingMachine");
             this.BBreak.setText("Restart");
         } else {
@@ -650,7 +731,7 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
     }//GEN-LAST:event_BBreakActionPerformed
 
     private void PBreakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PBreakActionPerformed
-        if(this.PBreak.getText().equalsIgnoreCase("Break")){
+        if (this.PBreak.getText().equalsIgnoreCase("Break")) {
             agent.breakMachine("Asset_Palletizer");
             this.PBreak.setText("Restart");
         } else {
@@ -659,6 +740,34 @@ public class VirtualProductLineUI extends javax.swing.JFrame {
         }
         updateStatus();
     }//GEN-LAST:event_PBreakActionPerformed
+
+    private void PBDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PBDetailsActionPerformed
+        this.createDetailsFrame("Asset_ProducerB");
+    }//GEN-LAST:event_PBDetailsActionPerformed
+
+    private void PCDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PCDetailsActionPerformed
+        this.createDetailsFrame("Asset_ProducerC");
+    }//GEN-LAST:event_PCDetailsActionPerformed
+
+    private void ADetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ADetailsActionPerformed
+        this.createDetailsFrame("Asset_Assembler");
+    }//GEN-LAST:event_ADetailsActionPerformed
+
+    private void QCDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QCDetailsActionPerformed
+        this.createDetailsFrame("Asset_QualityChecker");
+    }//GEN-LAST:event_QCDetailsActionPerformed
+
+    private void LDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LDetailsActionPerformed
+        this.createDetailsFrame("Asset_Labeler");
+    }//GEN-LAST:event_LDetailsActionPerformed
+
+    private void BDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BDetailsActionPerformed
+        this.createDetailsFrame("Asset_BoxingMachine");
+    }//GEN-LAST:event_BDetailsActionPerformed
+
+    private void PDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PDetailsActionPerformed
+        this.createDetailsFrame("Asset_Palletizer");
+    }//GEN-LAST:event_PDetailsActionPerformed
 
     /**
      * @param args the command line arguments

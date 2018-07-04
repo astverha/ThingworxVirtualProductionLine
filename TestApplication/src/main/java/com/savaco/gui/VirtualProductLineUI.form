@@ -28,10 +28,8 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                   <Component id="ProducerBPanel6" pref="237" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="ProducerBPanel3" pref="237" max="32767" attributes="0"/>
-                      <Component id="ProducerBPanel" pref="237" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="ProducerBPanel3" alignment="0" pref="237" max="32767" attributes="0"/>
+                  <Component id="ProducerBPanel" alignment="0" pref="237" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -164,6 +162,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Details..."/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PBDetailsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="PBBreak">
           <Properties>
@@ -266,6 +267,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Details..."/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PCDetailsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="PCBreak">
           <Properties>
@@ -368,6 +372,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Details..."/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ADetailsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="ABreak">
           <Properties>
@@ -470,6 +477,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Details..."/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="QCDetailsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="QCBreak">
           <Properties>
@@ -572,6 +582,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Details..."/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LDetailsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="LBreak">
           <Properties>
@@ -674,6 +687,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Details..."/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BDetailsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="BBreak">
           <Properties>
@@ -776,6 +792,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Details..."/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PDetailsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="PBreak">
           <Properties>

@@ -47,7 +47,7 @@ public class UIAgent {
         for (AssetThing at : agent.getAssetsAsThings()) {
             pt = at.getPropertyByName("status");
             if(pt != null){
-                status.add(pt.getValue());
+                status.add(at.convertIntToState(Integer.parseInt(pt.getValue())));
             }
         }
     }

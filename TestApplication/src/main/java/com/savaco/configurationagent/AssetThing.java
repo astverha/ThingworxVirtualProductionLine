@@ -269,4 +269,26 @@ public class AssetThing extends VirtualThing {
             return false;
         }
     }
+    
+    public String convertIntToState(int number){
+        String status = null;
+        switch(number){
+            case 1:
+                status = State.NOT_CONFIGURED.toString();
+                break;
+            case 2:
+                status = State.RUNNING.toString();
+                break;
+            case 3:
+                status = State.PLANNED_DOWNTIME.toString();
+                break;
+            case 4:
+                status = State.UNPLANNED_DOWNTIME.toString();
+                break;
+            case 5:
+                status = State.UNAVAILABLE.toString();
+                break;                
+        }
+        return status == null ? "No status available" : status;
+    }
 }
