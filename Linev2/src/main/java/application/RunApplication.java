@@ -1,7 +1,26 @@
 package application;
 
+import com.stage.client.ThingworxClient;
+import configuration.ConfigurationAgent;
+import org.slf4j.LoggerFactory;
+
 public class RunApplication {
-    public static void main(String[] args){
-        
+
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(RunApplication.class);
+
+    public static void main(String[] args) {
+        //Initialization of ConfigurationAgent (reads xml file, creates and exposes assetThings)
+        ConfigurationAgent agent = new ConfigurationAgent("configuration.xml");
+        try {
+            //Initialization of ThingworxClient (responsible for connection to thingworx)
+            ThingworxClient client = new ThingworxClient(agent);
+            
+            //Sets the initial values of the things in Thingworx
+            client.initThingworx();
+            
+            
+        } catch (Exception e) {
+            LOG.error("NOTIFICATIE [ERROR] - {} - An exception occurred while initializing the client.", RunApplication.class);
+        }
     }
 }

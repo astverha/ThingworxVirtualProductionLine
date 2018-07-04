@@ -1,5 +1,6 @@
 package configuration;
 
+import com.thingworx.communications.client.ClientConfigurator;
 import java.util.List;
 import org.slf4j.LoggerFactory;
 
@@ -7,9 +8,10 @@ public class ConfigurationAgent {
     
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ConfigurationAgent.class);
     
-    private final String serverName;
-    private final String appKey;
+    private String serverName;
+    private String appKey;
     private List<Line> lines;
+    private List<AssetThing> things;
     
     public ConfigurationAgent(String fileName){
         try {
@@ -19,6 +21,44 @@ public class ConfigurationAgent {
             lines = ReadXML.read(xmlFile);
             this.serverName = ReadXML.getServerName();
             this.appKey = ReadXML.getAppKey();
-        } c
+        } catch (Exception e){
+            LOG.error("NOTIFICATIE [ERROR] - {} - An exception occurred while reading the file.", ConfigurationAgent.class);
+        }
+    }
+    
+    public ClientConfigurator getConfiguration(){
+        ClientConfigurator config = new ClientConfigurator();
+        config.setUri(this.serverName);
+        config.setAppKey(this.appKey);
+        config.ignoreSSLErrors(true);
+        return config;
+    }
+    
+    public void classToThingConversion(){
+        try {
+            for(Line line : lines){
+                AssetThing lineThing = new AssetThing("Line_" + line.getName(), TypeEnum.LINE, line.getProperties());
+                things.add(lineThing);
+                for(Asset asset : line.getAssets()){
+                    AssetThing assetThing = new AssetThing("Asset_" + asset.getName(), TypeEnum.ASSET, asset.getProperties());
+                    things.add(assetThing);
+                }
+            }
+        } catch(Exception e){
+            LOG.error("NOTIFICATIE [ERROR] - {} - An exception occurred while converting assets to things.", ConfigurationAgent.class);
+        }
+    }
+    
+    public AssetThing getThingByName(String name){
+        for(AssetThing at : this.things){
+            if(at.getName().equals(name)){
+                return at;
+            }
+        }
+        return null;
+    }
+
+    public List<AssetThing> getThings() {
+        return things;
     }
 }
