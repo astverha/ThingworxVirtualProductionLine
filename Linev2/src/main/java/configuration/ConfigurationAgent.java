@@ -69,4 +69,8 @@ public class ConfigurationAgent {
     public void setClient(ThingworxClient client) {
         this.client = client;
     }
+
+    public ThingworxClient getClient() {
+        return client;
+    }
 }
