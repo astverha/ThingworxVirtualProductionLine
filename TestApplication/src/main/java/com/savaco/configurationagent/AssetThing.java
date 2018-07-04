@@ -8,6 +8,7 @@ import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
 import com.thingworx.relationships.RelationshipTypes.ThingworxEntityTypes;
 import com.thingworx.types.BaseTypes;
+import com.thingworx.types.InfoTable;
 import com.thingworx.types.collections.AspectCollection;
 import com.thingworx.types.collections.ValueCollection;
 import com.thingworx.types.constants.Aspects;
@@ -84,16 +85,27 @@ public class AssetThing extends VirtualThing {
         super.initialize();
     }
 
-    private void produce() throws Exception {
+    /**
+     * produces the correct amount based on production rate and simulation speed
+     *
+     */
+    private void produce() {
         //if not a line and not down, produce
         if (!this.getName().contains("Line") && !this.isDown()) {
+            //calculate amount to be produced
             int amountToProduce = newProdRate / 60 * Integer.parseInt(this.getPropertyByName("SimulationSpeed").getValue());
             if (amountToProduce < 1) {
                 amountToProduce = 1;
             }
+            //invoke Produce service
             for (int i = 0; i < amountToProduce; i++) {
                 ValueCollection params = new ValueCollection();
-                client.invokeService(ThingworxEntityTypes.Things, this.getName(), "Produce", params, 1000);
+                try {
+                    client.invokeService(ThingworxEntityTypes.Things, this.getName(), "Produce", params, 1000);
+                } catch (Exception e) {
+                    LOG.warn("TESTLOG ---- Exception invoking produce service in " + this.getClass());
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -120,7 +132,7 @@ public class AssetThing extends VirtualThing {
         if (newProdRate == 0) {
             try {
                 this.setProperty("Temperature", "" + temp);
-                this.setProperty("PercentageFailure", "" + failure);
+                this.setProperty("PercentageFailure", "" + 100);
             } catch (Exception e) {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData)");
             }
@@ -149,12 +161,7 @@ public class AssetThing extends VirtualThing {
                 LOG.warn("TESTLOG ---- Exception setting remote properties. (AssetThing - simulateNewData): " + this.getName());
             }
         }
-        try {
-            this.produce();
-        } catch (Exception e) {
-            LOG.warn("TESTLOG ---- Exception invoking produce service in " + this.getClass());
-            e.printStackTrace();
-        }
+        this.produce();
     }
 
     /**

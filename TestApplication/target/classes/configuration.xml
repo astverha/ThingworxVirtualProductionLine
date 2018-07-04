@@ -38,7 +38,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <Value>0</Value>
+                                                <Value>400</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -78,7 +78,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <Value>0</Value>
+                                                <Value>400</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -118,7 +118,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <Value>0</Value>
+                                                <Value>1000</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -173,7 +173,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <Value>0</Value>
+                                                <Value>1000</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -229,7 +229,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <Value>0</Value>
+                                                <Value>1000</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -269,7 +269,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <Value>0</Value>
+                                                <Value>1000</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
@@ -309,7 +309,7 @@
 					<Property>
 						<Name>BufferQuantity</Name>
 						<Min>0</Min>
-                                                <Value>0</Value>
+                                                <Value>1000</Value>
 					</Property>
 					<Property>
 						<Name>BufferCapacity</Name>
