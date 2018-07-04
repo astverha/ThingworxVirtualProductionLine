@@ -127,8 +127,11 @@ public class ThreadManager {
                                 }
                                 currProdRate = Integer.parseInt(thing.getPropertyByName("ProductionRate").getValue());
                                 
-                                //simulatie
-                                int rand = random.nextInt(30);
+                                //MANUAL -- Get prodRate from GUI
+                                //this.thing.simulateNewData(currProdRate);
+                                
+                                //AUTO -- Automated data simulation
+                                /*int rand = random.nextInt(30);
                                 if (rand == 1 && !this.thing.isDown()) {
                                     this.thing.setDown(true);
                                     this.thing.breakThing();
@@ -143,7 +146,7 @@ public class ThreadManager {
                                     } else {
                                         this.thing.simulateNewData(currProdRate);
                                     }
-                                }
+                                }*/
                                 //-------------------------------
                                 this.thing.updateSubscribedProperties(10000);
                                 //LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
