@@ -40,6 +40,13 @@ public class UIAgent {
             thing.restartThing(500);
         }
     }
+    
+    public void performMaintenance(String name){
+        AssetThing thing = agent.getAssetThingByName(name);
+        if(thing != null){
+            thing.performMaintenance();
+        }
+    }
 
     public void getAllStatus() {
         status.clear();
@@ -47,7 +54,7 @@ public class UIAgent {
         for (AssetThing at : agent.getAssetsAsThings()) {
             pt = at.getPropertyByName("status");
             if(pt != null){
-                status.add(pt.getValue());
+                status.add(at.convertIntToState(Integer.parseInt(pt.getValue())));
             }
         }
     }
@@ -73,5 +80,9 @@ public class UIAgent {
 
     public List<Integer> getProdRates() {
         return prodRates;
+    }
+    
+    public void setSimulation(boolean value){
+        this.agent.setAutomaticSimulation(value);
     }
 }

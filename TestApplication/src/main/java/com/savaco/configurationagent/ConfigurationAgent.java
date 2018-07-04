@@ -15,12 +15,14 @@ public final class ConfigurationAgent {
     private String appKey;
     private List<Line> lines;
     private ProductLineClient client;
+    private boolean automaticSimulation;
     
     /**
      * Initializes the ConfigurationClass. Supply the path to the XML file.
      * @param file 
      */
     public ConfigurationAgent(String file) {
+        automaticSimulation = false;
         try {
             ClassLoader loader = getClass().getClassLoader();
             File xmlFile = new File(loader.getResource(file).getFile());
@@ -91,5 +93,13 @@ public final class ConfigurationAgent {
     
     public ProductLineClient getClient() {
         return client;
+    }
+
+    public boolean isAutomaticSimulation() {
+        return automaticSimulation;
+    }
+
+    public void setAutomaticSimulation(boolean automaticSimulation) {
+        this.automaticSimulation = automaticSimulation;
     }
 }

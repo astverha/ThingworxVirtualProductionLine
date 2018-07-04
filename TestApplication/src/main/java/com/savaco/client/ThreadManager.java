@@ -20,8 +20,8 @@ public class ThreadManager {
     private boolean pauseThread;
 
     /**
-     * 
-     * @param agent 
+     *
+     * @param agent
      */
     public ThreadManager(ConfigurationAgent agent) {
         this.agent = agent;
@@ -83,7 +83,7 @@ public class ThreadManager {
     public void resume() {
         pauseThread = false;
     }
-    
+
     private class AgentThreadRunnable implements Runnable {
 
         Random random = new Random();
@@ -92,9 +92,9 @@ public class ThreadManager {
         private final int sleepTime;
 
         /**
-         * 
+         *
          * @param thing
-         * @param sleepTime 
+         * @param sleepTime
          */
         public AgentThreadRunnable(AssetThing thing, int sleepTime) {
             this.thing = thing;
@@ -106,7 +106,7 @@ public class ThreadManager {
          */
         @Override
         public void run() {
-            
+
             while (!client.isShutdown()) {
                 if (pauseThread) {
                     try {
@@ -126,18 +126,30 @@ public class ThreadManager {
                                     sign = -1;
                                 }
                                 currProdRate = Integer.parseInt(thing.getPropertyByName("ProductionRate").getValue());
-                                this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
-                                /*int rand = random.nextInt(20);
-                                if (rand == 1 && !this.thing.isDown()) {
-                                    this.thing.setDown(true);
-                                    this.thing.breakThing();
+
+
+                                if (agent.isAutomaticSimulation() == false) {
+                                    this.thing.simulateNewData(currProdRate);
+
                                 } else {
-                                    if (this.thing.isDown()) {
-                                        this.thing.restartThing(500);
+                                    int rand = random.nextInt(30);
+                                    if (rand == 1 && !this.thing.isDown()) {
+                                        this.thing.setDown(true);
+                                        this.thing.breakThing();
+                                    } else if (rand == 2 && !this.thing.isDown()) {
+                                        this.thing.setDown(true);
+                                        this.thing.performMaintenance();
                                     } else {
-                                        this.thing.simulateNewData(currProdRate);
+                                        if (this.thing.isDown()) {
+                                            //minstens 10 seconden kapot of onderhoud
+                                            Thread.sleep(10000);
+                                            this.thing.restartThing(500);
+                                        } else {
+                                            this.thing.simulateNewData(currProdRate);
+                                        }
                                     }
-                                }*/
+
+                                }
                                 //-------------------------------
                                 this.thing.updateSubscribedProperties(10000);
                                 //LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());
