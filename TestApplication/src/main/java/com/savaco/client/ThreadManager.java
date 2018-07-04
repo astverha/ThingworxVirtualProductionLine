@@ -44,8 +44,7 @@ public class ThreadManager {
                 List<AssetThing> assetThings = agent.getAssetsAsThings();
                 for (AssetThing thing : assetThings) {
                     if (!thing.getName().contains("Line")) {
-                        System.out.println("TESTLOG ---- " + thing.getName() + " Timing:" + Integer.parseInt(thing.getPropertyByName("SimulationSpeed").getValue()));
-                        Thread agentThread = new Thread(new AgentThreadRunnable(thing, 5));
+                        Thread agentThread = new Thread(new AgentThreadRunnable(thing, Integer.parseInt(thing.getPropertyByName("SimulationSpeed").getValue())));
                         agentThread.start();
                     }
                 }
@@ -127,18 +126,24 @@ public class ThreadManager {
                                     sign = -1;
                                 }
                                 currProdRate = Integer.parseInt(thing.getPropertyByName("ProductionRate").getValue());
-                                this.thing.simulateNewData((int) (currProdRate+= currProdRate*0.05*sign));
-                                /*int rand = random.nextInt(20);
+                                
+                                //simulatie
+                                int rand = random.nextInt(30);
                                 if (rand == 1 && !this.thing.isDown()) {
                                     this.thing.setDown(true);
                                     this.thing.breakThing();
+                                }else if (rand == 2 && !this.thing.isDown()) {
+                                    this.thing.setDown(true);
+                                    this.thing.performMaintenance();
                                 } else {
                                     if (this.thing.isDown()) {
+                                        //minstens 10 seconden kapot of onderhoud
+                                        Thread.sleep(10000);
                                         this.thing.restartThing(500);
                                     } else {
                                         this.thing.simulateNewData(currProdRate);
                                     }
-                                }*/
+                                }
                                 //-------------------------------
                                 this.thing.updateSubscribedProperties(10000);
                                 //LOG.info("TESTLOG ---- {} was updated, {} thread going to sleep now.", thing.getName());

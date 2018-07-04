@@ -45,6 +45,7 @@ public class ProductLineClient extends ConnectedThingClient {
                                 } else {
                                     thing.setPropertyValue(tp.getPropertyName(), new StringPrimitive(tp.getValue()));
                                 }
+                                LOG.info("TESTLOG ---- " + tp.getPropertyName() + "(" + tp.getValue() + ") has been set.");
                             }
                             thing.updateSubscribedProperties(10000);
                         } catch (Exception e) {
