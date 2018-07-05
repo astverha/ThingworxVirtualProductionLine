@@ -143,6 +143,7 @@ public class VirtualProductLine extends javax.swing.JFrame {
         MaintenanceButton = new javax.swing.JButton();
         BreakButton = new javax.swing.JButton();
         RestartButton = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -187,6 +188,13 @@ public class VirtualProductLine extends javax.swing.JFrame {
             }
         });
 
+        jToggleButton1.setText("Pause");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -195,9 +203,14 @@ public class VirtualProductLine extends javax.swing.JFrame {
                 .addGap(95, 95, 95)
                 .addComponent(BreakButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14)
-                .addComponent(MaintenanceButton)
-                .addGap(18, 18, 18)
-                .addComponent(RestartButton)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(MaintenanceButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(RestartButton))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jToggleButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -208,7 +221,9 @@ public class VirtualProductLine extends javax.swing.JFrame {
                     .addComponent(BreakButton)
                     .addComponent(MaintenanceButton)
                     .addComponent(RestartButton))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addComponent(jToggleButton1)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -268,6 +283,11 @@ public class VirtualProductLine extends javax.swing.JFrame {
         this.RestartButton.setEnabled(false);
     }//GEN-LAST:event_RestartButtonActionPerformed
 
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // TODO add your handling code here:
+        this.agent.togglePause();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -312,6 +332,7 @@ public class VirtualProductLine extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JTextField newProductionRateField;
     // End of variables declaration//GEN-END:variables
 }

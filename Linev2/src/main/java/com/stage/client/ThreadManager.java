@@ -7,6 +7,8 @@ import gui.VirtualProductLine;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ThreadManager {
@@ -32,7 +34,7 @@ public class ThreadManager {
         try {
             //Start GUI
             GUIThread.start();
-            
+
             //Start thingThreads (simulate data)
             if (client.waitForConnection(30000)) {
                 for (AssetThing thing : agent.getThings()) {
@@ -45,7 +47,12 @@ public class ThreadManager {
             }
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - An exception occurred while starting the threads.", ThreadManager.class);
+            e.printStackTrace();
         }
+    }
+
+    void togglePause() {
+        this.pauseThread = !this.pauseThread;
     }
 
     private class AgentThreadRunnable implements Runnable {
@@ -62,7 +69,12 @@ public class ThreadManager {
         public void run() {
             while (!client.isShutdown()) {
                 if (pauseThread) {
-                    //TO DO
+                    LOG.info("NOTIFICATIE [INFO] - pausing...");
+                    try {
+                        TimeUnit.SECONDS.sleep(speed);
+                    } catch (InterruptedException ex) {
+                        LOG.info("NOTIFICATIE [ERROR] - InterruptedException while sleeping...");
+                    }
                 } else {
                     try {
                         client.bindThing(this.thing);
@@ -81,7 +93,6 @@ public class ThreadManager {
                 }
             }
         }
-
 
     }
 

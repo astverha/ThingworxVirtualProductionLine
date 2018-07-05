@@ -12,6 +12,7 @@ public class ThingworxClient extends ConnectedThingClient {
 
     private final ConfigurationAgent agent;
     private int simulationSpeed;
+    private ThreadManager tManager;
 
     public ThingworxClient(ConfigurationAgent agent) throws Exception {
         super(agent.getConfiguration());
@@ -38,7 +39,7 @@ public class ThingworxClient extends ConnectedThingClient {
 
     public void startSimulation(int runTime) {
         try {
-            ThreadManager tManager = new ThreadManager(agent);
+            tManager = new ThreadManager(agent);
             tManager.start();
             LOG.info("NOTIFICATIE [INFO] - {} - ThreadManager succesfully started. Expected runtime: {} minutes.", ThingworxClient.class, runTime);
             TimeUnit.MINUTES.sleep(runTime);
@@ -46,5 +47,9 @@ public class ThingworxClient extends ConnectedThingClient {
             LOG.error("NOTIFICATIE [ERROR] - {} - Failed to start simulation (startSimulation).", ThingworxClient.class);
         }
 
+    }
+
+    public void togglePause() {
+        tManager.togglePause();
     }
 }

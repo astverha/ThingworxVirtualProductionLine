@@ -77,4 +77,8 @@ public final class ConfigurationAgent {
     public ThingworxClient getClient() {
         return client;
     }
+
+    public void togglePause() {
+        client.togglePause();
+    }
 }

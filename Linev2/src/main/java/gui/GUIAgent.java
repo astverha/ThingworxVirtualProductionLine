@@ -7,7 +7,6 @@ package gui;
 
 import configuration.AssetThing;
 import configuration.ConfigurationAgent;
-import configuration.ThingProperty;
 import java.util.List;
 
 /**
@@ -53,6 +52,10 @@ public class GUIAgent {
     
     public void restartMachine(){
         selectedAsset.restartMachine();
+    }
+
+    void togglePause() {
+        agent.togglePause();
     }
     
     
