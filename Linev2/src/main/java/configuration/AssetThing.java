@@ -46,34 +46,76 @@ public class AssetThing extends VirtualThing {
         try {
             for (int i = 0; i < this.assetProperties.size(); i++) {
                 ThingProperty node = this.assetProperties.get(i);
-                PropertyDefinition pd;
-                AspectCollection aspects = new AspectCollection();
 
-                if (StringUtils.isNumeric(node.getValue())) {
-                    pd = new PropertyDefinition(node.getName(), "", BaseTypes.NUMBER);
-                } else if ("true".equals(node.getValue()) || "false".equals(node.getValue())) {
-                    pd = new PropertyDefinition(node.getName(), "", BaseTypes.BOOLEAN);
-                } else {
-                    pd = new PropertyDefinition(node.getName(), "", BaseTypes.STRING);
+                if (!node.getName().equalsIgnoreCase("ProductionRate") && !node.getName().equalsIgnoreCase("PercentageFailure")) {
+                    PropertyDefinition pd;
+                    AspectCollection aspects = new AspectCollection();
+
+                    if (StringUtils.isNumeric(node.getValue())) {
+                        pd = new PropertyDefinition(node.getName(), "", BaseTypes.NUMBER);
+                    } else if ("true".equals(node.getValue()) || "false".equals(node.getValue())) {
+                        pd = new PropertyDefinition(node.getName(), "", BaseTypes.BOOLEAN);
+                    } else {
+                        pd = new PropertyDefinition(node.getName(), "", BaseTypes.STRING);
+                    }
+
+                    aspects.put(Aspects.ASPECT_DATACHANGETYPE, new StringPrimitive("VALUE"));
+                    aspects.put(Aspects.ASPECT_DATACHANGETHRESHOLD, new NumberPrimitive(0.0));
+                    aspects.put(Aspects.ASPECT_CACHETIME, new IntegerPrimitive(0));
+                    aspects.put(Aspects.ASPECT_ISPERSISTENT, new BooleanPrimitive(true));
+                    aspects.put(Aspects.ASPECT_ISREADONLY, new BooleanPrimitive(true));
+                    aspects.put("pushType", new StringPrimitive(DataChangeType.ALWAYS.name()));
+                    aspects.put(Aspects.ASPECT_ISLOGGED, new BooleanPrimitive(true));
+
+                    pd.setAspects(aspects);
+                    super.defineProperty(pd);
                 }
-
-                aspects.put(Aspects.ASPECT_DATACHANGETYPE, new StringPrimitive("VALUE"));
-                aspects.put(Aspects.ASPECT_DATACHANGETHRESHOLD, new NumberPrimitive(0.0));
-                aspects.put(Aspects.ASPECT_CACHETIME, new IntegerPrimitive(0));
-                aspects.put(Aspects.ASPECT_ISPERSISTENT, new BooleanPrimitive(false));
-                aspects.put(Aspects.ASPECT_ISREADONLY, new BooleanPrimitive(true));
-                aspects.put("pushType", new StringPrimitive(DataChangeType.ALWAYS.name()));
-                aspects.put(Aspects.ASPECT_ISLOGGED, new BooleanPrimitive(true));
-
-                pd.setAspects(aspects);
-                super.defineProperty(pd);
             }
+
+            //BufferQuantity
+            PropertyDefinition bufferQuantity;
+            AspectCollection aspects = new AspectCollection();
+            bufferQuantity = new PropertyDefinition("BufferQuantity", "", BaseTypes.NUMBER);
+            aspects.put(Aspects.ASPECT_DATACHANGETYPE, new StringPrimitive("VALUE"));
+            aspects.put(Aspects.ASPECT_DATACHANGETHRESHOLD, new NumberPrimitive(0.0));
+            aspects.put(Aspects.ASPECT_CACHETIME, new IntegerPrimitive(0));
+            aspects.put(Aspects.ASPECT_ISPERSISTENT, new BooleanPrimitive(true));
+            aspects.put(Aspects.ASPECT_ISREADONLY, new BooleanPrimitive(true));
+            aspects.put("pushType", new StringPrimitive(DataChangeType.ALWAYS.name()));
+            bufferQuantity.setAspects(aspects);
+            super.defineProperty(bufferQuantity);
+            
+            //GoodCount
+            PropertyDefinition goodCount;
+            aspects = new AspectCollection();
+            goodCount = new PropertyDefinition("GoodCount", "", BaseTypes.NUMBER);
+            aspects.put(Aspects.ASPECT_DATACHANGETYPE, new StringPrimitive("VALUE"));
+            aspects.put(Aspects.ASPECT_DATACHANGETHRESHOLD, new NumberPrimitive(0.0));
+            aspects.put(Aspects.ASPECT_CACHETIME, new IntegerPrimitive(0));
+            aspects.put(Aspects.ASPECT_ISPERSISTENT, new BooleanPrimitive(true));
+            aspects.put(Aspects.ASPECT_ISREADONLY, new BooleanPrimitive(true));
+            aspects.put("pushType", new StringPrimitive(DataChangeType.ALWAYS.name()));
+            goodCount.setAspects(aspects);
+            super.defineProperty(goodCount);
+            
+            //GoodCount
+            PropertyDefinition badCount;
+            aspects = new AspectCollection();
+            badCount = new PropertyDefinition("BadCount", "", BaseTypes.NUMBER);
+            aspects.put(Aspects.ASPECT_DATACHANGETYPE, new StringPrimitive("VALUE"));
+            aspects.put(Aspects.ASPECT_DATACHANGETHRESHOLD, new NumberPrimitive(0.0));
+            aspects.put(Aspects.ASPECT_CACHETIME, new IntegerPrimitive(0));
+            aspects.put(Aspects.ASPECT_ISPERSISTENT, new BooleanPrimitive(true));
+            aspects.put(Aspects.ASPECT_ISREADONLY, new BooleanPrimitive(true));
+            aspects.put("pushType", new StringPrimitive(DataChangeType.ALWAYS.name()));
+            badCount.setAspects(aspects);
+            super.defineProperty(badCount);
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - An exception occurred while initializing an asset", AssetThing.class);
         }
     }
 
-    public void initializeProperties() {
+    public void initializeProperties(ThingworxClient myClient) {
         try {
             for (ThingProperty tp : this.assetProperties) {
                 // Set pushedStatus, Temperature and NextAsset
@@ -92,13 +134,6 @@ public class AssetThing extends VirtualThing {
                 }
             }
 
-            InfoTable result = client.readProperty(ThingworxEntityTypes.Things,
-                    this.getName(), "BufferQuantity", 10000);
-            // The result is returned as an InfoTable, so you must extract the value.
-            // For this example, use the getStringValue() method to retrieve the name.
-            String name = result.getFirstRow().getStringValue("BufferQuantity");
-            LOG.info("NOTIFICATIE ---- The name of the Thing {} is: {}", this.getName(), name);
-
             // Initialize BufferQuantity, GoodCount and BadCount
             this.setRemoteProperty("BufferQuantity", Integer.toString(5000));
             this.setRemoteProperty("GoodCount", Double.toString(0.0));
@@ -107,7 +142,7 @@ public class AssetThing extends VirtualThing {
             // Wait for updates
             this.updateSubscribedProperties(1000);
         } catch (Exception e) {
-            LOG.error("NOTIFICATIE [ERROR] - {} - Timeout waiting for update of property of thing {}).", AssetThing.class, this.getName());
+            LOG.error("NOTIFICATIE [ERROR] - {} - Exception waiting for update of property of thing {}).", AssetThing.class, this.getName());
             e.printStackTrace();
         }
     }

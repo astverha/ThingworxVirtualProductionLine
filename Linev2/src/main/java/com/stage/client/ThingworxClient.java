@@ -25,7 +25,7 @@ public class ThingworxClient extends ConnectedThingClient {
                 for (AssetThing myThing : this.agent.getThings()) {
                     this.bindThing(myThing);
                     if (this.isConnected()) {
-                        myThing.initializeProperties();
+                        myThing.initializeProperties(this);
                     }
                 }
                 LOG.info("NOTIFICATIE [INFO] - {} - AssetThings succesfully initialized.", ThingworxClient.class);

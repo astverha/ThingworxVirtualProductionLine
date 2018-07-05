@@ -59,6 +59,7 @@ public class ThreadManager {
                         if (client.isConnected()) {
                             try {
                                 this.thing.simulateData();
+                                LOG.info("NOTIFICATIE [INFO] - {} has been updated.", thing.getName());
                             } catch (Exception e) {
                                 LOG.error("NOTIFICATIE [ERROR] - {} - Exception occurred while simulating new data.", AgentThreadRunnable.class);
                             }
