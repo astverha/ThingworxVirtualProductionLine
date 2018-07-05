@@ -211,6 +211,7 @@ public class AssetThing extends VirtualThing {
                             && !tp.getName().equalsIgnoreCase("NextAsset")) {
                         double val = Double.parseDouble(tp.getValue());
                         val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
+                        val = (double)Math.round(val * 100d) / 100d;
                         tp.setValue(Double.toString(val));
                     }
                 }
@@ -221,6 +222,12 @@ public class AssetThing extends VirtualThing {
             double production = this.prodRate / 60 * 5;
             int goodCount = (int) (((1 - this.failure) * production) + 0.5);
             int badCount = (int) ((this.failure * production) + 0.5);
+            
+            for(ThingProperty tp : this.assetProperties){
+                if(tp.getName().equalsIgnoreCase("ProductionRate")){
+                    tp.setValue(Integer.toString(this.prodRate));
+                }
+            }
 
             this.setRemoteProperty("GoodCount", Integer.toString(goodCount));
             this.setRemoteProperty("BadCount", Integer.toString(badCount));
