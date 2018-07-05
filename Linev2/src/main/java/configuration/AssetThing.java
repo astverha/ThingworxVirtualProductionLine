@@ -209,7 +209,8 @@ public class AssetThing extends VirtualThing {
                     if (!tp.getName().equalsIgnoreCase("pushedStatus")
                             && !tp.getName().equalsIgnoreCase("ProductionRate")
                             && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                            && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                            && !tp.getName().equalsIgnoreCase("NextAsset")
+                            && !tp.getName().contains("Stock")) {
                         double val = Double.parseDouble(tp.getValue());
                         val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
                         val = (double) Math.round(val * 100d) / 100d;
