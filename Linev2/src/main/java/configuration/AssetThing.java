@@ -28,6 +28,8 @@ public class AssetThing extends VirtualThing {
     private final String name;
     private final TypeEnum type;
     private final List<ThingProperty> assetProperties;
+    private int initProdRate;   //ProdRate used when Asset is restarted after (un)planned_downtime
+    private int GUIProdRate;
     private int prodRate;
     private double failure;
 
@@ -36,7 +38,7 @@ public class AssetThing extends VirtualThing {
         this.name = name;
         this.type = type;
         this.assetProperties = assetProperties;
-
+        
         try {
             for (int i = 0; i < this.assetProperties.size(); i++) {
                 ThingProperty node = this.assetProperties.get(i);
@@ -79,6 +81,8 @@ public class AssetThing extends VirtualThing {
                     this.setRemoteProperty(tp.getName(), "Asset_" + tp.getValue());
                 } else if (tp.getName().equals("ProductionRate")) {
                     this.prodRate = Integer.parseInt(tp.getValue());
+                    this.GUIProdRate = prodRate;
+                    this.initProdRate = prodRate;
                 } else if (tp.getName().equals("PercentageFailure")) {
                     this.failure = Double.parseDouble(tp.getValue());
                 }
@@ -130,5 +134,9 @@ public class AssetThing extends VirtualThing {
 
     public List<ThingProperty> getAssetProperties() {
         return assetProperties;
+    }
+
+    public void simulateData() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
