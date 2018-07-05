@@ -3,7 +3,9 @@ package configuration;
 import com.stage.client.ThingworxClient;
 import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
+import com.thingworx.relationships.RelationshipTypes.ThingworxEntityTypes;
 import com.thingworx.types.BaseTypes;
+import com.thingworx.types.InfoTable;
 import com.thingworx.types.collections.AspectCollection;
 import com.thingworx.types.constants.Aspects;
 import com.thingworx.types.constants.DataChangeType;
@@ -40,7 +42,7 @@ public class AssetThing extends VirtualThing {
         this.type = type;
         this.assetProperties = assetProperties;
         this.client = client;
-        
+
         try {
             for (int i = 0; i < this.assetProperties.size(); i++) {
                 ThingProperty node = this.assetProperties.get(i);
@@ -90,6 +92,13 @@ public class AssetThing extends VirtualThing {
                 }
             }
 
+            InfoTable result = client.readProperty(ThingworxEntityTypes.Things,
+                    this.getName(), "BufferQuantity", 10000);
+            // The result is returned as an InfoTable, so you must extract the value.
+            // For this example, use the getStringValue() method to retrieve the name.
+            String name = result.getFirstRow().getStringValue("BufferQuantity");
+            LOG.info("NOTIFICATIE ---- The name of the Thing {} is: {}", this.getName(), name);
+
             // Initialize BufferQuantity, GoodCount and BadCount
             this.setRemoteProperty("BufferQuantity", Integer.toString(5000));
             this.setRemoteProperty("GoodCount", Double.toString(0.0));
@@ -98,7 +107,8 @@ public class AssetThing extends VirtualThing {
             // Wait for updates
             this.updateSubscribedProperties(1000);
         } catch (Exception e) {
-            LOG.error("NOTIFICATIE [ERROR] - {} - Timeout waiting for update of property of thing {).", AssetThing.class, this.getName());
+            LOG.error("NOTIFICATIE [ERROR] - {} - Timeout waiting for update of property of thing {}).", AssetThing.class, this.getName());
+            e.printStackTrace();
         }
     }
 
@@ -116,13 +126,14 @@ public class AssetThing extends VirtualThing {
             vtq.setQuality(QualityStatus.GOOD);
             this.setPropertyVTQ(name, vtq, true);
         } catch (Exception e) {
-            LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property of thing {).", AssetThing.class, this.getName());
+            LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property of thing {}.", AssetThing.class, this.getName());
+            e.printStackTrace();
         }
     }
 
     public ThingProperty getPropertyByName(String name) {
         for (ThingProperty tp : this.assetProperties) {
-            if(tp.getName().equals(name)){
+            if (tp.getName().equals(name)) {
                 return tp;
             }
         }
@@ -140,47 +151,47 @@ public class AssetThing extends VirtualThing {
 
     public void simulateData() {
         int dProdRate = this.GUIProdRate - this.prodRate;
-        
-        if(dProdRate != 0){
-            for(ThingProperty tp : this.assetProperties){
-                if(!tp.getName().equalsIgnoreCase("pushedStatus")
-                        && !tp.getName().equalsIgnoreCase("ProductionRate") 
-                        && !tp.getName().equalsIgnoreCase("PercentageFailure") 
-                        && !tp.getName().equalsIgnoreCase("NextAsset")){
+
+        if (dProdRate != 0) {
+            for (ThingProperty tp : this.assetProperties) {
+                if (!tp.getName().equalsIgnoreCase("pushedStatus")
+                        && !tp.getName().equalsIgnoreCase("ProductionRate")
+                        && !tp.getName().equalsIgnoreCase("PercentageFailure")
+                        && !tp.getName().equalsIgnoreCase("NextAsset")) {
                     double val = Double.parseDouble(tp.getValue());
                     val = val * (this.GUIProdRate / this.prodRate);
                     tp.setValue(Double.toString(val));
                 }
             }
-            this.failure = this.failure * (this.GUIProdRate / this.prodRate );
+            this.failure = this.failure * (this.GUIProdRate / this.prodRate);
         } else {
             Random random = new Random();
-            for(ThingProperty tp : this.assetProperties){
-                if(!tp.getName().equalsIgnoreCase("pushedStatus")
-                        && !tp.getName().equalsIgnoreCase("ProductionRate") 
-                        && !tp.getName().equalsIgnoreCase("PercentageFailure") 
-                        && !tp.getName().equalsIgnoreCase("NextAsset")){
+            for (ThingProperty tp : this.assetProperties) {
+                if (!tp.getName().equalsIgnoreCase("pushedStatus")
+                        && !tp.getName().equalsIgnoreCase("ProductionRate")
+                        && !tp.getName().equalsIgnoreCase("PercentageFailure")
+                        && !tp.getName().equalsIgnoreCase("NextAsset")) {
                     double val = Double.parseDouble(tp.getValue());
-                    val = val + (( random.nextBoolean() ? 1 : -1 ) * (random.nextDouble() / 10 * val));
+                    val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
                     tp.setValue(Double.toString(val));
                 }
             }
         }
-        
+
         this.prodRate = this.GUIProdRate;
         double production = this.prodRate / 60 * 5;
         int goodCount = (int) (((1 - this.failure) * production) + 0.5);
         int badCount = (int) ((this.failure * production) + 0.5);
-        
+
         this.setRemoteProperty("GoodCount", Integer.toString(goodCount));
         this.setRemoteProperty("BadCount", Integer.toString(badCount));
-        for(ThingProperty tp : this.assetProperties){
-                if(!tp.getName().equalsIgnoreCase("pushedStatus")
-                        && !tp.getName().equalsIgnoreCase("ProductionRate") 
-                        && !tp.getName().equalsIgnoreCase("PercentageFailure") 
-                        && !tp.getName().equalsIgnoreCase("NextAsset")){
-                    this.setRemoteProperty(tp.getName(), tp.getValue());
-                }
+        for (ThingProperty tp : this.assetProperties) {
+            if (!tp.getName().equalsIgnoreCase("pushedStatus")
+                    && !tp.getName().equalsIgnoreCase("ProductionRate")
+                    && !tp.getName().equalsIgnoreCase("PercentageFailure")
+                    && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                this.setRemoteProperty(tp.getName(), tp.getValue());
             }
+        }
     }
 }

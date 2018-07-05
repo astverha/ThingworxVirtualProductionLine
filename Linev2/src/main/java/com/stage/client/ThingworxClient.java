@@ -20,6 +20,7 @@ public class ThingworxClient extends ConnectedThingClient {
 
     public void initThingworx() {
         try {
+            this.start();
             if (this.waitForConnection(20000)) {
                 for (AssetThing myThing : this.agent.getThings()) {
                     this.bindThing(myThing);
@@ -28,9 +29,11 @@ public class ThingworxClient extends ConnectedThingClient {
                     }
                 }
                 LOG.info("NOTIFICATIE [INFO] - {} - AssetThings succesfully initialized.", ThingworxClient.class);
+            } else {
+                LOG.warn("NOTIFICATIE [WARNING] - {} - Timed out waiting for client to connect to Thingworx (initThingworx).", ThingworxClient.class);
             }
         } catch (Exception e) {
-            LOG.error("NOTIFICATIE [ERROR] - {} - Timed out waiting for client to connect to Thingworx (initThingworx).", ThingworxClient.class);
+            LOG.error("NOTIFICATIE [ERROR] - {} - Failed to initialize things (initThingworx).", ThingworxClient.class);
         }
     }
 
