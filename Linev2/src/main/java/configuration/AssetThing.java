@@ -139,4 +139,8 @@ public class AssetThing extends VirtualThing {
     public void simulateData() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public void setNewProdRate(int rate) {
+        this.GUIProdRate = rate;
+    }
 }
