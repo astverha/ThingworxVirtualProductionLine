@@ -158,7 +158,7 @@ public class VirtualProductLine extends javax.swing.JFrame {
         );
         PropertyPanelLayout.setVerticalGroup(
             PropertyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 140, Short.MAX_VALUE)
+            .addGap(0, 206, Short.MAX_VALUE)
         );
 
         jLabel2.setText("New Production Rate:");
@@ -223,9 +223,8 @@ public class VirtualProductLine extends javax.swing.JFrame {
                     .addComponent(BreakButton)
                     .addComponent(MaintenanceButton)
                     .addComponent(RestartButton))
-                .addGap(34, 34, 34)
-                .addComponent(PropertyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(PropertyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();

@@ -184,6 +184,7 @@ public class AssetThing extends VirtualThing {
 
     public void simulateData() {
         if (!machineDown) {
+            Random random = new Random();
             try {
                 int dProdRate = this.GUIProdRate - this.prodRate;
 
@@ -203,10 +204,8 @@ public class AssetThing extends VirtualThing {
                             tp.setValue(Double.toString(val));
                         }
                     }
-                    Random random = new Random();
                     this.failure = this.failure + dProdRate / 30 + random.nextInt(10) - 5;
                 } else {
-                    Random random = new Random();
                     for (ThingProperty tp : this.assetProperties) {
                         if (!tp.getName().equalsIgnoreCase("pushedStatus")
                                 && !tp.getName().equalsIgnoreCase("ProductionRate")
@@ -245,11 +244,14 @@ public class AssetThing extends VirtualThing {
                     if (!tp.getName().equalsIgnoreCase("pushedStatus")
                             && !tp.getName().equalsIgnoreCase("ProductionRate")
                             && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                            && !tp.getName().equalsIgnoreCase("NextAsset")) {
-                        this.setRemoteProperty(tp.getName(), tp.getValue());
+                            && !tp.getName().equalsIgnoreCase("NextAsset")
+                            && !tp.getName().contains("Stock")) {
+                        double val = Double.parseDouble(tp.getValue());
+                        val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
+                        val = (double) Math.round(val * 100d) / 100d;
+                        tp.setValue(Double.toString(val));
                     }
                 }
-                System.out.println("THING " + this.getName() + " --- GOODCOUNT: " + goodCount);
                 this.updateSubscribedProperties(1000);
                 this.client.invokeService(ThingworxEntityTypes.Things, this.getName(), "addToBuffer", null, Integer.SIZE);
             } catch (Exception e) {
@@ -260,30 +262,30 @@ public class AssetThing extends VirtualThing {
 
     public void breakMachine() {
         this.setRemoteProperty("pushedStatus", "" + StatusEnum.UNPLANNED_DOWNTIME.ordinal());
-        for(ThingProperty pt : this.getAssetProperties()){
-            if(pt.getName().equals("pushedStatus")){
+        for (ThingProperty pt : this.getAssetProperties()) {
+            if (pt.getName().equals("pushedStatus")) {
                 pt.setValue("" + StatusEnum.UNPLANNED_DOWNTIME.ordinal());
             }
         }
         this.machineDown = true;
         LOG.info("NOTIFICATIE [INFO] - Thing {} is BROKEN. ", this.getName());
     }
-    
-    public void performMaintenance(){
+
+    public void performMaintenance() {
         this.setRemoteProperty("pushedStatus", "" + StatusEnum.PLANNED_DOWNTIME.ordinal());
-        for(ThingProperty pt : this.getAssetProperties()){
-            if(pt.getName().equals("pushedStatus")){
+        for (ThingProperty pt : this.getAssetProperties()) {
+            if (pt.getName().equals("pushedStatus")) {
                 pt.setValue("" + StatusEnum.PLANNED_DOWNTIME.ordinal());
             }
         }
         this.machineDown = true;
         LOG.info("NOTIFICATIE [INFO] - Thing {} is DOWN FOR MAINTENANCE. ", this.getName());
     }
-    
-    public void restartMachine(){
+
+    public void restartMachine() {
         this.setRemoteProperty("pushedStatus", "" + StatusEnum.RUNNING.ordinal());
-        for(ThingProperty pt : this.getAssetProperties()){
-            if(pt.getName().equals("pushedStatus")){
+        for (ThingProperty pt : this.getAssetProperties()) {
+            if (pt.getName().equals("pushedStatus")) {
                 pt.setValue("" + StatusEnum.RUNNING.ordinal());
             }
         }
