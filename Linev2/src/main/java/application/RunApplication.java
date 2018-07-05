@@ -19,6 +19,8 @@ public class RunApplication {
             //Sets the initial values of the things in Thingworx
             client.initThingworx();
             
+            //Starts the simulation for <int> minutes
+            client.startSimulation(15);
             
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - An exception occurred while initializing the client.", RunApplication.class);

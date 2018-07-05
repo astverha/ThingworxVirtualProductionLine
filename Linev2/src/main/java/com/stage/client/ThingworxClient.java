@@ -3,6 +3,7 @@ package com.stage.client;
 import com.thingworx.communications.client.ConnectedThingClient;
 import configuration.AssetThing;
 import configuration.ConfigurationAgent;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.LoggerFactory;
 
 public class ThingworxClient extends ConnectedThingClient {
@@ -26,6 +27,7 @@ public class ThingworxClient extends ConnectedThingClient {
                         myThing.initializeProperties();
                     }
                 }
+                LOG.info("NOTIFICATIE [INFO] - {} - AssetThings succesfully initialized.", ThingworxClient.class);
             }
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Timed out waiting for client to connect to Thingworx (initThingworx).", ThingworxClient.class);
@@ -36,6 +38,8 @@ public class ThingworxClient extends ConnectedThingClient {
         try {
             ThreadManager tManager = new ThreadManager(agent);
             tManager.start();
+            LOG.info("NOTIFICATIE [INFO] - {} - ThreadManager succesfully started. Expected runtime: {} minutes.", ThingworxClient.class, runTime);
+            TimeUnit.MINUTES.sleep(runTime);
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Failed to start simulation (startSimulation).", ThingworxClient.class);
         }
