@@ -45,9 +45,29 @@ public class VirtualProductLine extends javax.swing.JFrame {
         this.PropertyPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         this.initDropDown();
-        new Timer(5000, taskPerformer).start();
+
+        newProductionRateField.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                if (e.getKeyCode() == VK_ENTER) {
+                    agent.setProductionRate(Integer.parseInt(newProductionRateField.getText().trim()));
+                }
+            }
+
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent e) {
+            }
+
+        });
+
+        new Timer(1000, taskPerformer).start();
     }
-    
+
     ActionListener taskPerformer = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -84,51 +104,26 @@ public class VirtualProductLine extends javax.swing.JFrame {
 
     private void showPropsOfSelectedAsset() {
         this.PropertyPanel.removeAll();
-        
+
         GridLayout grid = new GridLayout(this.agent.getSelectedAsset().getAssetProperties().size(), 2);
         this.PropertyPanel.setLayout(grid);
-        
+
         for (ThingProperty pt : this.agent.getSelectedAsset().getAssetProperties()) {
             JLabel label = new JLabel(pt.getName() + ":", SwingConstants.CENTER);
+            JLabel value = new JLabel();
 
-            if (pt.getName().equalsIgnoreCase("ProductionRate")) {
-                JTextField field = new JTextField(pt.getValue());
-                field.addKeyListener(new KeyListener(){
-
-                    @Override
-                    public void keyPressed(java.awt.event.KeyEvent e) {
-                        if(e.getKeyCode() == VK_ENTER){
-                            System.out.println("NEW PRODUCTION RATE: " + field.getText());
-                            agent.setProductionRate(Integer.parseInt(field.getText().trim()));
-                        }
-                    }
-
-                    @Override
-                    public void keyTyped(java.awt.event.KeyEvent e) {}
-
-                    @Override
-                    public void keyReleased(java.awt.event.KeyEvent e) {}
-                    
-                });
-                this.PropertyPanel.add(field);
+            if (pt.getName().equalsIgnoreCase("pushedStatus")) {
+                value.setText(StatusEnum.convertIntToState(Integer.parseInt(pt.getValue())));
             } else {
-                JLabel value = new JLabel();
-                if (pt.getName().equalsIgnoreCase("pushedStatus")) {
-                    value.setText(StatusEnum.convertIntToState(Integer.parseInt(pt.getValue())));
-                } else {
-                    value.setText(pt.getValue());
-                }
-
-                this.PropertyPanel.add(value);
+                value.setText(pt.getValue());
             }
+
+            this.PropertyPanel.add(value);
 
             this.PropertyPanel.add(label);
         }
         this.PropertyPanel.validate();
     }
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -142,6 +137,8 @@ public class VirtualProductLine extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         AssetDropDown = new javax.swing.JComboBox<>();
         PropertyPanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        newProductionRateField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -153,24 +150,30 @@ public class VirtualProductLine extends javax.swing.JFrame {
         PropertyPanel.setLayout(PropertyPanelLayout);
         PropertyPanelLayout.setHorizontalGroup(
             PropertyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 467, Short.MAX_VALUE)
         );
         PropertyPanelLayout.setVerticalGroup(
             PropertyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 260, Short.MAX_VALUE)
         );
 
+        jLabel2.setText("New Production Rate:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(PropertyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(112, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(AssetDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(103, 103, 103))
+                .addGap(49, 49, 49)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(newProductionRateField)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,7 +181,9 @@ public class VirtualProductLine extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AssetDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AssetDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newProductionRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PropertyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -225,5 +230,7 @@ public class VirtualProductLine extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> AssetDropDown;
     private javax.swing.JPanel PropertyPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JTextField newProductionRateField;
     // End of variables declaration//GEN-END:variables
 }
