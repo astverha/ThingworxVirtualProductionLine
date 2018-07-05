@@ -33,12 +33,14 @@ public class ThreadManager {
             GUIThread.start();
             
             //Start simulation
+
             if (client.waitForConnection(30000)) {
                 for (AssetThing thing : agent.getThings()) {
                     if (!thing.getName().contains("Line")) {
                         Thread thingThread = new Thread(new AgentThreadRunnable(thing, 5));
                     }
                 }
+                LOG.info("NOTIFICATIE [INFO] - {} - Threads succesfully started. Refresh interval: {} seconds.", ThreadManager.class, 5);
             }
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - An exception occurred while starting the threads.", ThreadManager.class);
@@ -66,17 +68,19 @@ public class ThreadManager {
                         if (client.isConnected()) {
                             try {
                                 this.thing.simulateData();
+                                LOG.info("NOTIFICATIE [INFO] - {} has been updated.", thing.getName());
+
                             } catch (Exception e) {
                                 LOG.error("NOTIFICATIE [ERROR] - {} - Exception occurred while simulating new data.", AgentThreadRunnable.class);
                             }
                         }
-
                     } catch (Exception e) {
                         LOG.error("NOTIFICATIE [ERROR] - {} - Thing {} could not be bound to the client.", AgentThreadRunnable.class, this.thing.getName());
                     }
                 }
             }
         }
+
 
     }
 
@@ -88,6 +92,5 @@ public class ThreadManager {
                 new VirtualProductLine(new GUIAgent(agent)).setVisible(true);
             });
         }
-
     }
 }
