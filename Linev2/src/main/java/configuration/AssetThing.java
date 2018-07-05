@@ -5,11 +5,9 @@ import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
 import com.thingworx.relationships.RelationshipTypes.ThingworxEntityTypes;
 import com.thingworx.types.BaseTypes;
-import com.thingworx.types.InfoTable;
 import com.thingworx.types.collections.AspectCollection;
 import com.thingworx.types.constants.Aspects;
 import com.thingworx.types.constants.DataChangeType;
-import com.thingworx.types.constants.QualityStatus;
 import com.thingworx.types.primitives.BooleanPrimitive;
 import com.thingworx.types.primitives.IntegerPrimitive;
 import com.thingworx.types.primitives.NumberPrimitive;
@@ -18,7 +16,6 @@ import com.thingworx.types.primitives.structs.VTQ;
 import java.util.List;
 import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.Utilities;
@@ -34,7 +31,7 @@ public class AssetThing extends VirtualThing {
     private int initProdRate;   //ProdRate used when Asset is restarted after (un)planned_downtime
     private int GUIProdRate;
     private int prodRate;
-    private double failure;
+    private int failure;
 
     public AssetThing(String name, TypeEnum type, List<ThingProperty> assetProperties, ThingworxClient client) {
         super(name, "", client);
@@ -130,7 +127,7 @@ public class AssetThing extends VirtualThing {
                     this.GUIProdRate = prodRate;
                     this.initProdRate = prodRate;
                 } else if (tp.getName().equals("PercentageFailure")) {
-                    this.failure = Double.parseDouble(tp.getValue());
+                    this.failure = Integer.parseInt(tp.getValue());
                 }
             }
 
@@ -143,7 +140,6 @@ public class AssetThing extends VirtualThing {
             this.updateSubscribedProperties(1000);
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Exception waiting for update of property of thing {}).", AssetThing.class, this.getName());
-            e.printStackTrace();
         }
     }
 
@@ -194,15 +190,18 @@ public class AssetThing extends VirtualThing {
                     if (!tp.getName().equalsIgnoreCase("pushedStatus")
                             && !tp.getName().equalsIgnoreCase("ProductionRate")
                             && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                            && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                            && !tp.getName().equalsIgnoreCase("NextAsset")
+                            && !tp.getName().equalsIgnoreCase("StockA")
+                            && !tp.getName().equalsIgnoreCase("StockB")
+                            && !tp.getName().equalsIgnoreCase("StockC")) {
                         double val = Double.parseDouble(tp.getValue());
                         val = val * (this.GUIProdRate / new Double(this.prodRate));
-                        System.out.println("DELINGSJE: " + Double.toString(this.GUIProdRate) + " --- " + this.prodRate);
-                        System.out.println("VAL: " + val);
+
+                        val = (double)Math.round(val * 100d) / 100d;
                         tp.setValue(Double.toString(val));
                     }
                 }
-                this.failure = this.failure * (this.GUIProdRate / new Double(this.prodRate));
+                this.failure = (int) (this.failure * (this.GUIProdRate / new Double(this.prodRate)));
             } else {
                 Random random = new Random();
                 for (ThingProperty tp : this.assetProperties) {
@@ -222,9 +221,12 @@ public class AssetThing extends VirtualThing {
             double production = this.prodRate / 60 * 5;
             int goodCount = (int) (((1 - (this.failure/100)) * production) + 0.5);
             int badCount = (int) (((this.failure/100) * production) + 0.5);
+
             for(ThingProperty tp : this.assetProperties){
                 if(tp.getName().equalsIgnoreCase("ProductionRate")){
                     tp.setValue(Integer.toString(this.prodRate));
+                } else if (tp.getName().equalsIgnoreCase("PercentageFailure")) {
+                    tp.setValue(Integer.toString(this.failure));
                 }
             }
 
