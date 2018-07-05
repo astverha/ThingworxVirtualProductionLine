@@ -187,6 +187,7 @@ public class AssetThing extends VirtualThing {
 
     public void simulateData() {
         try {
+            System.out.println("GUIPRODRATE: " + this.GUIProdRate);
             int dProdRate = this.GUIProdRate - this.prodRate;
 
             if (dProdRate != 0) {
@@ -216,6 +217,7 @@ public class AssetThing extends VirtualThing {
             }
 
             this.prodRate = this.GUIProdRate;
+            System.out.println("PRODRATE: " + this.prodRate);
             double production = this.prodRate / 60 * 5;
             int goodCount = (int) (((1 - this.failure) * production) + 0.5);
             int badCount = (int) ((this.failure * production) + 0.5);

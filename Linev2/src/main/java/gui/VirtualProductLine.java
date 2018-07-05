@@ -23,6 +23,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -44,7 +45,15 @@ public class VirtualProductLine extends javax.swing.JFrame {
         this.PropertyPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         this.initDropDown();
+        new Timer(5000, taskPerformer).start();
     }
+    
+    ActionListener taskPerformer = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            showPropsOfSelectedAsset();
+        }
+    };
 
     private void initDropDown() {
         this.AssetDropDown.removeAllItems();
@@ -82,7 +91,7 @@ public class VirtualProductLine extends javax.swing.JFrame {
         for (ThingProperty pt : this.agent.getSelectedAsset().getAssetProperties()) {
             JLabel label = new JLabel(pt.getName() + ":", SwingConstants.CENTER);
 
-            if (pt.getName().equalsIgnoreCase("productionRate")) {
+            if (pt.getName().equalsIgnoreCase("ProductionRate")) {
                 JTextField field = new JTextField(pt.getValue());
                 field.addKeyListener(new KeyListener(){
 
@@ -90,6 +99,7 @@ public class VirtualProductLine extends javax.swing.JFrame {
                     public void keyPressed(java.awt.event.KeyEvent e) {
                         if(e.getKeyCode() == VK_ENTER){
                             System.out.println("NEW PRODUCTION RATE: " + field.getText());
+                            agent.setProductionRate(Integer.parseInt(field.getText().trim()));
                         }
                     }
 
