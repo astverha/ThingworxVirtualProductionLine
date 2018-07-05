@@ -39,5 +39,9 @@ public class GUIAgent {
        return this.agent.getThingByName(name);
     }
     
+    public void setProductionRate(int rate){
+        selectedAsset.setNewProdRate(rate);
+    }
+    
     
 }

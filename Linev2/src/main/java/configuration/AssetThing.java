@@ -194,4 +194,8 @@ public class AssetThing extends VirtualThing {
             }
         }
     }
+
+    public void setNewProdRate(int rate) {
+        this.GUIProdRate = rate;
+    }
 }

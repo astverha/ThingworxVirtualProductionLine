@@ -10,13 +10,21 @@ import configuration.ConfigurationAgent;
 import configuration.StatusEnum;
 import configuration.ThingProperty;
 import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import static java.awt.event.KeyEvent.VK_ENTER;
+import java.awt.event.KeyListener;
+import javafx.scene.input.KeyEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -31,8 +39,9 @@ public class VirtualProductLine extends javax.swing.JFrame {
      */
     public VirtualProductLine(GUIAgent agent) {
         initComponents();
+        setLocationRelativeTo(null);
         this.agent = agent;
-        this.PropertyPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);        
+        this.PropertyPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         this.initDropDown();
     }
@@ -45,32 +54,71 @@ public class VirtualProductLine extends javax.swing.JFrame {
         this.AssetDropDown.setSelectedIndex(1);
         this.agent.setSelectedAsset(this.agent.getAllThings().get(1));
         this.showPropsOfSelectedAsset();
-        
+
         this.AssetDropDown.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                System.out.println("ITEM CHANGED");
+                //1 means that an item was selected
+                //2 means that an item was deselected
+                if (e.getStateChange() == 1) {
+                    AssetThing at = agent.getAssetThingByName(e.getItem().toString());
+                    if (at != null) {
+                        agent.setSelectedAsset(at);
+                        showPropsOfSelectedAsset();
+                    }
+                }
             }
-            
+
         });
-        
+
     }
 
     private void showPropsOfSelectedAsset() {
-        GridLayout grid = new GridLayout(this.agent.getSelectedAsset().getAssetProperties().size(), 2, 5, 5);
+        this.PropertyPanel.removeAll();
+        
+        GridLayout grid = new GridLayout(this.agent.getSelectedAsset().getAssetProperties().size(), 2);
         this.PropertyPanel.setLayout(grid);
+        
         for (ThingProperty pt : this.agent.getSelectedAsset().getAssetProperties()) {
-            JLabel label = new JLabel(pt.getName() + ":");
-            JLabel value = new JLabel();
-            if (pt.getName().equalsIgnoreCase("status")) {
-                value.setText(StatusEnum.convertIntToState(Integer.parseInt(pt.getValue())));
+            JLabel label = new JLabel(pt.getName() + ":", SwingConstants.CENTER);
+
+            if (pt.getName().equalsIgnoreCase("productionRate")) {
+                JTextField field = new JTextField(pt.getValue());
+                field.addKeyListener(new KeyListener(){
+
+                    @Override
+                    public void keyPressed(java.awt.event.KeyEvent e) {
+                        if(e.getKeyCode() == VK_ENTER){
+                            System.out.println("NEW PRODUCTION RATE: " + field.getText());
+                        }
+                    }
+
+                    @Override
+                    public void keyTyped(java.awt.event.KeyEvent e) {}
+
+                    @Override
+                    public void keyReleased(java.awt.event.KeyEvent e) {}
+                    
+                });
+                this.PropertyPanel.add(field);
             } else {
-                value.setText(pt.getValue());
+                JLabel value = new JLabel();
+                if (pt.getName().equalsIgnoreCase("pushedStatus")) {
+                    value.setText(StatusEnum.convertIntToState(Integer.parseInt(pt.getValue())));
+                } else {
+                    value.setText(pt.getValue());
+                }
+
+                this.PropertyPanel.add(value);
             }
+
             this.PropertyPanel.add(label);
-            this.PropertyPanel.add(value);
         }
+        this.PropertyPanel.validate();
     }
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -106,13 +154,13 @@ public class VirtualProductLine extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
+            .addComponent(PropertyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(112, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(AssetDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(158, Short.MAX_VALUE))
-            .addComponent(PropertyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(103, 103, 103))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
