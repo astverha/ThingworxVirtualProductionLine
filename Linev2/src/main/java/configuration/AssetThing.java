@@ -197,12 +197,12 @@ public class AssetThing extends VirtualThing {
                         double val = Double.parseDouble(tp.getValue());
                         val = val * (this.GUIProdRate / new Double(this.prodRate));
 
-                        val = (double)Math.round(val * 100d) / 100d;
+                        val = (double) Math.round(val * 100d) / 100d;
                         tp.setValue(Double.toString(val));
                     }
                 }
                 Random random = new Random();
-                this.failure = this.failure + dProdRate/20 + random.nextInt(10) - 5;
+                this.failure = this.failure + dProdRate / 20 + random.nextInt(10) - 5;
             } else {
                 Random random = new Random();
                 for (ThingProperty tp : this.assetProperties) {
@@ -212,7 +212,7 @@ public class AssetThing extends VirtualThing {
                             && !tp.getName().equalsIgnoreCase("NextAsset")) {
                         double val = Double.parseDouble(tp.getValue());
                         val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
-                        val = (double)Math.round(val * 100d) / 100d;
+                        val = (double) Math.round(val * 100d) / 100d;
                         tp.setValue(Double.toString(val));
                     }
                 }
@@ -220,14 +220,20 @@ public class AssetThing extends VirtualThing {
 
             this.prodRate = this.GUIProdRate;
             double production = this.prodRate / 60 * 5;
-            int goodCount = (int) (((1 - (this.failure/100)) * production) + 0.5);
-            int badCount = (int) (((this.failure/100) * production) + 0.5);
+            int goodCount = (int) (((1 - (this.failure / 100)) * production) + 0.5);
+            int badCount = (int) (((this.failure / 100) * production) + 0.5);
 
-            for(ThingProperty tp : this.assetProperties){
-                if(tp.getName().equalsIgnoreCase("ProductionRate")){
+            for (ThingProperty tp : this.assetProperties) {
+                if (tp.getName().equalsIgnoreCase("ProductionRate")) {
                     tp.setValue(Integer.toString(this.prodRate));
                 } else if (tp.getName().equalsIgnoreCase("PercentageFailure")) {
-                    tp.setValue(Integer.toString(this.failure));
+                    if (this.failure > 100) {
+                        tp.setValue(Integer.toString(100));
+                    } else if (this.failure < 0) {
+                        tp.setValue(Integer.toString(0));
+                    } else {
+                        tp.setValue(Integer.toString(this.failure));
+                    }
                 }
             }
 
