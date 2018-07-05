@@ -7,6 +7,7 @@ package gui;
 
 import configuration.AssetThing;
 import configuration.ConfigurationAgent;
+import configuration.ThingProperty;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ import java.util.List;
 public class GUIAgent {
     
     private final ConfigurationAgent agent;
+    private AssetThing selectedAsset;
     
     public GUIAgent(ConfigurationAgent agent){
         this.agent = agent;
@@ -24,4 +26,18 @@ public class GUIAgent {
     public List<AssetThing> getAllThings(){
         return agent.getThings();
     }
+
+    public void setSelectedAsset(AssetThing asset) {
+        this.selectedAsset = asset;
+    }
+
+    public AssetThing getSelectedAsset() {
+        return this.selectedAsset;
+    }
+    
+    public AssetThing getAssetThingByName(String name){
+       return this.agent.getThingByName(name);
+    }
+    
+    
 }
