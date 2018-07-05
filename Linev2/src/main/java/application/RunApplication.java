@@ -2,6 +2,7 @@ package application;
 
 import com.stage.client.ThingworxClient;
 import configuration.ConfigurationAgent;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.LoggerFactory;
 
 public class RunApplication {
@@ -18,7 +19,6 @@ public class RunApplication {
             
             //Sets the initial values of the things in Thingworx
             client.initThingworx();
-            
             
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - An exception occurred while initializing the client.", RunApplication.class);
