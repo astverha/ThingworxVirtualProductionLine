@@ -32,6 +32,7 @@ public class AssetThing extends VirtualThing {
     private int GUIProdRate;
     private int prodRate;
     private int failure;
+    private boolean machineDown;
 
     public AssetThing(String name, TypeEnum type, List<ThingProperty> assetProperties, ThingworxClient client) {
         super(name, "", client);
@@ -39,7 +40,7 @@ public class AssetThing extends VirtualThing {
         this.type = type;
         this.assetProperties = assetProperties;
         this.client = client;
-
+        this.machineDown = false;
         try {
             for (int i = 0; i < this.assetProperties.size(); i++) {
                 ThingProperty node = this.assetProperties.get(i);
@@ -182,77 +183,113 @@ public class AssetThing extends VirtualThing {
     }
 
     public void simulateData() {
-        try {
-            int dProdRate = this.GUIProdRate - this.prodRate;
+        if (!machineDown) {
+            try {
+                int dProdRate = this.GUIProdRate - this.prodRate;
 
-            if (dProdRate != 0) {
-                for (ThingProperty tp : this.assetProperties) {
-                    if (!tp.getName().equalsIgnoreCase("pushedStatus")
-                            && !tp.getName().equalsIgnoreCase("ProductionRate")
-                            && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                            && !tp.getName().equalsIgnoreCase("NextAsset")
-                            && !tp.getName().equalsIgnoreCase("StockA")
-                            && !tp.getName().equalsIgnoreCase("StockB")
-                            && !tp.getName().equalsIgnoreCase("StockC")) {
-                        double val = Double.parseDouble(tp.getValue());
-                        val = val * (this.GUIProdRate / new Double(this.prodRate));
+                if (dProdRate != 0) {
+                    for (ThingProperty tp : this.assetProperties) {
+                        if (!tp.getName().equalsIgnoreCase("pushedStatus")
+                                && !tp.getName().equalsIgnoreCase("ProductionRate")
+                                && !tp.getName().equalsIgnoreCase("PercentageFailure")
+                                && !tp.getName().equalsIgnoreCase("NextAsset")
+                                && !tp.getName().equalsIgnoreCase("StockA")
+                                && !tp.getName().equalsIgnoreCase("StockB")
+                                && !tp.getName().equalsIgnoreCase("StockC")) {
+                            double val = Double.parseDouble(tp.getValue());
+                            val = val * (this.GUIProdRate / new Double(this.prodRate));
 
-                        val = (double) Math.round(val * 100d) / 100d;
-                        tp.setValue(Double.toString(val));
+                            val = (double) Math.round(val * 100d) / 100d;
+                            tp.setValue(Double.toString(val));
+                        }
+                    }
+                    Random random = new Random();
+                    this.failure = this.failure + dProdRate / 30 + random.nextInt(10) - 5;
+                } else {
+                    Random random = new Random();
+                    for (ThingProperty tp : this.assetProperties) {
+                        if (!tp.getName().equalsIgnoreCase("pushedStatus")
+                                && !tp.getName().equalsIgnoreCase("ProductionRate")
+                                && !tp.getName().equalsIgnoreCase("PercentageFailure")
+                                && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                            double val = Double.parseDouble(tp.getValue());
+                            val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
+                            val = (double) Math.round(val * 100d) / 100d;
+                            tp.setValue(Double.toString(val));
+                        }
                     }
                 }
-                Random random = new Random();
-                this.failure = this.failure + dProdRate / 20 + random.nextInt(10) - 5;
-            } else {
-                Random random = new Random();
+
+                this.prodRate = this.GUIProdRate;
+                double production = this.prodRate / 60 * 5;
+                int goodCount = (int) (((1 - (this.failure / 100)) * production) + 0.5);
+                int badCount = (int) (((this.failure / 100) * production) + 0.5);
+
+                for (ThingProperty tp : this.assetProperties) {
+                    if (tp.getName().equalsIgnoreCase("ProductionRate")) {
+                        tp.setValue(Integer.toString(this.prodRate));
+                    } else if (tp.getName().equalsIgnoreCase("PercentageFailure")) {
+                        if (this.failure > 100) {
+                            tp.setValue(Integer.toString(100));
+                        } else if (this.failure < 0) {
+                            tp.setValue(Integer.toString(0));
+                        } else {
+                            tp.setValue(Integer.toString(this.failure));
+                        }
+                    }
+                }
+
+                this.setRemoteProperty("GoodCount", Integer.toString(goodCount));
+                this.setRemoteProperty("BadCount", Integer.toString(badCount));
                 for (ThingProperty tp : this.assetProperties) {
                     if (!tp.getName().equalsIgnoreCase("pushedStatus")
                             && !tp.getName().equalsIgnoreCase("ProductionRate")
                             && !tp.getName().equalsIgnoreCase("PercentageFailure")
                             && !tp.getName().equalsIgnoreCase("NextAsset")) {
-                        double val = Double.parseDouble(tp.getValue());
-                        val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
-                        val = (double) Math.round(val * 100d) / 100d;
-                        tp.setValue(Double.toString(val));
+                        this.setRemoteProperty(tp.getName(), tp.getValue());
                     }
                 }
+                System.out.println("THING " + this.getName() + " --- GOODCOUNT: " + goodCount);
+                this.updateSubscribedProperties(1000);
+                this.client.invokeService(ThingworxEntityTypes.Things, this.getName(), "addToBuffer", null, Integer.SIZE);
+            } catch (Exception e) {
+                LOG.error("NOTIFICATIE [ERROR] - {} - Unable to simulate data of thing {}.", AssetThing.class, this.getName());
             }
-
-            this.prodRate = this.GUIProdRate;
-            double production = this.prodRate / 60 * 5;
-            int goodCount = (int) (((1 - (this.failure / 100)) * production) + 0.5);
-            int badCount = (int) (((this.failure / 100) * production) + 0.5);
-
-            for (ThingProperty tp : this.assetProperties) {
-                if (tp.getName().equalsIgnoreCase("ProductionRate")) {
-                    tp.setValue(Integer.toString(this.prodRate));
-                } else if (tp.getName().equalsIgnoreCase("PercentageFailure")) {
-                    if (this.failure > 100) {
-                        tp.setValue(Integer.toString(100));
-                    } else if (this.failure < 0) {
-                        tp.setValue(Integer.toString(0));
-                    } else {
-                        tp.setValue(Integer.toString(this.failure));
-                    }
-                }
-            }
-
-            this.setRemoteProperty("GoodCount", Integer.toString(goodCount));
-            this.setRemoteProperty("BadCount", Integer.toString(badCount));
-            for (ThingProperty tp : this.assetProperties) {
-                if (!tp.getName().equalsIgnoreCase("pushedStatus")
-                        && !tp.getName().equalsIgnoreCase("ProductionRate")
-                        && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                        && !tp.getName().equalsIgnoreCase("NextAsset")) {
-                    this.setRemoteProperty(tp.getName(), tp.getValue());
-                }
-            }
-            System.out.println("THING " + this.getName() + " --- GOODCOUNT: " + goodCount);
-            this.updateSubscribedProperties(1000);
-            this.client.invokeService(ThingworxEntityTypes.Things, this.getName(), "addToBuffer", null, Integer.SIZE);
-        } catch (Exception e) {
-            LOG.error("NOTIFICATIE [ERROR] - {} - Unable to simulate data of thing {}.", AssetThing.class, this.getName());
         }
+    }
+
+    public void breakMachine() {
+        this.setRemoteProperty("pushedStatus", "" + StatusEnum.UNPLANNED_DOWNTIME.ordinal());
+        for(ThingProperty pt : this.getAssetProperties()){
+            if(pt.getName().equals("pushedStatus")){
+                pt.setValue("" + StatusEnum.UNPLANNED_DOWNTIME.ordinal());
+            }
+        }
+        this.machineDown = true;
+        LOG.info("NOTIFICATIE [INFO] - Thing {} is BROKEN. ", this.getName());
+    }
+    
+    public void performMaintenance(){
+        this.setRemoteProperty("pushedStatus", "" + StatusEnum.PLANNED_DOWNTIME.ordinal());
+        for(ThingProperty pt : this.getAssetProperties()){
+            if(pt.getName().equals("pushedStatus")){
+                pt.setValue("" + StatusEnum.PLANNED_DOWNTIME.ordinal());
+            }
+        }
+        this.machineDown = true;
+        LOG.info("NOTIFICATIE [INFO] - Thing {} is DOWN FOR MAINTENANCE. ", this.getName());
+    }
+    
+    public void restartMachine(){
+        this.setRemoteProperty("pushedStatus", "" + StatusEnum.RUNNING.ordinal());
+        for(ThingProperty pt : this.getAssetProperties()){
+            if(pt.getName().equals("pushedStatus")){
+                pt.setValue("" + StatusEnum.RUNNING.ordinal());
+            }
+        }
+        this.machineDown = false;
+        this.prodRate = initProdRate;
+        LOG.info("NOTIFICATIE [INFO] - Thing {} was RESTARTED. ", this.getName());
     }
 
     public void setNewProdRate(int rate) {

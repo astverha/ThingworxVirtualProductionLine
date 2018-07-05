@@ -43,5 +43,17 @@ public class GUIAgent {
         selectedAsset.setNewProdRate(rate);
     }
     
+    public void breakMachine(){
+        selectedAsset.breakMachine();
+    }
+    
+    public void performMaintenance(){
+        selectedAsset.performMaintenance();
+    }
+    
+    public void restartMachine(){
+        selectedAsset.restartMachine();
+    }
+    
     
 }
