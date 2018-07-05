@@ -221,9 +221,8 @@ public class AssetThing extends VirtualThing {
 
                 this.prodRate = this.GUIProdRate;
                 double production = this.prodRate / 60 * 5;
-                int goodCount = (int) (((1 - (this.failure / 100)) * production) + 0.5);
-                int badCount = (int) (((this.failure / 100) * production) + 0.5);
-
+                int goodCount = (int) (((1 - (this.failure / 100.0)) * production) + 0.5);
+                int badCount = (int) (((this.failure / 100.0) * production) + 0.5);
                 for (ThingProperty tp : this.assetProperties) {
                     if (tp.getName().equalsIgnoreCase("ProductionRate")) {
                         tp.setValue(Integer.toString(this.prodRate));
@@ -250,7 +249,8 @@ public class AssetThing extends VirtualThing {
                         val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
                         val = (double) Math.round(val * 100d) / 100d;
                         tp.setValue(Double.toString(val));
-                    }
+                        this.setRemoteProperty(tp.getName(), Double.toString(val));
+                    } 
                 }
                 this.updateSubscribedProperties(1000);
                 this.client.invokeService(ThingworxEntityTypes.Things, this.getName(), "addToBuffer", null, Integer.SIZE);
