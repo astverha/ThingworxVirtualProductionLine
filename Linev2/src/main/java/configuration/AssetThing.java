@@ -191,7 +191,7 @@ public class AssetThing extends VirtualThing {
             int dProdRate = this.GUIProdRate - this.prodRate;
 
             if (dProdRate != 0) {
-                for (ThingProperty tp : this.assetProperties) {
+                /*for (ThingProperty tp : this.assetProperties) {
                     if (!tp.getName().equalsIgnoreCase("pushedStatus")
                             && !tp.getName().equalsIgnoreCase("ProductionRate")
                             && !tp.getName().equalsIgnoreCase("PercentageFailure")
@@ -200,7 +200,7 @@ public class AssetThing extends VirtualThing {
                         val = val * (this.GUIProdRate / this.prodRate);
                         tp.setValue(Double.toString(val));
                     }
-                }
+                }*/
                 this.failure = this.failure * (this.GUIProdRate / this.prodRate);
             } else {
                 Random random = new Random();
