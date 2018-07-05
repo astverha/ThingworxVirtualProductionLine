@@ -31,7 +31,7 @@ public class ThreadManager {
     public void start() {
         try {
             //Start GUI
-            //GUIThread.start();
+            GUIThread.start();
             
             //Start simulation
 
