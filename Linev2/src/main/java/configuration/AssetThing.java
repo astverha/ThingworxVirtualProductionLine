@@ -84,7 +84,7 @@ public class AssetThing extends VirtualThing {
             aspects.put("pushType", new StringPrimitive(DataChangeType.ALWAYS.name()));
             bufferQuantity.setAspects(aspects);
             super.defineProperty(bufferQuantity);
-            
+
             //GoodCount
             PropertyDefinition goodCount;
             aspects = new AspectCollection();
@@ -97,7 +97,7 @@ public class AssetThing extends VirtualThing {
             aspects.put("pushType", new StringPrimitive(DataChangeType.ALWAYS.name()));
             goodCount.setAspects(aspects);
             super.defineProperty(goodCount);
-            
+
             //GoodCount
             PropertyDefinition badCount;
             aspects = new AspectCollection();
@@ -150,18 +150,19 @@ public class AssetThing extends VirtualThing {
     public void setRemoteProperty(String name, String value) {
         try {
             VTQ vtq = new VTQ();
-            if (Utilities.isDouble(value)) {
-                vtq.setValue(new NumberPrimitive(Double.parseDouble(value)));
-            } else if (Utilities.isInteger(value)) {
+            if (Utilities.isInteger(value)) {
                 vtq.setValue(new IntegerPrimitive(Integer.parseInt(value)));
+            } else if (Utilities.isDouble(value)) {
+                vtq.setValue(new NumberPrimitive(Double.parseDouble(value)));
             } else {
                 vtq.setValue(new StringPrimitive(value));
             }
-            vtq.setTime(new DateTime());
-            vtq.setQuality(QualityStatus.GOOD);
-            this.setPropertyVTQ(name, vtq, true);
+            //vtq.setTime(new DateTime());
+            //vtq.setQuality(QualityStatus.GOOD);
+            //this.setPropertyVTQ(name, vtq, true);
+            client.writeProperty(ThingworxEntityTypes.Things, this.getName(), name, vtq.getValue(), Integer.SIZE);
         } catch (Exception e) {
-            LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property of thing {}.", AssetThing.class, this.getName());
+            LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property {} of thing {}.", AssetThing.class, name, this.getName());
             e.printStackTrace();
         }
     }
@@ -185,48 +186,54 @@ public class AssetThing extends VirtualThing {
     }
 
     public void simulateData() {
-        int dProdRate = this.GUIProdRate - this.prodRate;
+        try {
+            int dProdRate = this.GUIProdRate - this.prodRate;
 
-        if (dProdRate != 0) {
+            if (dProdRate != 0) {
+                for (ThingProperty tp : this.assetProperties) {
+                    if (!tp.getName().equalsIgnoreCase("pushedStatus")
+                            && !tp.getName().equalsIgnoreCase("ProductionRate")
+                            && !tp.getName().equalsIgnoreCase("PercentageFailure")
+                            && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                        double val = Double.parseDouble(tp.getValue());
+                        val = val * (this.GUIProdRate / this.prodRate);
+                        tp.setValue(Double.toString(val));
+                    }
+                }
+                this.failure = this.failure * (this.GUIProdRate / this.prodRate);
+            } else {
+                Random random = new Random();
+                for (ThingProperty tp : this.assetProperties) {
+                    if (!tp.getName().equalsIgnoreCase("pushedStatus")
+                            && !tp.getName().equalsIgnoreCase("ProductionRate")
+                            && !tp.getName().equalsIgnoreCase("PercentageFailure")
+                            && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                        double val = Double.parseDouble(tp.getValue());
+                        val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
+                        tp.setValue(Double.toString(val));
+                    }
+                }
+            }
+
+            this.prodRate = this.GUIProdRate;
+            double production = this.prodRate / 60 * 5;
+            int goodCount = (int) (((1 - this.failure) * production) + 0.5);
+            int badCount = (int) ((this.failure * production) + 0.5);
+
+            this.setRemoteProperty("GoodCount", Integer.toString(goodCount));
+            this.setRemoteProperty("BadCount", Integer.toString(badCount));
             for (ThingProperty tp : this.assetProperties) {
                 if (!tp.getName().equalsIgnoreCase("pushedStatus")
                         && !tp.getName().equalsIgnoreCase("ProductionRate")
                         && !tp.getName().equalsIgnoreCase("PercentageFailure")
                         && !tp.getName().equalsIgnoreCase("NextAsset")) {
-                    double val = Double.parseDouble(tp.getValue());
-                    val = val * (this.GUIProdRate / this.prodRate);
-                    tp.setValue(Double.toString(val));
+                    this.setRemoteProperty(tp.getName(), tp.getValue());
                 }
             }
-            this.failure = this.failure * (this.GUIProdRate / this.prodRate);
-        } else {
-            Random random = new Random();
-            for (ThingProperty tp : this.assetProperties) {
-                if (!tp.getName().equalsIgnoreCase("pushedStatus")
-                        && !tp.getName().equalsIgnoreCase("ProductionRate")
-                        && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                        && !tp.getName().equalsIgnoreCase("NextAsset")) {
-                    double val = Double.parseDouble(tp.getValue());
-                    val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
-                    tp.setValue(Double.toString(val));
-                }
-            }
-        }
 
-        this.prodRate = this.GUIProdRate;
-        double production = this.prodRate / 60 * 5;
-        int goodCount = (int) (((1 - this.failure) * production) + 0.5);
-        int badCount = (int) ((this.failure * production) + 0.5);
-
-        this.setRemoteProperty("GoodCount", Integer.toString(goodCount));
-        this.setRemoteProperty("BadCount", Integer.toString(badCount));
-        for (ThingProperty tp : this.assetProperties) {
-            if (!tp.getName().equalsIgnoreCase("pushedStatus")
-                    && !tp.getName().equalsIgnoreCase("ProductionRate")
-                    && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                    && !tp.getName().equalsIgnoreCase("NextAsset")) {
-                this.setRemoteProperty(tp.getName(), tp.getValue());
-            }
+            this.updateSubscribedProperties(1000);
+        } catch (Exception e) {
+            LOG.error("NOTIFICATIE [ERROR] - {} - Unable to simulate data of thing {}.", AssetThing.class, this.getName());
         }
     }
 

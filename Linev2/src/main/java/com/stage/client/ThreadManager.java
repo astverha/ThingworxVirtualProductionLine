@@ -6,6 +6,7 @@ import gui.GUIAgent;
 import gui.VirtualProductLine;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.LoggerFactory;
 
 public class ThreadManager {
@@ -30,7 +31,7 @@ public class ThreadManager {
     public void start() {
         try {
             //Start GUI
-            GUIThread.start();
+            //GUIThread.start();
             
             //Start simulation
 
@@ -38,6 +39,7 @@ public class ThreadManager {
                 for (AssetThing thing : agent.getThings()) {
                     if (!thing.getName().contains("Line")) {
                         Thread thingThread = new Thread(new AgentThreadRunnable(thing, 5));
+                        thingThread.start();
                     }
                 }
                 LOG.info("NOTIFICATIE [INFO] - {} - Threads succesfully started. Refresh interval: {} seconds.", ThreadManager.class, 5);
@@ -69,7 +71,7 @@ public class ThreadManager {
                             try {
                                 this.thing.simulateData();
                                 LOG.info("NOTIFICATIE [INFO] - {} has been updated.", thing.getName());
-
+                                TimeUnit.SECONDS.sleep(speed);
                             } catch (Exception e) {
                                 LOG.error("NOTIFICATIE [ERROR] - {} - Exception occurred while simulating new data.", AgentThreadRunnable.class);
                             }

@@ -2,7 +2,6 @@ package application;
 
 import com.stage.client.ThingworxClient;
 import configuration.ConfigurationAgent;
-import java.util.concurrent.TimeUnit;
 import org.slf4j.LoggerFactory;
 
 public class RunApplication {
@@ -14,8 +13,8 @@ public class RunApplication {
         ConfigurationAgent agent = new ConfigurationAgent("configuration.xml");
         try {
             //Initialization of ThingworxClient (responsible for connection to thingworx)
-            ThingworxClient client = new ThingworxClient(agent);
-            agent.setClient(client);
+            ThingworxClient client = agent.getClient();
+            client.start();
             
             //Sets the initial values of the things in Thingworx
             client.initThingworx();

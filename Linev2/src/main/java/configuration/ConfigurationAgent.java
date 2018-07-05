@@ -22,13 +22,16 @@ public final class ConfigurationAgent {
         try {
             ClassLoader loader = this.getClass().getClassLoader();
             File xmlFile = new File(loader.getResource(fileName).getFile());
-
+            
             lines = ReadXML.read(xmlFile);
             things = new ArrayList<>();
-            this.classToThingConversion();
 
             this.serverName = ReadXML.getServerName();
             this.appKey = ReadXML.getAppKey();
+            
+            this.client = new ThingworxClient(this);
+            
+            this.classToThingConversion();
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - An exception occurred while reading the file.", ConfigurationAgent.class);
         }
@@ -69,10 +72,6 @@ public final class ConfigurationAgent {
 
     public List<AssetThing> getThings() {
         return things;
-    }
-
-    public void setClient(ThingworxClient client) {
-        this.client = client;
     }
 
     public ThingworxClient getClient() {

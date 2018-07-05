@@ -20,7 +20,6 @@ public class ThingworxClient extends ConnectedThingClient {
 
     public void initThingworx() {
         try {
-            this.start();
             if (this.waitForConnection(20000)) {
                 for (AssetThing myThing : this.agent.getThings()) {
                     this.bindThing(myThing);
