@@ -33,8 +33,7 @@ public class ThreadManager {
             //Start GUI
             GUIThread.start();
             
-            //Start simulation
-
+            //Start thingThreads (simulate data)
             if (client.waitForConnection(30000)) {
                 for (AssetThing thing : agent.getThings()) {
                     if (!thing.getName().contains("Line")) {

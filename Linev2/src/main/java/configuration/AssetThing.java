@@ -28,10 +28,12 @@ public class AssetThing extends VirtualThing {
     private final TypeEnum type;
     private final List<ThingProperty> assetProperties;
     private ThingworxClient client;
-    private int initProdRate;   //ProdRate used when Asset is restarted after (un)planned_downtime
+    private int initProdRate;
     private int GUIProdRate;
     private int prodRate;
     private int failure;
+    private int goodCount;
+    private int badCount;
     private boolean machineDown;
 
     public AssetThing(String name, TypeEnum type, List<ThingProperty> assetProperties, ThingworxClient client) {
@@ -41,7 +43,12 @@ public class AssetThing extends VirtualThing {
         this.assetProperties = assetProperties;
         this.client = client;
         this.machineDown = false;
+        this.goodCount = 0;
+        this.badCount = 0;
         try {
+            //Define properties for the remote thing
+            //for loop voor standaard props,
+            //specifiek voor BufferQuantity, GoodCount en BadCount
             for (int i = 0; i < this.assetProperties.size(); i++) {
                 ThingProperty node = this.assetProperties.get(i);
 
@@ -96,7 +103,7 @@ public class AssetThing extends VirtualThing {
             goodCount.setAspects(aspects);
             super.defineProperty(goodCount);
 
-            //GoodCount
+            //BadCount
             PropertyDefinition badCount;
             aspects = new AspectCollection();
             badCount = new PropertyDefinition("BadCount", "", BaseTypes.NUMBER);
@@ -113,6 +120,10 @@ public class AssetThing extends VirtualThing {
         }
     }
 
+    /**
+     * Initializes thing properties, remote and local (DEPRECATED)
+     * @param myClient 
+     */
     public void initializeProperties(ThingworxClient myClient) {
         try {
             for (ThingProperty tp : this.assetProperties) {
@@ -144,6 +155,11 @@ public class AssetThing extends VirtualThing {
         }
     }
 
+    /**
+     * Sets the remote property of a thing (does not set local ThingProperty).
+     * @param name
+     * @param value 
+     */
     public void setRemoteProperty(String name, String value) {
         try {
             VTQ vtq = new VTQ();
@@ -154,16 +170,17 @@ public class AssetThing extends VirtualThing {
             } else {
                 vtq.setValue(new StringPrimitive(value));
             }
-            //vtq.setTime(new DateTime());
-            //vtq.setQuality(QualityStatus.GOOD);
-            //this.setPropertyVTQ(name, vtq, true);
             client.writeProperty(ThingworxEntityTypes.Things, this.getName(), name, vtq.getValue(), Integer.SIZE);
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property {} of thing {}.", AssetThing.class, name, this.getName());
-            e.printStackTrace();
         }
     }
 
+    /**
+     * Returns the local ThingProperty.
+     * @param name
+     * @return 
+     */
     public ThingProperty getPropertyByName(String name) {
         for (ThingProperty tp : this.assetProperties) {
             if (tp.getName().equals(name)) {
@@ -182,47 +199,41 @@ public class AssetThing extends VirtualThing {
         return assetProperties;
     }
 
+    /**
+     * Simulates parameter changes of the virtual things.
+     */
     public void simulateData() {
         if (!machineDown) {
             Random random = new Random();
             try {
+                //Calculate difference between new production rate and old production rate.
                 int dProdRate = this.GUIProdRate - this.prodRate;
-
+                //If there is a difference, set all parameters according to the new production rate,
+                //as well as the new percentage failure stat.
                 if (dProdRate != 0) {
                     for (ThingProperty tp : this.assetProperties) {
                         if (!tp.getName().equalsIgnoreCase("pushedStatus")
                                 && !tp.getName().equalsIgnoreCase("ProductionRate")
                                 && !tp.getName().equalsIgnoreCase("PercentageFailure")
                                 && !tp.getName().equalsIgnoreCase("NextAsset")
-                                && !tp.getName().equalsIgnoreCase("StockA")
-                                && !tp.getName().equalsIgnoreCase("StockB")
-                                && !tp.getName().equalsIgnoreCase("StockC")) {
+                                && !tp.getName().contains("Stock")) {
                             double val = Double.parseDouble(tp.getValue());
                             val = val * (this.GUIProdRate / new Double(this.prodRate));
-
                             val = (double) Math.round(val * 100d) / 100d;
                             tp.setValue(Double.toString(val));
                         }
                     }
                     this.failure = this.failure + dProdRate / 30 + random.nextInt(10) - 5;
-                } else {
-                    for (ThingProperty tp : this.assetProperties) {
-                        if (!tp.getName().equalsIgnoreCase("pushedStatus")
-                                && !tp.getName().equalsIgnoreCase("ProductionRate")
-                                && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                                && !tp.getName().equalsIgnoreCase("NextAsset")) {
-                            double val = Double.parseDouble(tp.getValue());
-                            val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
-                            val = (double) Math.round(val * 100d) / 100d;
-                            tp.setValue(Double.toString(val));
-                        }
-                    }
                 }
-
+                
+                //Set the production rate equal to the new production rate.
                 this.prodRate = this.GUIProdRate;
+                //calculate the amount of items produced every 5 seconds (simulationspeed)
                 double production = this.prodRate / 60 * 5;
-                int goodCount = (int) (((1 - (this.failure / 100.0)) * production) + 0.5);
-                int badCount = (int) (((this.failure / 100.0) * production) + 0.5);
+                //calculate good and bad count
+                this.goodCount = (int) (((1 - (this.failure / 100.0)) * production) + 0.5 + this.goodCount);
+                this.badCount = (int) (((this.failure / 100.0) * production) + 0.5 + this.badCount);
+                //Set the local production rate and percentage failure (for GUI)
                 for (ThingProperty tp : this.assetProperties) {
                     if (tp.getName().equalsIgnoreCase("ProductionRate")) {
                         tp.setValue(Integer.toString(this.prodRate));
@@ -237,8 +248,10 @@ public class AssetThing extends VirtualThing {
                     }
                 }
 
-                this.setRemoteProperty("GoodCount", Integer.toString(goodCount));
-                this.setRemoteProperty("BadCount", Integer.toString(badCount));
+                //add the new products to good and badcount
+                this.setRemoteProperty("GoodCount", Integer.toString(this.goodCount));
+                this.setRemoteProperty("BadCount", Integer.toString(this.badCount));
+                //simulate small variations in parameter values
                 for (ThingProperty tp : this.assetProperties) {
                     if (!tp.getName().equalsIgnoreCase("pushedStatus")
                             && !tp.getName().equalsIgnoreCase("ProductionRate")
@@ -253,7 +266,6 @@ public class AssetThing extends VirtualThing {
                     } 
                 }
                 this.updateSubscribedProperties(1000);
-                this.client.invokeService(ThingworxEntityTypes.Things, this.getName(), "addToBuffer", null, Integer.SIZE);
             } catch (Exception e) {
                 LOG.error("NOTIFICATIE [ERROR] - {} - Unable to simulate data of thing {}.", AssetThing.class, this.getName());
             }
