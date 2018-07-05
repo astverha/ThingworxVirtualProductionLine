@@ -187,7 +187,6 @@ public class AssetThing extends VirtualThing {
 
     public void simulateData() {
         try {
-            System.out.println("GUIPRODRATE: " + this.GUIProdRate);
             int dProdRate = this.GUIProdRate - this.prodRate;
 
             if (dProdRate != 0) {
@@ -197,11 +196,13 @@ public class AssetThing extends VirtualThing {
                             && !tp.getName().equalsIgnoreCase("PercentageFailure")
                             && !tp.getName().equalsIgnoreCase("NextAsset")) {
                         double val = Double.parseDouble(tp.getValue());
-                        val = val * (this.GUIProdRate / this.prodRate);
+                        val = val * (this.GUIProdRate / new Double(this.prodRate));
+                        System.out.println("DELINGSJE: " + Double.toString(this.GUIProdRate) + " --- " + this.prodRate);
+                        System.out.println("VAL: " + val);
                         tp.setValue(Double.toString(val));
                     }
                 }
-                this.failure = this.failure * (this.GUIProdRate / this.prodRate);
+                this.failure = this.failure * (this.GUIProdRate / new Double(this.prodRate));
             } else {
                 Random random = new Random();
                 for (ThingProperty tp : this.assetProperties) {
@@ -218,11 +219,9 @@ public class AssetThing extends VirtualThing {
             }
 
             this.prodRate = this.GUIProdRate;
-            System.out.println("PRODRATE: " + this.prodRate);
             double production = this.prodRate / 60 * 5;
-            int goodCount = (int) (((1 - this.failure) * production) + 0.5);
-            int badCount = (int) ((this.failure * production) + 0.5);
-            
+            int goodCount = (int) (((1 - (this.failure/100)) * production) + 0.5);
+            int badCount = (int) (((this.failure/100) * production) + 0.5);
             for(ThingProperty tp : this.assetProperties){
                 if(tp.getName().equalsIgnoreCase("ProductionRate")){
                     tp.setValue(Integer.toString(this.prodRate));
@@ -239,8 +238,9 @@ public class AssetThing extends VirtualThing {
                     this.setRemoteProperty(tp.getName(), tp.getValue());
                 }
             }
-
+            System.out.println("THING " + this.getName() + " --- GOODCOUNT: " + goodCount);
             this.updateSubscribedProperties(1000);
+            this.client.invokeService(ThingworxEntityTypes.Things, this.getName(), "addToBuffer", null, Integer.SIZE);
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Unable to simulate data of thing {}.", AssetThing.class, this.getName());
         }
