@@ -106,13 +106,12 @@ public class VirtualProductLine extends javax.swing.JFrame {
     private void showPropsOfSelectedAsset() {
         this.PropertyPanel.removeAll();
 
-        GridLayout grid = new GridLayout(this.agent.getSelectedAsset().getAssetProperties().size(), 2);
+        GridLayout grid = new GridLayout(this.agent.getSelectedAsset().getAssetProperties().size(), 2, 0, 5);
         this.PropertyPanel.setLayout(grid);
 
         for (ThingProperty pt : this.agent.getSelectedAsset().getAssetProperties()) {
             JLabel label = new JLabel(pt.getName() + ":", SwingConstants.CENTER);
             JLabel value = new JLabel();
-
             if (pt.getName().equalsIgnoreCase("pushedStatus")) {
                 value.setText(StatusEnum.convertIntToState(Integer.parseInt(pt.getValue())));
             } else {
@@ -140,8 +139,9 @@ public class VirtualProductLine extends javax.swing.JFrame {
         PropertyPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         newProductionRateField = new javax.swing.JTextField();
-        BreakButton = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         MaintenanceButton = new javax.swing.JButton();
+        BreakButton = new javax.swing.JButton();
         RestartButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -150,30 +150,33 @@ public class VirtualProductLine extends javax.swing.JFrame {
 
         AssetDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        PropertyPanel.setMinimumSize(new java.awt.Dimension(470, 300));
+        PropertyPanel.setPreferredSize(new java.awt.Dimension(470, 300));
+
         javax.swing.GroupLayout PropertyPanelLayout = new javax.swing.GroupLayout(PropertyPanel);
         PropertyPanel.setLayout(PropertyPanelLayout);
         PropertyPanelLayout.setHorizontalGroup(
             PropertyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 467, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         PropertyPanelLayout.setVerticalGroup(
             PropertyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 206, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         jLabel2.setText("New Production Rate:");
-
-        BreakButton.setText("Break");
-        BreakButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BreakButtonActionPerformed(evt);
-            }
-        });
 
         MaintenanceButton.setText("Maintenance");
         MaintenanceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MaintenanceButtonActionPerformed(evt);
+            }
+        });
+
+        BreakButton.setText("Break");
+        BreakButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BreakButtonActionPerformed(evt);
             }
         });
 
@@ -184,30 +187,46 @@ public class VirtualProductLine extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(95, 95, 95)
+                .addComponent(BreakButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(MaintenanceButton)
+                .addGap(18, 18, 18)
+                .addComponent(RestartButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BreakButton)
+                    .addComponent(MaintenanceButton)
+                    .addComponent(RestartButton))
+                .addContainerGap(45, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PropertyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(BreakButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
-                        .addComponent(MaintenanceButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(RestartButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(AssetDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(newProductionRateField)))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(AssetDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(newProductionRateField, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(PropertyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,13 +237,11 @@ public class VirtualProductLine extends javax.swing.JFrame {
                     .addComponent(AssetDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(newProductionRateField, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BreakButton)
-                    .addComponent(MaintenanceButton)
-                    .addComponent(RestartButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(PropertyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(PropertyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -294,6 +311,7 @@ public class VirtualProductLine extends javax.swing.JFrame {
     private javax.swing.JButton RestartButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField newProductionRateField;
     // End of variables declaration//GEN-END:variables
 }
