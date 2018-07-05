@@ -201,7 +201,8 @@ public class AssetThing extends VirtualThing {
                         tp.setValue(Double.toString(val));
                     }
                 }
-                this.failure = (int) (this.failure * (this.GUIProdRate / new Double(this.prodRate)));
+                Random random = new Random();
+                this.failure = this.failure + dProdRate/20 + random.nextInt(10) - 5;
             } else {
                 Random random = new Random();
                 for (ThingProperty tp : this.assetProperties) {
