@@ -26,7 +26,7 @@ public class ThreadManager {
     public void start(){
         try {
             if(client.waitForConnection(30000)){
-                for(AssetThing thing : agent.getThings()){    
+                for(AssetThing thing : agent.getThings()){
                     if(!thing.getName().contains("Line")){
                         Thread thingThread = new Thread(new AgentThreadRunnable(thing, 5));
                     }
@@ -61,8 +61,7 @@ public class ThreadManager {
                             } catch(Exception e){
                                 LOG.error("NOTIFICATIE [ERROR] - {} - Exception occurred while simulating new data.", AgentThreadRunnable.class);
                             }
-                        }
-                                
+                        }     
                     } catch(Exception e){
                         LOG.error("NOTIFICATIE [ERROR] - {} - Thing {} could not be bound to the client.", AgentThreadRunnable.class, this.thing.getName());
                     }

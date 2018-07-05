@@ -1,7 +1,6 @@
 package configuration;
 
 import com.stage.client.ThingworxClient;
-import com.thingworx.communications.client.ConnectedThingClient;
 import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
 import com.thingworx.types.BaseTypes;
@@ -15,6 +14,7 @@ import com.thingworx.types.primitives.NumberPrimitive;
 import com.thingworx.types.primitives.StringPrimitive;
 import com.thingworx.types.primitives.structs.VTQ;
 import java.util.List;
+import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -28,6 +28,7 @@ public class AssetThing extends VirtualThing {
     private final String name;
     private final TypeEnum type;
     private final List<ThingProperty> assetProperties;
+    private ThingworxClient client;
     private int initProdRate;   //ProdRate used when Asset is restarted after (un)planned_downtime
     private int GUIProdRate;
     private int prodRate;
@@ -38,6 +39,7 @@ public class AssetThing extends VirtualThing {
         this.name = name;
         this.type = type;
         this.assetProperties = assetProperties;
+        this.client = client;
         
         try {
             for (int i = 0; i < this.assetProperties.size(); i++) {
@@ -137,6 +139,48 @@ public class AssetThing extends VirtualThing {
     }
 
     public void simulateData() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int dProdRate = this.GUIProdRate - this.prodRate;
+        
+        if(dProdRate != 0){
+            for(ThingProperty tp : this.assetProperties){
+                if(!tp.getName().equalsIgnoreCase("pushedStatus")
+                        && !tp.getName().equalsIgnoreCase("ProductionRate") 
+                        && !tp.getName().equalsIgnoreCase("PercentageFailure") 
+                        && !tp.getName().equalsIgnoreCase("NextAsset")){
+                    double val = Double.parseDouble(tp.getValue());
+                    val = val * (this.GUIProdRate / this.prodRate);
+                    tp.setValue(Double.toString(val));
+                }
+            }
+            this.failure = this.failure * (this.GUIProdRate / this.prodRate );
+        } else {
+            Random random = new Random();
+            for(ThingProperty tp : this.assetProperties){
+                if(!tp.getName().equalsIgnoreCase("pushedStatus")
+                        && !tp.getName().equalsIgnoreCase("ProductionRate") 
+                        && !tp.getName().equalsIgnoreCase("PercentageFailure") 
+                        && !tp.getName().equalsIgnoreCase("NextAsset")){
+                    double val = Double.parseDouble(tp.getValue());
+                    val = val + (( random.nextBoolean() ? 1 : -1 ) * (random.nextDouble() / 10 * val));
+                    tp.setValue(Double.toString(val));
+                }
+            }
+        }
+        
+        this.prodRate = this.GUIProdRate;
+        double production = this.prodRate / 60 * 5;
+        int goodCount = (int) (((1 - this.failure) * production) + 0.5);
+        int badCount = (int) ((this.failure * production) + 0.5);
+        
+        this.setRemoteProperty("GoodCount", Integer.toString(goodCount));
+        this.setRemoteProperty("BadCount", Integer.toString(badCount));
+        for(ThingProperty tp : this.assetProperties){
+                if(!tp.getName().equalsIgnoreCase("pushedStatus")
+                        && !tp.getName().equalsIgnoreCase("ProductionRate") 
+                        && !tp.getName().equalsIgnoreCase("PercentageFailure") 
+                        && !tp.getName().equalsIgnoreCase("NextAsset")){
+                    this.setRemoteProperty(tp.getName(), tp.getValue());
+                }
+            }
     }
 }

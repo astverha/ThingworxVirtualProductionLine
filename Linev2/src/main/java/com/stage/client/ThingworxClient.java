@@ -10,6 +10,7 @@ public class ThingworxClient extends ConnectedThingClient {
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ThingworxClient.class);
 
     private final ConfigurationAgent agent;
+    private int simulationSpeed;
 
     public ThingworxClient(ConfigurationAgent agent) throws Exception {
         super(agent.getConfiguration());
