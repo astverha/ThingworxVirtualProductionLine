@@ -246,6 +246,7 @@ public class AssetThing extends VirtualThing {
                     //calculate good and bad count
                     this.goodCount = deltaGoodCount + this.goodCount;
                     this.badCount = (int) (((this.failure / 100.0) * production) + 0.5 + this.badCount);
+                    
                     //Set the local production rate and percentage failure (for GUI)
                     for (ThingProperty tp : this.assetProperties) {
                         if (tp.getName().equalsIgnoreCase("ProductionRate")) {
