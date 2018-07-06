@@ -166,15 +166,15 @@ public class AssetThing extends VirtualThing {
     public void setRemoteProperty(String name, String value) {
         try {
             VTQ vtq = new VTQ();
-            if (Utilities.isInteger(value)) {
-                vtq.setValue(new IntegerPrimitive(Integer.parseInt(value)));
-            } else if (Utilities.isDouble(value)) {
+            if (Utilities.isDouble(value)) {
                 vtq.setValue(new NumberPrimitive(Double.parseDouble(value)));
-            } else {
+            } else if (Utilities.isInteger(value)) {
+                vtq.setValue(new IntegerPrimitive(Integer.parseInt(value)));
+            }  else {
                 vtq.setValue(new StringPrimitive(value));
             }
             LOG.info("NOTIFICATIE: {} - property " + name + " is now " + value, this.getName());
-            client.writeProperty(ThingworxEntityTypes.Things, this.getName(), name, vtq.getValue(), Integer.SIZE);
+            this.setPropertyVTQ(name, vtq, true);
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property {} of thing {}.", AssetThing.class, name, this.getName());
             e.printStackTrace();
