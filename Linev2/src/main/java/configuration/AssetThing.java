@@ -1,10 +1,12 @@
 package configuration;
 
 import com.stage.client.ThingworxClient;
+import com.thingworx.communications.client.ConnectionException;
 import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
 import com.thingworx.relationships.RelationshipTypes.ThingworxEntityTypes;
 import com.thingworx.types.BaseTypes;
+import com.thingworx.types.InfoTable;
 import com.thingworx.types.collections.AspectCollection;
 import com.thingworx.types.constants.Aspects;
 import com.thingworx.types.constants.DataChangeType;
@@ -15,6 +17,7 @@ import com.thingworx.types.primitives.StringPrimitive;
 import com.thingworx.types.primitives.structs.VTQ;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,30 +94,30 @@ public class AssetThing extends VirtualThing {
             super.defineProperty(bufferQuantity);
 
             //GoodCount
-            PropertyDefinition goodCount;
+            PropertyDefinition gc;
             aspects = new AspectCollection();
-            goodCount = new PropertyDefinition("GoodCount", "", BaseTypes.NUMBER);
+            gc = new PropertyDefinition("GoodCount", "", BaseTypes.NUMBER);
             aspects.put(Aspects.ASPECT_DATACHANGETYPE, new StringPrimitive("VALUE"));
             aspects.put(Aspects.ASPECT_DATACHANGETHRESHOLD, new NumberPrimitive(0.0));
             aspects.put(Aspects.ASPECT_CACHETIME, new IntegerPrimitive(0));
             aspects.put(Aspects.ASPECT_ISPERSISTENT, new BooleanPrimitive(true));
             aspects.put(Aspects.ASPECT_ISREADONLY, new BooleanPrimitive(true));
             aspects.put("pushType", new StringPrimitive(DataChangeType.ALWAYS.name()));
-            goodCount.setAspects(aspects);
-            super.defineProperty(goodCount);
+            gc.setAspects(aspects);
+            super.defineProperty(gc);
 
             //BadCount
-            PropertyDefinition badCount;
+            PropertyDefinition bc;
             aspects = new AspectCollection();
-            badCount = new PropertyDefinition("BadCount", "", BaseTypes.NUMBER);
+            bc = new PropertyDefinition("BadCount", "", BaseTypes.NUMBER);
             aspects.put(Aspects.ASPECT_DATACHANGETYPE, new StringPrimitive("VALUE"));
             aspects.put(Aspects.ASPECT_DATACHANGETHRESHOLD, new NumberPrimitive(0.0));
             aspects.put(Aspects.ASPECT_CACHETIME, new IntegerPrimitive(0));
             aspects.put(Aspects.ASPECT_ISPERSISTENT, new BooleanPrimitive(true));
             aspects.put(Aspects.ASPECT_ISREADONLY, new BooleanPrimitive(true));
             aspects.put("pushType", new StringPrimitive(DataChangeType.ALWAYS.name()));
-            badCount.setAspects(aspects);
-            super.defineProperty(badCount);
+            bc.setAspects(aspects);
+            super.defineProperty(bc);
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - An exception occurred while initializing an asset", AssetThing.class);
         }
@@ -122,7 +125,8 @@ public class AssetThing extends VirtualThing {
 
     /**
      * Initializes thing properties, remote and local (DEPRECATED)
-     * @param myClient 
+     *
+     * @param myClient
      */
     public void initializeProperties(ThingworxClient myClient) {
         try {
@@ -157,8 +161,9 @@ public class AssetThing extends VirtualThing {
 
     /**
      * Sets the remote property of a thing (does not set local ThingProperty).
+     *
      * @param name
-     * @param value 
+     * @param value
      */
     public void setRemoteProperty(String name, String value) {
         try {
@@ -178,8 +183,9 @@ public class AssetThing extends VirtualThing {
 
     /**
      * Returns the local ThingProperty.
+     *
      * @param name
-     * @return 
+     * @return
      */
     public ThingProperty getPropertyByName(String name) {
         for (ThingProperty tp : this.assetProperties) {
@@ -225,7 +231,7 @@ public class AssetThing extends VirtualThing {
                     }
                     this.failure = this.failure + dProdRate / 30 + random.nextInt(10) - 5;
                 }
-                
+
                 //Set the production rate equal to the new production rate.
                 this.prodRate = this.GUIProdRate;
                 //calculate the amount of items produced every 5 seconds (simulationspeed)
@@ -263,11 +269,25 @@ public class AssetThing extends VirtualThing {
                         val = (double) Math.round(val * 100d) / 100d;
                         tp.setValue(Double.toString(val));
                         this.setRemoteProperty(tp.getName(), Double.toString(val));
-                    } 
+                    }
                 }
                 this.updateSubscribedProperties(1000);
             } catch (Exception e) {
                 LOG.error("NOTIFICATIE [ERROR] - {} - Unable to simulate data of thing {}.", AssetThing.class, this.getName());
+            }
+            for (ThingProperty tp : this.assetProperties) {
+                if (!tp.getName().equalsIgnoreCase("pushedStatus")
+                        && !tp.getName().equalsIgnoreCase("ProductionRate")
+                        && !tp.getName().equalsIgnoreCase("PercentageFailure")
+                        && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                    try {
+                        InfoTable result = client.readProperty(ThingworxEntityTypes.Things, this.getName(), tp.getName(), true, Integer.SIZE);
+                        String value = result.getFirstRow().getStringValue(tp.getName());
+                        tp.setValue(value);
+                    } catch (Exception ex) {
+                        LOG.error("NOTIFICATIE [ERROR] - {} - Unable to read property {} of thing {}.", AssetThing.class, tp.getName(), this.getName());
+                    }
+                }
             }
         }
     }

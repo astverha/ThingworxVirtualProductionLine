@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import configuration.AssetThing;
-import configuration.ConfigurationAgent;
 import configuration.StatusEnum;
 import configuration.ThingProperty;
 import java.awt.ComponentOrientation;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,26 +11,14 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import java.awt.event.KeyListener;
-import javafx.scene.input.KeyEvent;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
-/**
- *
- * @author Administrator
- */
 public class VirtualProductLine extends javax.swing.JFrame {
 
     private GUIAgent agent;
 
-    /**
-     * Creates new form VirtualProductLine
-     */
     public VirtualProductLine(GUIAgent agent) {
         initComponents();
         setLocationRelativeTo(null);
