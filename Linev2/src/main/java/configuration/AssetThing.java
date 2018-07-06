@@ -221,7 +221,8 @@ public class AssetThing extends VirtualThing {
                         if (!tp.getName().equalsIgnoreCase("pushedStatus")
                                 && !tp.getName().equalsIgnoreCase("ProductionRate")
                                 && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                                && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                                && !tp.getName().equalsIgnoreCase("NextAsset")
+                                && !tp.getName().equalsIgnoreCase("IdealRunRate")) {
                             double val = Double.parseDouble(tp.getValue());
                             val = val * (this.GUIProdRate / new Double(this.prodRate));
                             val = (double) Math.round(val * 100d) / 100d;
@@ -272,7 +273,8 @@ public class AssetThing extends VirtualThing {
                     if (!tp.getName().equalsIgnoreCase("pushedStatus")
                             && !tp.getName().equalsIgnoreCase("ProductionRate")
                             && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                            && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                            && !tp.getName().equalsIgnoreCase("NextAsset")
+                            && !tp.getName().equalsIgnoreCase("IdealRunRate")) {
                         double val = Double.parseDouble(tp.getValue());
                         val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
                         val = (double) Math.round(val * 100d) / 100d;
@@ -289,7 +291,8 @@ public class AssetThing extends VirtualThing {
                 if (!tp.getName().equalsIgnoreCase("pushedStatus")
                         && !tp.getName().equalsIgnoreCase("ProductionRate")
                         && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                        && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                        && !tp.getName().equalsIgnoreCase("NextAsset")
+                        && !tp.getName().equalsIgnoreCase("IdealRunRate")) {
                     try {
                         InfoTable result = client.readProperty(ThingworxEntityTypes.Things, this.getName(), tp.getName(), true, Integer.SIZE);
                         String value = result.getFirstRow().getStringValue(tp.getName());
