@@ -284,8 +284,7 @@ public class VirtualProductLine extends javax.swing.JFrame {
     }//GEN-LAST:event_RestartButtonActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        // TODO add your handling code here:
-        this.agent.togglePause();
+            this.agent.togglePause();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
