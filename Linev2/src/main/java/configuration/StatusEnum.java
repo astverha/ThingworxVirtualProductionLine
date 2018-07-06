@@ -26,7 +26,7 @@ public enum StatusEnum {
                 break;
             case 4: status = StatusEnum.UNPLANNED_DOWNTIME.toString();
                 break;
-            case 5: status = status = StatusEnum.UNAVAILABLE.toString();
+            case 5: status = StatusEnum.UNAVAILABLE.toString();
                 break;
         }
         return status;
