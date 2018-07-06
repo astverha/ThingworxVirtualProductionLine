@@ -7,6 +7,7 @@ import com.thingworx.relationships.RelationshipTypes.ThingworxEntityTypes;
 import com.thingworx.types.BaseTypes;
 import com.thingworx.types.InfoTable;
 import com.thingworx.types.collections.AspectCollection;
+import com.thingworx.types.collections.ValueCollection;
 import com.thingworx.types.constants.Aspects;
 import com.thingworx.types.constants.DataChangeType;
 import com.thingworx.types.primitives.BooleanPrimitive;
@@ -129,10 +130,10 @@ public class AssetThing extends VirtualThing {
     public void initializeProperties(ThingworxClient myClient) {
         try {
             for (ThingProperty tp : this.assetProperties) {
-                if (!tp.getName().equals("ProductionRate") 
+                if (!tp.getName().equals("ProductionRate")
                         && !tp.getName().equals("PercentageFailure")
                         && !tp.getName().equals("NextAsset")) {
-                    this.setRemoteProperty(tp.getName(), tp.getName());
+                    this.setRemoteProperty(tp.getName(), tp.getValue());
                 } else if (tp.getName().equals("NextAsset")) {
                     this.setRemoteProperty(tp.getName(), "Asset_" + tp.getValue());
                 } else if (tp.getName().equals("ProductionRate")) {
@@ -165,15 +166,15 @@ public class AssetThing extends VirtualThing {
     public void setRemoteProperty(String name, String value) {
         try {
             VTQ vtq = new VTQ();
-            if (Utilities.isInteger(value)) {
-                vtq.setValue(new IntegerPrimitive(Integer.parseInt(value)));
-            } else if (Utilities.isDouble(value)) {
+            if (Utilities.isDouble(value)) {
                 vtq.setValue(new NumberPrimitive(Double.parseDouble(value)));
-            } else {
+            } else if (Utilities.isInteger(value)) {
+                vtq.setValue(new IntegerPrimitive(Integer.parseInt(value)));
+            }  else {
                 vtq.setValue(new StringPrimitive(value));
             }
-            client.writeProperty(ThingworxEntityTypes.Things, this.getName(), name, vtq.getValue(), Integer.SIZE);
             LOG.info("NOTIFICATIE: {} - property " + name + " is now " + value, this.getName());
+            this.setPropertyVTQ(name, vtq, true);
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property {} of thing {}.", AssetThing.class, name, this.getName());
             e.printStackTrace();
@@ -221,7 +222,7 @@ public class AssetThing extends VirtualThing {
                                 && !tp.getName().equalsIgnoreCase("ProductionRate")
                                 && !tp.getName().equalsIgnoreCase("PercentageFailure")
                                 && !tp.getName().equalsIgnoreCase("NextAsset")
-                                && !tp.getName().contains("Stock")) {
+                                && !tp.getName().equalsIgnoreCase("IdealRunRate")) {
                             double val = Double.parseDouble(tp.getValue());
                             val = val * (this.GUIProdRate / new Double(this.prodRate));
                             val = (double) Math.round(val * 100d) / 100d;
@@ -235,34 +236,45 @@ public class AssetThing extends VirtualThing {
                 this.prodRate = this.GUIProdRate;
                 //calculate the amount of items produced every 5 seconds (simulationspeed)
                 double production = this.prodRate / 60 * 5;
-                //calculate good and bad count
-                this.goodCount = (int) (((1 - (this.failure / 100.0)) * production) + 0.5 + this.goodCount);
-                this.badCount = (int) (((this.failure / 100.0) * production) + 0.5 + this.badCount);
-                //Set the local production rate and percentage failure (for GUI)
-                for (ThingProperty tp : this.assetProperties) {
-                    if (tp.getName().equalsIgnoreCase("ProductionRate")) {
-                        tp.setValue(Integer.toString(this.prodRate));
-                    } else if (tp.getName().equalsIgnoreCase("PercentageFailure")) {
-                        if (this.failure > 100) {
-                            tp.setValue(Integer.toString(100));
-                        } else if (this.failure < 0) {
-                            tp.setValue(Integer.toString(0));
-                        } else {
-                            tp.setValue(Integer.toString(this.failure));
+                int deltaGoodCount = (int) (((1 - (this.failure / 100.0)) * production) + 0.5);
+
+                //check if there are enough resources to produce
+                ValueCollection params = new ValueCollection();
+                params.put("amount", new IntegerPrimitive(deltaGoodCount));
+                InfoTable result = client.invokeService(ThingworxEntityTypes.Things, this.getName(), "checkIfCanProduce", params, 5000);
+                if (result.getFirstRow().getStringValue("result").equalsIgnoreCase("true")) {
+                    //calculate good and bad count
+                    this.goodCount = deltaGoodCount + this.goodCount;
+                    this.badCount = (int) (((this.failure / 100.0) * production) + 0.5 + this.badCount);
+                    //Set the local production rate and percentage failure (for GUI)
+                    for (ThingProperty tp : this.assetProperties) {
+                        if (tp.getName().equalsIgnoreCase("ProductionRate")) {
+                            tp.setValue(Integer.toString(this.prodRate));
+                        } else if (tp.getName().equalsIgnoreCase("PercentageFailure")) {
+                            if (this.failure > 100) {
+                                tp.setValue(Integer.toString(100));
+                            } else if (this.failure < 0) {
+                                tp.setValue(Integer.toString(0));
+                            } else {
+                                tp.setValue(Integer.toString(this.failure));
+                            }
                         }
                     }
+
+                    //add the new products to good and badcount
+                    this.setRemoteProperty("GoodCount", Integer.toString(this.goodCount));
+                    this.setRemoteProperty("BadCount", Integer.toString(this.badCount));
+                } else {
+                    LOG.error("NOTIFICATIE [INFO] - {} - No production possible for {}.", AssetThing.class, this.getName());
                 }
 
-                //add the new products to good and badcount
-                this.setRemoteProperty("GoodCount", Integer.toString(this.goodCount));
-                this.setRemoteProperty("BadCount", Integer.toString(this.badCount));
                 //simulate small variations in parameter values
                 for (ThingProperty tp : this.assetProperties) {
                     if (!tp.getName().equalsIgnoreCase("pushedStatus")
                             && !tp.getName().equalsIgnoreCase("ProductionRate")
                             && !tp.getName().equalsIgnoreCase("PercentageFailure")
                             && !tp.getName().equalsIgnoreCase("NextAsset")
-                            && !tp.getName().contains("Stock")) {
+                            && !tp.getName().equalsIgnoreCase("IdealRunRate")) {
                         double val = Double.parseDouble(tp.getValue());
                         val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
                         val = (double) Math.round(val * 100d) / 100d;
@@ -273,12 +285,14 @@ public class AssetThing extends VirtualThing {
                 this.updateSubscribedProperties(1000);
             } catch (Exception e) {
                 LOG.error("NOTIFICATIE [ERROR] - {} - Unable to simulate data of thing {}.", AssetThing.class, this.getName());
+                e.printStackTrace();
             }
             for (ThingProperty tp : this.assetProperties) {
                 if (!tp.getName().equalsIgnoreCase("pushedStatus")
                         && !tp.getName().equalsIgnoreCase("ProductionRate")
                         && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                        && !tp.getName().equalsIgnoreCase("NextAsset")) {
+                        && !tp.getName().equalsIgnoreCase("NextAsset")
+                        && !tp.getName().equalsIgnoreCase("IdealRunRate")) {
                     try {
                         InfoTable result = client.readProperty(ThingworxEntityTypes.Things, this.getName(), tp.getName(), true, Integer.SIZE);
                         String value = result.getFirstRow().getStringValue(tp.getName());
