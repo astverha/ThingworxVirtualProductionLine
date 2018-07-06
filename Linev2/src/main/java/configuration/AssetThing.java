@@ -1,7 +1,6 @@
 package configuration;
 
 import com.stage.client.ThingworxClient;
-import com.thingworx.communications.client.ConnectionException;
 import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
 import com.thingworx.relationships.RelationshipTypes.ThingworxEntityTypes;
@@ -17,7 +16,6 @@ import com.thingworx.types.primitives.StringPrimitive;
 import com.thingworx.types.primitives.structs.VTQ;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,11 +129,10 @@ public class AssetThing extends VirtualThing {
     public void initializeProperties(ThingworxClient myClient) {
         try {
             for (ThingProperty tp : this.assetProperties) {
-                // Set pushedStatus, Temperature and NextAsset
-                if (tp.getName().equals("pushedStatus")) {
-                    this.setRemoteProperty(tp.getName(), tp.getValue());
-                } else if (tp.getName().equals("Temperature")) {
-                    this.setRemoteProperty(tp.getName(), tp.getValue());
+                if (!tp.getName().equals("ProductionRate") 
+                        && !tp.getName().equals("PercentageFailure")
+                        && !tp.getName().equals("NextAsset")) {
+                    this.setRemoteProperty(tp.getName(), tp.getName());
                 } else if (tp.getName().equals("NextAsset")) {
                     this.setRemoteProperty(tp.getName(), "Asset_" + tp.getValue());
                 } else if (tp.getName().equals("ProductionRate")) {
@@ -176,8 +173,10 @@ public class AssetThing extends VirtualThing {
                 vtq.setValue(new StringPrimitive(value));
             }
             client.writeProperty(ThingworxEntityTypes.Things, this.getName(), name, vtq.getValue(), Integer.SIZE);
+            LOG.info("NOTIFICATIE: {} - property " + name + " is now " + value, this.getName());
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property {} of thing {}.", AssetThing.class, name, this.getName());
+            e.printStackTrace();
         }
     }
 
