@@ -4,7 +4,7 @@ The first step is creating the XML configuration file. For an example, check out
 
 ## Creating your devices in the Thingworx Manufacturer Apps and ThingWorx Composer
 ### Thingworx Manufacturer Apps
-Create your Line and your different Assets using Thingworx Manufacturer Apps. Provide every asset of it's properties. You only have to provide the properties you added. In the XML file in the documentation folder this is limited to the Temperature property. 
+Create your Line and your different Assets using Thingworx Manufacturer Apps. Provide every asset of its properties. You only have to provide the properties you added. In the XML file in the documentation folder this is limited to the Temperature property. 
 
 ### Run the Java project to connect the virtual things
 In the Other Resources folder of the Java project, provide the XML configuration file. Make sure the name of the file corresponds with the name supplied to the ConfigurationAgent in the RunApplication.java class.
