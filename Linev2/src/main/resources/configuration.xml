@@ -97,18 +97,6 @@
                         <Name>Temperature</Name>
                         <Value>35</Value>
                     </Property>
-                    <Property>
-                        <Name>StockA</Name>
-                        <Value>2000</Value>
-                    </Property>
-                    <Property>
-                        <Name>StockB</Name>
-                        <Value>2000</Value>
-                    </Property>
-                    <Property>
-                        <Name>StockC</Name>
-                        <Value>1000</Value>
-                    </Property>
                 </PropertyDefinitions>
             </Asset>
             
