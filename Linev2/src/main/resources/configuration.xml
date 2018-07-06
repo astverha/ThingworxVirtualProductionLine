@@ -32,7 +32,7 @@
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
-                        <Value>40</Value>
+                        <Value>15</Value>
                     </Property>
                     <Property>
                         <Name>NextAsset</Name>
