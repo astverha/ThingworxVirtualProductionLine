@@ -27,12 +27,17 @@ You can now stop the running Java project.
 
 ### Thingworx Manufacturer Apps - Defining Statuses, Performance Metrics and Alerts
 Using Thingworx Manufacturer Apps, define the status for the line and every asset. The easiest way is using pushedStatus. Examples: 
+
 RUNNING: `"Asset__AssetName_:pushedStatus" = 2`
+
 PLANNED_DOWNTIME: `"Asset__AssetName_:pushedStatus" = 3`
 
 Define the performance metrics as follows:
+
 Good Count: `"Asset__AssetName_:GoodCount"`
+
 Total Count: `"Asset__AssetName_:BadCount"+"Asset__AssetName_:GoodCount"`
+
 Ideal Run Rate: `"Asset__AssetName_:idealRunRate"`
 
 ## Restarting the simulation
