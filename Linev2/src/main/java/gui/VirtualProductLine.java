@@ -12,6 +12,7 @@ import java.awt.event.ItemListener;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import java.awt.event.KeyListener;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
@@ -32,7 +33,13 @@ public class VirtualProductLine extends javax.swing.JFrame {
             @Override
             public void keyPressed(java.awt.event.KeyEvent e) {
                 if (e.getKeyCode() == VK_ENTER) {
-                    agent.setProductionRate(Integer.parseInt(newProductionRateField.getText().trim()));
+                    int prodRate = Integer.parseInt(newProductionRateField.getText().trim());
+                    if(Integer.parseInt(agent.getSelectedAsset().getPropertyByName("IdealRunRate").getValue()) < prodRate){
+                        JOptionPane.showMessageDialog(null, "Invalid! New production rate cannot be greater than ideal run rate.");
+                    } else {
+                        
+                    agent.setProductionRate(prodRate);
+                    }
                     newProductionRateField.setText("");
                 }
             }
