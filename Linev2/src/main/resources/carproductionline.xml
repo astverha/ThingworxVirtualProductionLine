@@ -152,11 +152,11 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>500</Value>
+                        <Value>850</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>300</Value>
+                        <Value>600</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
@@ -183,11 +183,11 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>380</Value>
+                        <Value>1000</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>300</Value>
+                        <Value>500</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
@@ -218,7 +218,7 @@
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>600</Value>
+                        <Value>500</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
