@@ -174,7 +174,8 @@ public class AssetThing extends VirtualThing {
                 vtq.setValue(new StringPrimitive(value));
             }
             LOG.info("NOTIFICATIE: {} - property " + name + " is now " + value, this.getName());
-            this.setPropertyVTQ(name, vtq, true);
+            //this.setPropertyVTQ(name, vtq, true);
+            client.writeProperty(ThingworxEntityTypes.Things, this.getName(), name, vtq.getValue(), Integer.SIZE);
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property {} of thing {}.", AssetThing.class, name, this.getName());
             e.printStackTrace();
@@ -246,6 +247,7 @@ public class AssetThing extends VirtualThing {
                     //calculate good and bad count
                     this.goodCount = deltaGoodCount + this.goodCount;
                     this.badCount = (int) (((this.failure / 100.0) * production) + 0.5 + this.badCount);
+                    
                     //Set the local production rate and percentage failure (for GUI)
                     for (ThingProperty tp : this.assetProperties) {
                         if (tp.getName().equalsIgnoreCase("ProductionRate")) {

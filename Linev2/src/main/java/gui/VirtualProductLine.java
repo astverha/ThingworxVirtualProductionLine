@@ -12,6 +12,7 @@ import java.awt.event.ItemListener;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import java.awt.event.KeyListener;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
@@ -32,7 +33,13 @@ public class VirtualProductLine extends javax.swing.JFrame {
             @Override
             public void keyPressed(java.awt.event.KeyEvent e) {
                 if (e.getKeyCode() == VK_ENTER) {
-                    agent.setProductionRate(Integer.parseInt(newProductionRateField.getText().trim()));
+                    int prodRate = Integer.parseInt(newProductionRateField.getText().trim());
+                    if(Integer.parseInt(agent.getSelectedAsset().getPropertyByName("IdealRunRate").getValue()) < prodRate){
+                        JOptionPane.showMessageDialog(null, "Invalid! New production rate cannot be greater than ideal run rate.");
+                    } else {
+                        
+                    agent.setProductionRate(prodRate);
+                    }
                     newProductionRateField.setText("");
                 }
             }
@@ -76,7 +83,19 @@ public class VirtualProductLine extends javax.swing.JFrame {
                     if (at != null) {
                         agent.setSelectedAsset(at);
                         showPropsOfSelectedAsset();
+
+                        //Buttons enabled/disabled depending on status
+                        if (at.getPropertyByName("pushedStatus").getValue().equalsIgnoreCase("2")) {
+                            BreakButton.setEnabled(true);
+                            MaintenanceButton.setEnabled(true);
+                            RestartButton.setEnabled(false);
+                        } else {
+                            BreakButton.setEnabled(false);
+                            MaintenanceButton.setEnabled(false);
+                            RestartButton.setEnabled(true);
+                        }
                     }
+
                 }
             }
 
@@ -131,6 +150,11 @@ public class VirtualProductLine extends javax.swing.JFrame {
         jLabel1.setText("Asset: ");
 
         AssetDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        AssetDropDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AssetDropDownActionPerformed(evt);
+            }
+        });
 
         PropertyPanel.setMinimumSize(new java.awt.Dimension(470, 300));
         PropertyPanel.setPreferredSize(new java.awt.Dimension(470, 300));
@@ -265,8 +289,12 @@ public class VirtualProductLine extends javax.swing.JFrame {
     }//GEN-LAST:event_RestartButtonActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-            this.agent.togglePause();
+        this.agent.togglePause();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void AssetDropDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AssetDropDownActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AssetDropDownActionPerformed
 
     /**
      * @param args the command line arguments
