@@ -94,7 +94,7 @@
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>300</Value>
+                        <Value>400</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
@@ -218,7 +218,7 @@
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>400</Value>
+                        <Value>600</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>

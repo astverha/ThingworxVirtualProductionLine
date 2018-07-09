@@ -174,7 +174,8 @@ public class AssetThing extends VirtualThing {
                 vtq.setValue(new StringPrimitive(value));
             }
             LOG.info("NOTIFICATIE: {} - property " + name + " is now " + value, this.getName());
-            this.setPropertyVTQ(name, vtq, true);
+            //this.setPropertyVTQ(name, vtq, true);
+            client.writeProperty(ThingworxEntityTypes.Things, this.getName(), name, vtq.getValue(), Integer.SIZE);
         } catch (Exception e) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Unable to update property {} of thing {}.", AssetThing.class, name, this.getName());
             e.printStackTrace();
