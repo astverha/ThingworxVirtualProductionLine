@@ -14,7 +14,7 @@ Run the project, keep it running for the next steps.
 Using Thingworx Composer, make sure all assets of your line implement the SimulationThingShape thing shape. Then bind all the properties to their correct remote counterparts. Pay attention you bind GoodCount (remote) to GoodCount (Thingworx) and BadCount to BadCount, mind the casing!
 
 ### Thingworx Composer - Create an ERP to manage your stock
-Using Thingworx Composer, create an ERP thing implementing the LineV2ERP, which will be referenced to as "ERPStock" from now on. Initialize the stock. Example: if you have an assembler that makes a product out of part A and B, create a data entry for A: Article = "A", Stock = initial stock value, and for B: Article = "B", Stock = initial stock value.
+Using Thingworx Composer, create an ERP DataTable implementing LineV2ERP, which will be referenced to as "ERPStock" from now on. Initialize the stock. Example: if you have an assembler that makes a product out of part A and B, create a data entry for A: Article = "A", Stock = initial stock value, and for B: Article = "B", Stock = initial stock value.
 
 ### Thingworx Composer - Override the checkIfCanProduce service
 Using Thingworx Composer, override the "checkIfCanProduce" service of the SimulationThingShape thing shape for every asset. In this service, use Javascript to code the logic of producing. Examples can be found in the documentation > checkIfCanProduce folder.
