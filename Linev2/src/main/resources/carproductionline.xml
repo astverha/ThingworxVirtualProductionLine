@@ -32,7 +32,7 @@
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>500</Value>
+                        <Value>300</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
@@ -63,7 +63,7 @@
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>500</Value>
+                        <Value>300</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
@@ -90,11 +90,11 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>500</Value>
+                        <Value>600</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>400</Value>
+                        <Value>500</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
@@ -125,7 +125,7 @@
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>500</Value>
+                        <Value>300</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
@@ -276,11 +276,11 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>200</Value>
+                        <Value>250</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>100</Value>
+                        <Value>200</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
