@@ -10,7 +10,7 @@ public class RunApplication {
 
     public static void main(String[] args) {
         //Initialization of ConfigurationAgent (reads xml file, creates and exposes assetThings)
-        ConfigurationAgent agent = new ConfigurationAgent("beerproductionline.xml");
+        ConfigurationAgent agent = new ConfigurationAgent("carproductionline.xml");
         try {
             //Initialization of ThingworxClient (responsible for connection to thingworx)
             ThingworxClient client = agent.getClient();

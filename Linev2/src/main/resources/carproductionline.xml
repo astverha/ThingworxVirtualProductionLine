@@ -28,11 +28,11 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>700</Value>
+                        <Value>600</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>600</Value>
+                        <Value>300</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
@@ -59,15 +59,15 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>700</Value>
+                        <Value>600</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>500</Value>
+                        <Value>300</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
-                        <Value>30</Value>
+                        <Value>15</Value>
                     </Property>
                     <Property>
                         <Name>NextAsset</Name>
@@ -90,15 +90,15 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>450</Value>
+                        <Value>600</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>400</Value>
+                        <Value>500</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
-                        <Value>10</Value>
+                        <Value>15</Value>
                     </Property>
                     <Property>
                         <Name>NextAsset</Name>
@@ -121,7 +121,7 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>450</Value>
+                        <Value>600</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
@@ -152,11 +152,11 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>850</Value>
+                        <Value>600</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>600</Value>
+                        <Value>500</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
@@ -183,7 +183,7 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>1000</Value>
+                        <Value>600</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
@@ -214,11 +214,11 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>700</Value>
+                        <Value>500</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
-                        <Value>500</Value>
+                        <Value>400</Value>
                     </Property>
                     <Property>
                         <Name>PercentageFailure</Name>
@@ -276,7 +276,7 @@
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
-                        <Value>300</Value>
+                        <Value>250</Value>
                     </Property>
                     <Property>
                         <Name>ProductionRate</Name>
