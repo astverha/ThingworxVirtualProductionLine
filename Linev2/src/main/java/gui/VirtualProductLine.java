@@ -34,11 +34,11 @@ public class VirtualProductLine extends javax.swing.JFrame {
             public void keyPressed(java.awt.event.KeyEvent e) {
                 if (e.getKeyCode() == VK_ENTER) {
                     int prodRate = Integer.parseInt(newProductionRateField.getText().trim());
-                    if(Integer.parseInt(agent.getSelectedAsset().getPropertyByName("IdealRunRate").getValue()) < prodRate){
+                    if (Integer.parseInt(agent.getSelectedAsset().getPropertyByName("IdealRunRate").getValue()) < prodRate) {
                         JOptionPane.showMessageDialog(null, "Invalid! New production rate cannot be greater than ideal run rate.");
                     } else {
-                        
-                    agent.setProductionRate(prodRate);
+
+                        agent.setProductionRate(prodRate);
                     }
                     newProductionRateField.setText("");
                 }
@@ -106,21 +106,24 @@ public class VirtualProductLine extends javax.swing.JFrame {
     private void showPropsOfSelectedAsset() {
         this.PropertyPanel.removeAll();
 
-        GridLayout grid = new GridLayout(this.agent.getSelectedAsset().getAssetProperties().size(), 2, 0, 5);
+        GridLayout grid = new GridLayout(this.agent.getSelectedAsset().getAssetProperties().size()-1, 2, 0, 5);
         this.PropertyPanel.setLayout(grid);
 
         for (ThingProperty pt : this.agent.getSelectedAsset().getAssetProperties()) {
-            JLabel label = new JLabel(pt.getName() + ":", SwingConstants.CENTER);
-            JLabel value = new JLabel();
-            if (pt.getName().equalsIgnoreCase("pushedStatus")) {
-                value.setText(StatusEnum.convertIntToState(Integer.parseInt(pt.getValue())));
-            } else {
-                value.setText(pt.getValue());
+            if (!pt.getName().equalsIgnoreCase("nextasset")) {
+
+                JLabel label = new JLabel(pt.getName() + ":", SwingConstants.CENTER);
+                JLabel value = new JLabel();
+                if (pt.getName().equalsIgnoreCase("pushedStatus")) {
+                    value.setText(StatusEnum.convertIntToState(Integer.parseInt(pt.getValue())));
+                } else {
+                    value.setText(pt.getValue());
+                }
+
+                this.PropertyPanel.add(value);
+
+                this.PropertyPanel.add(label);
             }
-
-            this.PropertyPanel.add(value);
-
-            this.PropertyPanel.add(label);
         }
         this.PropertyPanel.validate();
     }
