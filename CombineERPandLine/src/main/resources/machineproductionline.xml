@@ -24,7 +24,7 @@
                 <PropertyDefinitions>
                     <Property>
                         <Name>pushedStatus</Name>
-                        <Value>2</Value>
+                        <Value>4</Value>
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>

@@ -34,11 +34,11 @@ public class VirtualProductLine extends javax.swing.JFrame {
             public void keyPressed(java.awt.event.KeyEvent e) {
                 if (e.getKeyCode() == VK_ENTER) {
                     int prodRate = Integer.parseInt(newProductionRateField.getText().trim());
-                    if(Integer.parseInt(agent.getSelectedAsset().getPropertyByName("IdealRunRate").getValue()) < prodRate){
+                    if (Integer.parseInt(agent.getSelectedAsset().getPropertyByName("IdealRunRate").getValue()) < prodRate) {
                         JOptionPane.showMessageDialog(null, "Invalid! New production rate cannot be greater than ideal run rate.");
                     } else {
-                        
-                    agent.setProductionRate(prodRate);
+
+                        agent.setProductionRate(prodRate);
                     }
                     newProductionRateField.setText("");
                 }
@@ -72,6 +72,7 @@ public class VirtualProductLine extends javax.swing.JFrame {
         this.AssetDropDown.setSelectedIndex(1);
         this.agent.setSelectedAsset(this.agent.getAllThings().get(1));
         this.showPropsOfSelectedAsset();
+        this.setButtonStatus(this.agent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
 
         this.AssetDropDown.addItemListener(new ItemListener() {
             @Override
@@ -83,17 +84,8 @@ public class VirtualProductLine extends javax.swing.JFrame {
                     if (at != null) {
                         agent.setSelectedAsset(at);
                         showPropsOfSelectedAsset();
-
                         //Buttons enabled/disabled depending on status
-                        if (at.getPropertyByName("pushedStatus").getValue().equalsIgnoreCase("2")) {
-                            BreakButton.setEnabled(true);
-                            MaintenanceButton.setEnabled(true);
-                            RestartButton.setEnabled(false);
-                        } else {
-                            BreakButton.setEnabled(false);
-                            MaintenanceButton.setEnabled(false);
-                            RestartButton.setEnabled(true);
-                        }
+                        setButtonStatus(agent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
                     }
 
                 }
@@ -123,6 +115,18 @@ public class VirtualProductLine extends javax.swing.JFrame {
             this.PropertyPanel.add(label);
         }
         this.PropertyPanel.validate();
+    }
+
+    private void setButtonStatus(String value) {
+        if (value.equals("2")) {
+            this.BreakButton.setEnabled(true);
+            this.MaintenanceButton.setEnabled(true);
+            this.RestartButton.setEnabled(false);
+        } else {
+            this.BreakButton.setEnabled(false);
+            this.MaintenanceButton.setEnabled(false);
+            this.RestartButton.setEnabled(true);
+        }
     }
 
     /**
@@ -269,23 +273,17 @@ public class VirtualProductLine extends javax.swing.JFrame {
 
     private void BreakButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BreakButtonActionPerformed
         this.agent.breakMachine();
-        this.BreakButton.setEnabled(false);
-        this.MaintenanceButton.setEnabled(false);
-        this.RestartButton.setEnabled(true);
+        this.setButtonStatus(this.agent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
     }//GEN-LAST:event_BreakButtonActionPerformed
 
     private void MaintenanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaintenanceButtonActionPerformed
         this.agent.performMaintenance();
-        this.BreakButton.setEnabled(false);
-        this.MaintenanceButton.setEnabled(false);
-        this.RestartButton.setEnabled(true);
+        this.setButtonStatus(this.agent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
     }//GEN-LAST:event_MaintenanceButtonActionPerformed
 
     private void RestartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RestartButtonActionPerformed
         this.agent.restartMachine();
-        this.BreakButton.setEnabled(true);
-        this.MaintenanceButton.setEnabled(true);
-        this.RestartButton.setEnabled(false);
+        this.setButtonStatus(this.agent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
     }//GEN-LAST:event_RestartButtonActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed

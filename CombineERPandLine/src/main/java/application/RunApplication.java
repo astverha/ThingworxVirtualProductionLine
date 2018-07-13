@@ -2,6 +2,7 @@ package application;
 
 import com.stage.client.ThingworxClient;
 import configuration.ConfigurationAgent;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.LoggerFactory;
 
 public class RunApplication {

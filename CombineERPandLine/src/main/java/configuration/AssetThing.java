@@ -1,8 +1,10 @@
 package configuration;
 
 import com.stage.client.ThingworxClient;
+import com.thingworx.communications.client.ConnectionException;
 import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
+import com.thingworx.relationships.RelationshipTypes;
 import com.thingworx.relationships.RelationshipTypes.ThingworxEntityTypes;
 import com.thingworx.types.BaseTypes;
 import com.thingworx.types.InfoTable;
@@ -17,6 +19,8 @@ import com.thingworx.types.primitives.StringPrimitive;
 import com.thingworx.types.primitives.structs.VTQ;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,6 +133,7 @@ public class AssetThing extends VirtualThing {
      */
     public void initializeProperties(ThingworxClient myClient) {
         try {
+            System.out.println(this.getName() + " --> INIT STATUS: " + this.getPropertyByName("pushedStatus").getValue());
             for (ThingProperty tp : this.assetProperties) {
                 if (!tp.getName().equals("ProductionRate")
                         && !tp.getName().equals("PercentageFailure")
@@ -170,7 +175,7 @@ public class AssetThing extends VirtualThing {
                 vtq.setValue(new NumberPrimitive(Double.parseDouble(value)));
             } else if (Utilities.isInteger(value)) {
                 vtq.setValue(new IntegerPrimitive(Integer.parseInt(value)));
-            }  else {
+            } else {
                 vtq.setValue(new StringPrimitive(value));
             }
             LOG.info("NOTIFICATIE: {} - property " + name + " is now " + value, this.getName());
@@ -210,14 +215,80 @@ public class AssetThing extends VirtualThing {
      * Simulates parameter changes of the virtual things.
      */
     public void simulateData() {
-        if (!machineDown) {
-            Random random = new Random();
-            try {
-                //Calculate difference between new production rate and old production rate.
-                int dProdRate = this.GUIProdRate - this.prodRate;
-                //If there is a difference, set all parameters according to the new production rate,
-                //as well as the new percentage failure stat.
-                if (dProdRate != 0) {
+        try {
+            //Get the pushedStatus of the Thing
+            InfoTable resultaat = client.readProperty(RelationshipTypes.ThingworxEntityTypes.Things, this.getName(), "pushedStatus", 10000);
+            String status = resultaat.getFirstRow().getStringValue("pushedStatus");
+            if(status.equals("2")){
+                this.machineDown = false;
+            } else if(status.equals("3") || status.equals("4")){
+                this.machineDown = true;
+            }
+            System.out.println(this.getName() + " --> THINGWORX STATUS: " + status);
+            System.out.println(this.getName() + " --> JAVA STATUS: " + this.getPropertyByName("pushedStatus").getValue());
+            this.getPropertyByName("pushedStatus").setValue(status);
+            if (!machineDown) {
+                Random random = new Random();
+                try {
+                    
+                    //Calculate difference between new production rate and old production rate.
+                    int dProdRate = this.GUIProdRate - this.prodRate;
+                    //If there is a difference, set all parameters according to the new production rate,
+                    //as well as the new percentage failure stat.
+                    if (dProdRate != 0) {
+                        for (ThingProperty tp : this.assetProperties) {
+                            if (!tp.getName().equalsIgnoreCase("pushedStatus")
+                                    && !tp.getName().equalsIgnoreCase("ProductionRate")
+                                    && !tp.getName().equalsIgnoreCase("PercentageFailure")
+                                    && !tp.getName().equalsIgnoreCase("NextAsset")
+                                    && !tp.getName().equalsIgnoreCase("IdealRunRate")) {
+                                double val = Double.parseDouble(tp.getValue());
+                                val = val * (this.GUIProdRate / new Double(this.prodRate));
+                                val = (double) Math.round(val * 100d) / 100d;
+                                tp.setValue(Double.toString(val));
+                            }
+                        }
+                        this.failure = this.failure + dProdRate / 30 + random.nextInt(10) - 5;
+                    }
+                    
+                    //Set the production rate equal to the new production rate.
+                    this.prodRate = this.GUIProdRate;
+                    //calculate the amount of items produced every 5 seconds (simulationspeed)
+                    double production = this.prodRate / 60 * 5;
+                    int deltaGoodCount = (int) (((1 - (this.failure / 100.0)) * production) + 0.5);
+                    
+                    //check if there are enough resources to produce
+                    ValueCollection params = new ValueCollection();
+                    params.put("amount", new IntegerPrimitive(deltaGoodCount));
+                    InfoTable result = client.invokeService(ThingworxEntityTypes.Things, this.getName(), "checkIfCanProduce", params, 5000);
+                    if (result.getFirstRow().getStringValue("result").equalsIgnoreCase("true")) {
+                        //calculate good and bad count
+                        this.goodCount = deltaGoodCount + this.goodCount;
+                        this.badCount = (int) (((this.failure / 100.0) * production) + 0.5 + this.badCount);
+                        
+                        //Set the local production rate and percentage failure (for GUI)
+                        for (ThingProperty tp : this.assetProperties) {
+                            if (tp.getName().equalsIgnoreCase("ProductionRate")) {
+                                tp.setValue(Integer.toString(this.prodRate));
+                            } else if (tp.getName().equalsIgnoreCase("PercentageFailure")) {
+                                if (this.failure > 100) {
+                                    tp.setValue(Integer.toString(100));
+                                } else if (this.failure < 0) {
+                                    tp.setValue(Integer.toString(0));
+                                } else {
+                                    tp.setValue(Integer.toString(this.failure));
+                                }
+                            }
+                        }
+                        
+                        //add the new products to good and badcount
+                        this.setRemoteProperty("GoodCount", Integer.toString(this.goodCount));
+                        this.setRemoteProperty("BadCount", Integer.toString(this.badCount));
+                    } else {
+                        LOG.error("NOTIFICATIE [INFO] - {} - No production possible for {}.", AssetThing.class, this.getName());
+                    }
+                    
+                    //simulate small variations in parameter values
                     for (ThingProperty tp : this.assetProperties) {
                         if (!tp.getName().equalsIgnoreCase("pushedStatus")
                                 && !tp.getName().equalsIgnoreCase("ProductionRate")
@@ -225,85 +296,35 @@ public class AssetThing extends VirtualThing {
                                 && !tp.getName().equalsIgnoreCase("NextAsset")
                                 && !tp.getName().equalsIgnoreCase("IdealRunRate")) {
                             double val = Double.parseDouble(tp.getValue());
-                            val = val * (this.GUIProdRate / new Double(this.prodRate));
+                            val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
                             val = (double) Math.round(val * 100d) / 100d;
                             tp.setValue(Double.toString(val));
+                            this.setRemoteProperty(tp.getName(), Double.toString(val));
                         }
                     }
-                    this.failure = this.failure + dProdRate / 30 + random.nextInt(10) - 5;
+                    this.updateSubscribedProperties(1000);
+                } catch (Exception e) {
+                    LOG.error("NOTIFICATIE [ERROR] - {} - Unable to simulate data of thing {}.", AssetThing.class, this.getName());
+                    e.printStackTrace();
                 }
-
-                //Set the production rate equal to the new production rate.
-                this.prodRate = this.GUIProdRate;
-                //calculate the amount of items produced every 5 seconds (simulationspeed)
-                double production = this.prodRate / 60 * 5;
-                int deltaGoodCount = (int) (((1 - (this.failure / 100.0)) * production) + 0.5);
-
-                //check if there are enough resources to produce
-                ValueCollection params = new ValueCollection();
-                params.put("amount", new IntegerPrimitive(deltaGoodCount));
-                InfoTable result = client.invokeService(ThingworxEntityTypes.Things, this.getName(), "checkIfCanProduce", params, 5000);
-                if (result.getFirstRow().getStringValue("result").equalsIgnoreCase("true")) {
-                    //calculate good and bad count
-                    this.goodCount = deltaGoodCount + this.goodCount;
-                    this.badCount = (int) (((this.failure / 100.0) * production) + 0.5 + this.badCount);
-                    
-                    //Set the local production rate and percentage failure (for GUI)
-                    for (ThingProperty tp : this.assetProperties) {
-                        if (tp.getName().equalsIgnoreCase("ProductionRate")) {
-                            tp.setValue(Integer.toString(this.prodRate));
-                        } else if (tp.getName().equalsIgnoreCase("PercentageFailure")) {
-                            if (this.failure > 100) {
-                                tp.setValue(Integer.toString(100));
-                            } else if (this.failure < 0) {
-                                tp.setValue(Integer.toString(0));
-                            } else {
-                                tp.setValue(Integer.toString(this.failure));
-                            }
-                        }
-                    }
-
-                    //add the new products to good and badcount
-                    this.setRemoteProperty("GoodCount", Integer.toString(this.goodCount));
-                    this.setRemoteProperty("BadCount", Integer.toString(this.badCount));
-                } else {
-                    LOG.error("NOTIFICATIE [INFO] - {} - No production possible for {}.", AssetThing.class, this.getName());
-                }
-
-                //simulate small variations in parameter values
                 for (ThingProperty tp : this.assetProperties) {
                     if (!tp.getName().equalsIgnoreCase("pushedStatus")
                             && !tp.getName().equalsIgnoreCase("ProductionRate")
                             && !tp.getName().equalsIgnoreCase("PercentageFailure")
                             && !tp.getName().equalsIgnoreCase("NextAsset")
                             && !tp.getName().equalsIgnoreCase("IdealRunRate")) {
-                        double val = Double.parseDouble(tp.getValue());
-                        val = val + ((random.nextBoolean() ? 1 : -1) * (random.nextDouble() / 10 * val));
-                        val = (double) Math.round(val * 100d) / 100d;
-                        tp.setValue(Double.toString(val));
-                        this.setRemoteProperty(tp.getName(), Double.toString(val));
-                    }
-                }
-                this.updateSubscribedProperties(1000);
-            } catch (Exception e) {
-                LOG.error("NOTIFICATIE [ERROR] - {} - Unable to simulate data of thing {}.", AssetThing.class, this.getName());
-                e.printStackTrace();
-            }
-            for (ThingProperty tp : this.assetProperties) {
-                if (!tp.getName().equalsIgnoreCase("pushedStatus")
-                        && !tp.getName().equalsIgnoreCase("ProductionRate")
-                        && !tp.getName().equalsIgnoreCase("PercentageFailure")
-                        && !tp.getName().equalsIgnoreCase("NextAsset")
-                        && !tp.getName().equalsIgnoreCase("IdealRunRate")) {
-                    try {
-                        InfoTable result = client.readProperty(ThingworxEntityTypes.Things, this.getName(), tp.getName(), true, Integer.SIZE);
-                        String value = result.getFirstRow().getStringValue(tp.getName());
-                        tp.setValue(value);
-                    } catch (Exception ex) {
-                        LOG.error("NOTIFICATIE [ERROR] - {} - Unable to read property {} of thing {}.", AssetThing.class, tp.getName(), this.getName());
+                        try {
+                            InfoTable result = client.readProperty(ThingworxEntityTypes.Things, this.getName(), tp.getName(), true, Integer.SIZE);
+                            String value = result.getFirstRow().getStringValue(tp.getName());
+                            tp.setValue(value);
+                        } catch (Exception ex) {
+                            LOG.error("NOTIFICATIE [ERROR] - {} - Unable to read property {} of thing {}.", AssetThing.class, tp.getName(), this.getName());
+                        }
                     }
                 }
             }
+        } catch (Exception ex) {
+            LOG.error("NOTIFICATIE [ERROR] - {} - Unable te retrieve status for Thing {}.", AssetThing.class, this.getName());
         }
     }
 
@@ -343,5 +364,6 @@ public class AssetThing extends VirtualThing {
 
     public void setNewProdRate(int rate) {
         this.GUIProdRate = rate;
-    }
+    }   
+    
 }
