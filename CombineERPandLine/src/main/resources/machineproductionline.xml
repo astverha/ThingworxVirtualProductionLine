@@ -99,7 +99,7 @@
     </ProductionLine>
     
     <ProductionLine>
-        <Name>MachineProductionLine</Name>
+        <Name>FrameProductionLine</Name>
         <Description>Virtual production line of a machine</Description>
         <PropertyDefinitions>
             <Property>
