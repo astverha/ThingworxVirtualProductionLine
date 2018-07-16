@@ -3,10 +3,9 @@
         <Server>ws://iottest07:80/Thingworx/WS</Server>
         <AppKey>434cfef9-9993-478f-ad49-0738fb8948b3</AppKey>
     </ServerConfiguration>
-    
     <ProductionLine>
-        <Name>MachineProductionLine</Name>
-        <Description>Virtual production line of a machine</Description>
+        <Name>BProductionLine</Name>
+        <Description>Virtual production line of part B</Description>
         <PropertyDefinitions>
             <Property>
                 <Name>pushedStatus</Name>
@@ -14,17 +13,16 @@
             </Property>
             <Property>
                 <Name>SimulationSpeed</Name>
-                <Value>5</Value>
+                <Value>8</Value>
             </Property>
         </PropertyDefinitions>
-        
         <AssetDefinitions>
             <Asset>
                 <Name>B_Producer</Name>
                 <PropertyDefinitions>
                     <Property>
                         <Name>pushedStatus</Name>
-                        <Value>4</Value>
+                        <Value>2</Value>
                     </Property>
                     <Property>
                         <Name>IdealRunRate</Name>
@@ -40,7 +38,7 @@
                     </Property>
                     <Property>
                         <Name>NextAsset</Name>
-                        <Value>FrameBuilder</Value>
+                        <Value>null</Value>
                     </Property>
                     
                     <Property>
@@ -49,7 +47,24 @@
                     </Property>
                 </PropertyDefinitions>
             </Asset> 
-            
+        </AssetDefinitions>
+    </ProductionLine>
+    
+    <ProductionLine>
+        <Name>CProductionLine</Name>
+        <Description>Virtual production line of part C</Description>
+        <PropertyDefinitions>
+            <Property>
+                <Name>pushedStatus</Name>
+                <Value>2</Value>
+            </Property>
+            <Property>
+                <Name>SimulationSpeed</Name>
+                <Value>8</Value>
+            </Property>
+        </PropertyDefinitions>
+        
+        <AssetDefinitions>
             <Asset>
                 <Name>C_Producer</Name>
                 <PropertyDefinitions>
@@ -71,7 +86,7 @@
                     </Property>
                     <Property>
                         <Name>NextAsset</Name>
-                        <Value>FrameBuilder</Value>
+                        <Value>null</Value>
                     </Property>
                     
                     <Property>
@@ -80,9 +95,26 @@
                     </Property>
                 </PropertyDefinitions>
             </Asset>
-            
+        </AssetDefinitions>
+    </ProductionLine>
+    
+    <ProductionLine>
+        <Name>MachineProductionLine</Name>
+        <Description>Virtual production line of a machine</Description>
+        <PropertyDefinitions>
+            <Property>
+                <Name>pushedStatus</Name>
+                <Value>2</Value>
+            </Property>
+            <Property>
+                <Name>SimulationSpeed</Name>
+                <Value>5</Value>
+            </Property>
+        </PropertyDefinitions>
+        
+        <AssetDefinitions>          
             <Asset>
-                <Name>FrameBuilder</Name>
+                <Name>Cutter</Name>
                 <PropertyDefinitions>
                     <Property>
                         <Name>pushedStatus</Name>
@@ -102,7 +134,7 @@
                     </Property>
                     <Property>
                         <Name>NextAsset</Name>
-                        <Value>FramingMachine</Value>
+                        <Value>Folder</Value>
                     </Property>
                     
                     <Property>
@@ -113,7 +145,7 @@
             </Asset>
             
             <Asset>
-                <Name>MachineBuilder</Name>
+                <Name>Folder</Name>
                 <PropertyDefinitions>
                     <Property>
                         <Name>pushedStatus</Name>
@@ -133,7 +165,7 @@
                     </Property>
                     <Property>
                         <Name>NextAsset</Name>
-                        <Value>FramingMachine</Value>
+                        <Value>Polishing</Value>
                     </Property>
                     
                     <Property>
@@ -144,7 +176,7 @@
             </Asset>
             
             <Asset>
-                <Name>FramingMachine</Name>
+                <Name>Polishing</Name>
                 <PropertyDefinitions>
                     <Property>
                         <Name>pushedStatus</Name>
