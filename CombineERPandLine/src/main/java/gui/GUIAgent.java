@@ -1,16 +1,22 @@
 package gui;
 
+import configuration.Asset;
 import configuration.AssetThing;
 import configuration.ConfigurationAgent;
+import configuration.Line;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GUIAgent {
     
     private final ConfigurationAgent agent;
     private AssetThing selectedAsset;
+    private Line selectedLine;
+    private List<AssetThing> assets;
     
     public GUIAgent(ConfigurationAgent agent){
         this.agent = agent;
+        assets = new ArrayList<>();
     }
     
     public List<AssetThing> getAllThings(){
@@ -45,9 +51,26 @@ public class GUIAgent {
         selectedAsset.restartMachine();
     }
 
-    void togglePause() {
+    public void togglePause() {
         agent.togglePause();
     }
     
+    public List<Line> getLines(){
+        return agent.getLines();
+    }
+
+    public void setSelectedLine(String name) {
+        this.selectedLine = agent.getLineByName(name);
+        
+        //GET ALL ASSETS FOR NEW SELECTED LINE
+        this.assets.clear();
+        for(Asset a : this.selectedLine.getAssets()){
+            assets.add(agent.getThingByName("Asset_" + a.getName()));
+        }
+    }
     
+    public List<AssetThing> getAssetThingsFromLine(){
+        return assets;
+    }
+      
 }

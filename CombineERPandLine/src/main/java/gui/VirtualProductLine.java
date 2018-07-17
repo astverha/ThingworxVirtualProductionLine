@@ -1,6 +1,7 @@
 package gui;
 
 import configuration.AssetThing;
+import configuration.Line;
 import configuration.StatusEnum;
 import configuration.ThingProperty;
 import java.awt.ComponentOrientation;
@@ -18,12 +19,12 @@ import javax.swing.Timer;
 
 public class VirtualProductLine extends javax.swing.JFrame {
 
-    private GUIAgent agent;
+    private GUIAgent guiAgent;
 
-    public VirtualProductLine(GUIAgent agent) {
+    public VirtualProductLine(GUIAgent guiAgent) {
         initComponents();
         setLocationRelativeTo(null);
-        this.agent = agent;
+        this.guiAgent = guiAgent;
         this.PropertyPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         this.RestartButton.setEnabled(false);
         this.initDropDown();
@@ -34,11 +35,11 @@ public class VirtualProductLine extends javax.swing.JFrame {
             public void keyPressed(java.awt.event.KeyEvent e) {
                 if (e.getKeyCode() == VK_ENTER) {
                     int prodRate = Integer.parseInt(newProductionRateField.getText().trim());
-                    if (Integer.parseInt(agent.getSelectedAsset().getPropertyByName("IdealRunRate").getValue()) < prodRate) {
+                    if (Integer.parseInt(guiAgent.getSelectedAsset().getPropertyByName("IdealRunRate").getValue()) < prodRate) {
                         JOptionPane.showMessageDialog(null, "Invalid! New production rate cannot be greater than ideal run rate.");
                     } else {
 
-                        agent.setProductionRate(prodRate);
+                        guiAgent.setProductionRate(prodRate);
                     }
                     newProductionRateField.setText("");
                 }
@@ -65,14 +66,37 @@ public class VirtualProductLine extends javax.swing.JFrame {
     };
 
     private void initDropDown() {
+        //LINE DROP DOWN
+        this.LineDropDown.removeAllItems();
+        for (Line l : guiAgent.getLines()) {
+            this.LineDropDown.addItem(l.getName());
+        }
+        this.LineDropDown.setSelectedIndex(0);
+        this.guiAgent.setSelectedLine(guiAgent.getLines().get(0).getName());
+
+        this.LineDropDown.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == 1) {
+                    guiAgent.setSelectedLine(e.getItem().toString());
+                    AssetDropDown.removeAllItems();
+                    for (AssetThing at : guiAgent.getAssetThingsFromLine()) {
+                       AssetDropDown.addItem(at.getName());
+                    }
+                }
+            }
+
+        });
+
+        //ASSET DROP DOWN
         this.AssetDropDown.removeAllItems();
-        for (AssetThing at : agent.getAllThings()) {
+        for (AssetThing at : guiAgent.getAssetThingsFromLine()) {
             this.AssetDropDown.addItem(at.getName());
         }
-        this.AssetDropDown.setSelectedIndex(1);
-        this.agent.setSelectedAsset(this.agent.getAllThings().get(1));
+        this.AssetDropDown.setSelectedIndex(0);
+        this.guiAgent.setSelectedAsset(this.guiAgent.getAllThings().get(1));
         this.showPropsOfSelectedAsset();
-        this.setButtonStatus(this.agent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
+        this.setButtonStatus(this.guiAgent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
 
         this.AssetDropDown.addItemListener(new ItemListener() {
             @Override
@@ -80,12 +104,12 @@ public class VirtualProductLine extends javax.swing.JFrame {
                 //1 means that an item was selected
                 //2 means that an item was deselected
                 if (e.getStateChange() == 1) {
-                    AssetThing at = agent.getAssetThingByName(e.getItem().toString());
+                    AssetThing at = guiAgent.getAssetThingByName(e.getItem().toString());
                     if (at != null) {
-                        agent.setSelectedAsset(at);
+                        guiAgent.setSelectedAsset(at);
                         showPropsOfSelectedAsset();
                         //Buttons enabled/disabled depending on status
-                        setButtonStatus(agent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
+                        setButtonStatus(guiAgent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
                     }
 
                 }
@@ -98,10 +122,10 @@ public class VirtualProductLine extends javax.swing.JFrame {
     private void showPropsOfSelectedAsset() {
         this.PropertyPanel.removeAll();
 
-        GridLayout grid = new GridLayout(this.agent.getSelectedAsset().getAssetProperties().size(), 2, 0, 5);
+        GridLayout grid = new GridLayout(this.guiAgent.getSelectedAsset().getAssetProperties().size(), 2, 0, 5);
         this.PropertyPanel.setLayout(grid);
 
-        for (ThingProperty pt : this.agent.getSelectedAsset().getAssetProperties()) {
+        for (ThingProperty pt : this.guiAgent.getSelectedAsset().getAssetProperties()) {
             JLabel label = new JLabel(pt.getName() + ":", SwingConstants.CENTER);
             JLabel value = new JLabel();
             if (pt.getName().equalsIgnoreCase("pushedStatus")) {
@@ -148,6 +172,8 @@ public class VirtualProductLine extends javax.swing.JFrame {
         BreakButton = new javax.swing.JButton();
         RestartButton = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
+        LineDropwDownLabel = new javax.swing.JLabel();
+        LineDropDown = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -235,59 +261,73 @@ public class VirtualProductLine extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        LineDropwDownLabel.setText("Line: ");
+
+        LineDropDown.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(PropertyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(AssetDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(AssetDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(LineDropwDownLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(LineDropDown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(newProductionRateField, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(PropertyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LineDropwDownLabel)
+                    .addComponent(LineDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(AssetDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(newProductionRateField, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(49, 49, 49)
                 .addComponent(PropertyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(21, 21, 21))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BreakButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BreakButtonActionPerformed
-        this.agent.breakMachine();
-        this.setButtonStatus(this.agent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
+        this.guiAgent.breakMachine();
+        this.setButtonStatus(this.guiAgent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
     }//GEN-LAST:event_BreakButtonActionPerformed
 
     private void MaintenanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaintenanceButtonActionPerformed
-        this.agent.performMaintenance();
-        this.setButtonStatus(this.agent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
+        this.guiAgent.performMaintenance();
+        this.setButtonStatus(this.guiAgent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
     }//GEN-LAST:event_MaintenanceButtonActionPerformed
 
     private void RestartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RestartButtonActionPerformed
-        this.agent.restartMachine();
-        this.setButtonStatus(this.agent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
+        this.guiAgent.restartMachine();
+        this.setButtonStatus(this.guiAgent.getSelectedAsset().getPropertyByName("pushedStatus").getValue());
     }//GEN-LAST:event_RestartButtonActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        this.agent.togglePause();
+        this.guiAgent.togglePause();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void AssetDropDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AssetDropDownActionPerformed
@@ -332,6 +372,8 @@ public class VirtualProductLine extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> AssetDropDown;
     private javax.swing.JButton BreakButton;
+    private javax.swing.JComboBox<String> LineDropDown;
+    private javax.swing.JLabel LineDropwDownLabel;
     private javax.swing.JButton MaintenanceButton;
     private javax.swing.JPanel PropertyPanel;
     private javax.swing.JButton RestartButton;

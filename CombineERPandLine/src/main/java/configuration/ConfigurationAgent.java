@@ -81,4 +81,18 @@ public final class ConfigurationAgent {
     public void togglePause() {
         client.togglePause();
     }
+
+    public List<Line> getLines() {
+        return lines;
+    }
+    
+    public Line getLineByName(String name){
+        for(Line l : lines){
+            if(l.getName().equals(name)){
+                return l;
+            }
+        }
+        return null;
+    }
+    
 }

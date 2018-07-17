@@ -133,7 +133,6 @@ public class AssetThing extends VirtualThing {
      */
     public void initializeProperties(ThingworxClient myClient) {
         try {
-            System.out.println(this.getName() + " --> INIT STATUS: " + this.getPropertyByName("pushedStatus").getValue());
             for (ThingProperty tp : this.assetProperties) {
                 if (!tp.getName().equals("ProductionRate")
                         && !tp.getName().equals("PercentageFailure")
@@ -224,8 +223,6 @@ public class AssetThing extends VirtualThing {
             } else if(status.equals("3") || status.equals("4")){
                 this.machineDown = true;
             }
-            System.out.println(this.getName() + " --> THINGWORX STATUS: " + status);
-            System.out.println(this.getName() + " --> JAVA STATUS: " + this.getPropertyByName("pushedStatus").getValue());
             this.getPropertyByName("pushedStatus").setValue(status);
             if (!machineDown) {
                 Random random = new Random();
