@@ -242,7 +242,11 @@ public class AssetThing extends VirtualThing {
                                 tp.setValue(Double.toString(val));
                             }
                         }
-                        this.failure = this.failure + dProdRate / 30 + random.nextInt(10) - 5;
+                        if(dProdRate < 0){
+                            this.failure = this.failure + dProdRate / 30 - random.nextInt(5);
+                        } else {
+                            this.failure = this.failure + dProdRate / 30 + random.nextInt(5);
+                        }
                     }
 
                     //Set the production rate equal to the new production rate.
