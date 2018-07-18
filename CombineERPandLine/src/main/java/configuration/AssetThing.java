@@ -221,6 +221,13 @@ public class AssetThing extends VirtualThing {
                 this.machineDown = true;
             }
             this.getPropertyByName("pushedStatus").setValue(status);
+
+            //Set the production rate equal to the new production rate.
+            this.prodRate = this.GUIProdRate;
+            //calculate the amount of items produced every 5 seconds (simulationspeed)
+            double production = this.prodRate / 60 * 5;
+            int deltaGoodCount = (int) (((1 - (this.failure / 100.0)) * production) + 0.5);
+
             if (!machineDown) {
                 Random random = new Random();
                 try {
@@ -242,34 +249,18 @@ public class AssetThing extends VirtualThing {
                                 tp.setValue(Double.toString(val));
                             }
                         }
-                        if(dProdRate < 0){
+                        if (dProdRate < 0) {
                             this.failure = this.failure + dProdRate / 30 - random.nextInt(5);
                         } else {
                             this.failure = this.failure + dProdRate / 30 + random.nextInt(5);
                         }
                     }
 
-                    //Set the production rate equal to the new production rate.
-                    this.prodRate = this.GUIProdRate;
-                    //calculate the amount of items produced every 5 seconds (simulationspeed)
-                    double production = this.prodRate / 60 * 5;
-                    int deltaGoodCount = (int) (((1 - (this.failure / 100.0)) * production) + 0.5);
-
                     //check if there are enough resources to produce
                     ValueCollection params = new ValueCollection();
                     params.put("amount", new IntegerPrimitive(deltaGoodCount));
                     InfoTable result = client.invokeService(ThingworxEntityTypes.Things, this.getName(), "checkIfCanProduce", params, 5000);
                     if (result.getFirstRow().getStringValue("result").equalsIgnoreCase("true")) {
-                        //Check pushedstatus
-                        if(this.getPropertyByName("pushedStatus").getValue().equals("4")){
-                            this.setRemoteProperty("pushedStatus", "" + StatusEnum.UNPLANNED_DOWNTIME.ordinal());
-                            for (ThingProperty pt : this.getAssetProperties()) {
-                                if (pt.getName().equals("pushedStatus")) {
-                                    pt.setValue("" + StatusEnum.UNPLANNED_DOWNTIME.ordinal());
-                                }
-                            }
-                        }
-                            
                         //calculate good and bad count
                         this.goodCount = deltaGoodCount + this.goodCount;
                         this.badCount = (int) (((this.failure / 100.0) * production) + 0.5 + this.badCount);
@@ -334,6 +325,20 @@ public class AssetThing extends VirtualThing {
                             tp.setValue(value);
                         } catch (Exception ex) {
                             LOG.error("NOTIFICATIE [ERROR] - {} - Unable to read property {} of thing {}.", AssetThing.class, tp.getName(), this.getName());
+                        }
+                    }
+                }
+            } else {
+                ValueCollection params = new ValueCollection();
+                params.put("amount", new IntegerPrimitive(deltaGoodCount));
+                InfoTable result = client.invokeService(ThingworxEntityTypes.Things, this.getName(), "checkIfCanProduce", params, 5000);
+                if (result.getFirstRow().getStringValue("result").equalsIgnoreCase("true")) {
+                    if (this.getPropertyByName("pushedStatus").getValue().equals("4")) {
+                        this.setRemoteProperty("pushedStatus", "" + StatusEnum.RUNNING.ordinal());
+                        for (ThingProperty pt : this.getAssetProperties()) {
+                            if (pt.getName().equals("pushedStatus")) {
+                                pt.setValue("" + StatusEnum.RUNNING.ordinal());
+                            }
                         }
                     }
                 }
