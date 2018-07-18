@@ -328,21 +328,14 @@ public class AssetThing extends VirtualThing {
                         }
                     }
                 }
-            } else {
+            } /*else {
                 ValueCollection params = new ValueCollection();
                 params.put("amount", new IntegerPrimitive(deltaGoodCount));
                 InfoTable result = client.invokeService(ThingworxEntityTypes.Things, this.getName(), "checkIfCanProduce", params, 5000);
                 if (result.getFirstRow().getStringValue("result").equalsIgnoreCase("true")) {
-                    if (this.getPropertyByName("pushedStatus").getValue().equals("4")) {
-                        this.setRemoteProperty("pushedStatus", "" + StatusEnum.RUNNING.ordinal());
-                        for (ThingProperty pt : this.getAssetProperties()) {
-                            if (pt.getName().equals("pushedStatus")) {
-                                pt.setValue("" + StatusEnum.RUNNING.ordinal());
-                            }
-                        }
-                    }
+                    this.restartMachine();
                 }
-            }
+            }*/
         } catch (Exception ex) {
             LOG.error("NOTIFICATIE [ERROR] - {} - Unable te retrieve status for Thing {}.", AssetThing.class, this.getName());
         }
