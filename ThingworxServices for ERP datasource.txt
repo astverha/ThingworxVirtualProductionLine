@@ -1,0 +1,28 @@
+#ERPSimulationDB.DataSource services
+___________________________________
+
+##SELECT
+getAllCustomers()
+getAllOrderableArticles()
+getStockForArticle(articleDescription)
+getPersonsFromCustomer(customerID)
+getProjectsForCustomer(customerID)
+getSitesForCustomer(customerID)
+getOrdersForCustomer(customerID)
+getOrdersForPerson(personID)
+getOrdersForSite(siteID)
+getOrderID(customerID, personID, siteID, orderDate)
+
+##INSERT
+createCustomer(name, VAT, address1, address2, city, postalCode, country, position, discount)		//position format: 53.24 120.24
+
+createCustomerSite(customerID, name, address1, address2, city, postalCode, country, position)
+
+createOrder(status, customerID, personID, siteID, orderDate)
+
+createOrderDetails(orderID, status, projectID, articleID, quantity, expectedDelivery, confirmedDelivery, deliveryDate)
+
+
+placeOrderWithDetails(customerID, personID, siteID, orderDate, projectID)
+
+updateArticlestock(articleDescription, newStock)

@@ -1,7 +1,6 @@
 package configuration;
 
 import com.stage.client.ThingworxClient;
-import com.thingworx.communications.client.ConnectionException;
 import com.thingworx.communications.client.things.VirtualThing;
 import com.thingworx.metadata.PropertyDefinition;
 import com.thingworx.relationships.RelationshipTypes;
@@ -19,8 +18,6 @@ import com.thingworx.types.primitives.StringPrimitive;
 import com.thingworx.types.primitives.structs.VTQ;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -218,16 +215,16 @@ public class AssetThing extends VirtualThing {
             //Get the pushedStatus of the Thing
             InfoTable resultaat = client.readProperty(RelationshipTypes.ThingworxEntityTypes.Things, this.getName(), "pushedStatus", 10000);
             String status = resultaat.getFirstRow().getStringValue("pushedStatus");
-            if(status.equals("2")){
+            if (status.equals("2")) {
                 this.machineDown = false;
-            } else if(status.equals("3") || status.equals("4")){
+            } else if (status.equals("3") || status.equals("4")) {
                 this.machineDown = true;
             }
             this.getPropertyByName("pushedStatus").setValue(status);
             if (!machineDown) {
                 Random random = new Random();
                 try {
-                    
+
                     //Calculate difference between new production rate and old production rate.
                     int dProdRate = this.GUIProdRate - this.prodRate;
                     //If there is a difference, set all parameters according to the new production rate,
@@ -247,22 +244,32 @@ public class AssetThing extends VirtualThing {
                         }
                         this.failure = this.failure + dProdRate / 30 + random.nextInt(10) - 5;
                     }
-                    
+
                     //Set the production rate equal to the new production rate.
                     this.prodRate = this.GUIProdRate;
                     //calculate the amount of items produced every 5 seconds (simulationspeed)
                     double production = this.prodRate / 60 * 5;
                     int deltaGoodCount = (int) (((1 - (this.failure / 100.0)) * production) + 0.5);
-                    
+
                     //check if there are enough resources to produce
                     ValueCollection params = new ValueCollection();
                     params.put("amount", new IntegerPrimitive(deltaGoodCount));
                     InfoTable result = client.invokeService(ThingworxEntityTypes.Things, this.getName(), "checkIfCanProduce", params, 5000);
                     if (result.getFirstRow().getStringValue("result").equalsIgnoreCase("true")) {
+                        //Check pushedstatus
+                        if(this.getPropertyByName("pushedStatus").getValue().equals("4")){
+                            this.setRemoteProperty("pushedStatus", "" + StatusEnum.UNPLANNED_DOWNTIME.ordinal());
+                            for (ThingProperty pt : this.getAssetProperties()) {
+                                if (pt.getName().equals("pushedStatus")) {
+                                    pt.setValue("" + StatusEnum.UNPLANNED_DOWNTIME.ordinal());
+                                }
+                            }
+                        }
+                            
                         //calculate good and bad count
                         this.goodCount = deltaGoodCount + this.goodCount;
                         this.badCount = (int) (((this.failure / 100.0) * production) + 0.5 + this.badCount);
-                        
+
                         //Set the local production rate and percentage failure (for GUI)
                         for (ThingProperty tp : this.assetProperties) {
                             if (tp.getName().equalsIgnoreCase("ProductionRate")) {
@@ -277,14 +284,21 @@ public class AssetThing extends VirtualThing {
                                 }
                             }
                         }
-                        
+
                         //add the new products to good and badcount
                         this.setRemoteProperty("GoodCount", Integer.toString(this.goodCount));
                         this.setRemoteProperty("BadCount", Integer.toString(this.badCount));
                     } else {
                         LOG.error("NOTIFICATIE [INFO] - {} - No production possible for {}.", AssetThing.class, this.getName());
+                        //Can't produce, so unplanned downtime (both local and remote)
+                        this.setRemoteProperty("pushedStatus", "" + StatusEnum.UNPLANNED_DOWNTIME.ordinal());
+                        for (ThingProperty pt : this.getAssetProperties()) {
+                            if (pt.getName().equals("pushedStatus")) {
+                                pt.setValue("" + StatusEnum.UNPLANNED_DOWNTIME.ordinal());
+                            }
+                        }
                     }
-                    
+
                     //simulate small variations in parameter values
                     for (ThingProperty tp : this.assetProperties) {
                         if (!tp.getName().equalsIgnoreCase("pushedStatus")
@@ -361,6 +375,6 @@ public class AssetThing extends VirtualThing {
 
     public void setNewProdRate(int rate) {
         this.GUIProdRate = rate;
-    }   
-    
+    }
+
 }
