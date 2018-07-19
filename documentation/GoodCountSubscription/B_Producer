@@ -1,0 +1,45 @@
+//CALCULATE GOODCOUNT DIFFERENCE
+var delta = eventData.newValue.value - eventData.oldValue.value;
+
+//B PRODUCER TAKES COPPER AND IRON, already checked in checkifcanproduce
+//OUTPUTS part B stock
+
+//Time to produce
+//get stock iron
+var params = {
+	articleDescription: "IRON INGOTS" /* STRING */
+};
+var stockIron = Things["ERPSimulationDB.DataSource"].getStockForArticle(params).ART_STOCK;
+
+//get stock copper
+var params = {
+	articleDescription: "COPPER INGOTS" /* STRING */
+};
+var stockCopper = Things["ERPSimulationDB.DataSource"].getStockForArticle(params).ART_STOCK;
+
+//get stock B
+var params = {
+	articleDescription: "B" /* STRING */
+};
+var stockB = Things["ERPSimulationDB.DataSource"].getStockForArticle(params).ART_STOCK;
+
+//update stock values
+var params = {
+	articleDescription: "IRON INGOTS" /* STRING */,
+	newStock: stockIron - 2*delta /* INTEGER */
+};
+// result: NUMBER
+var result = Things["ERPSimulationDB.DataSource"].updateArticlestock(params);
+var params = {
+	articleDescription: "COPPER INGOTS" /* STRING */,
+	newStock: stockCopper - delta /* INTEGER */
+};
+// result: NUMBER
+var result = Things["ERPSimulationDB.DataSource"].updateArticlestock(params);
+var params = {
+	articleDescription: "B" /* STRING */,
+	newStock: stockB + delta /* INTEGER */
+};
+// result: NUMBER
+var result = Things["ERPSimulationDB.DataSource"].updateArticlestock(params);
+
